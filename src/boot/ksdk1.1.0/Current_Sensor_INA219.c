@@ -16,24 +16,24 @@
 #include "warp.h"
 
 
-extern volatile WarpI2CDeviceState	deviceMMA8451QState;
-extern volatile uint32_t			gWarpI2cBaudRateKbps;
+extern volatile WarpI2CDeviceState	device_INA219State; //Renamed and modified this variable - baud rates, delay fro reading and writing bits on I2C bus will stay the same (not touching lines of code below).
+extern volatile uint32_t			gWarpI2cBaudRateKbps; 
 extern volatile uint32_t			gWarpI2cTimeoutMilliseconds;
 extern volatile uint32_t			gWarpSupplySettlingDelayMilliseconds;
 
 
 
 void
-initMMA8451Q(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
+init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 {
-	deviceMMA8451QState.i2cAddress					= i2cAddress;
-	deviceMMA8451QState.operatingVoltageMillivolts	= operatingVoltageMillivolts;
+	device_INA219State.i2cAddress					= i2cAddress;
+	device_INA219State.operatingVoltageMillivolts	= operatingVoltageMillivolts;
 
 	return;
 }
 
 WarpStatus
-writeSensorRegisterMMA8451Q(uint8_t deviceRegister, uint8_t payload)
+writeSensorRegister_INA219(uint8_t deviceRegister, uint8_t payload)
 {
 	uint8_t		payloadByte[1], commandByte[1];
 	i2c_status_t	status;
@@ -61,11 +61,11 @@ writeSensorRegisterMMA8451Q(uint8_t deviceRegister, uint8_t payload)
 
 	i2c_device_t slave =
 		{
-		.address = deviceMMA8451QState.i2cAddress,
+		.address = device_INA219State.i2cAddress,
 		.baudRate_kbps = gWarpI2cBaudRateKbps
 	};
 
-	warpScaleSupplyVoltage(deviceMMA8451QState.operatingVoltageMillivolts);
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 	commandByte[0] = deviceRegister;
 	payloadByte[0] = payload;
 	warpEnableI2Cpins();
@@ -87,18 +87,18 @@ writeSensorRegisterMMA8451Q(uint8_t deviceRegister, uint8_t payload)
 }
 
 WarpStatus
-configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1)
+configureSensor_INA219(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1)
 {
 	WarpStatus	i2cWriteStatus1, i2cWriteStatus2;
 
 
-	warpScaleSupplyVoltage(deviceMMA8451QState.operatingVoltageMillivolts);
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 
-	i2cWriteStatus1 = writeSensorRegisterMMA8451Q(kWarpSensorConfigurationRegisterMMA8451QF_SETUP /* register address F_SETUP */,
+	i2cWriteStatus1 = writeSensorRegister_INA219(kWarpSensorConfigurationRegister_INA219F_SETUP /* register address F_SETUP */,
 												  payloadF_SETUP /* payload: Disable FIFO */
 	);
 
-	i2cWriteStatus2 = writeSensorRegisterMMA8451Q(kWarpSensorConfigurationRegisterMMA8451QCTRL_REG1 /* register address CTRL_REG1 */,
+	i2cWriteStatus2 = writeSensorRegister_INA219(kWarpSensorConfigurationRegister_INA219CTRL_REG1 /* register address CTRL_REG1 */,
 												  payloadCTRL_REG1 /* payload */
 	);
 
@@ -106,7 +106,7 @@ configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1)
 }
 
 WarpStatus
-readSensorRegisterMMA8451Q(uint8_t deviceRegister, int numberOfBytes)
+readSensorRegister_INA219(uint8_t deviceRegister, int numberOfBytes)
 {
 	uint8_t		cmdBuf[1] = {0xFF};
 	i2c_status_t	status;
@@ -139,11 +139,11 @@ readSensorRegisterMMA8451Q(uint8_t deviceRegister, int numberOfBytes)
 
 	i2c_device_t slave =
 		{
-		.address = deviceMMA8451QState.i2cAddress,
+		.address = device_INA219State.i2cAddress,
 		.baudRate_kbps = gWarpI2cBaudRateKbps
 	};
 
-	warpScaleSupplyVoltage(deviceMMA8451QState.operatingVoltageMillivolts);
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 	cmdBuf[0] = deviceRegister;
 	warpEnableI2Cpins();
 
@@ -152,7 +152,7 @@ readSensorRegisterMMA8451Q(uint8_t deviceRegister, int numberOfBytes)
 		&slave,
 		cmdBuf,
 		1,
-		(uint8_t *)deviceMMA8451QState.i2cBuffer,
+		(uint8_t *)device_INA219State.i2cBuffer,
 		numberOfBytes,
 		gWarpI2cTimeoutMilliseconds);
 
@@ -165,7 +165,7 @@ readSensorRegisterMMA8451Q(uint8_t deviceRegister, int numberOfBytes)
 }
 
 void
-printSensorDataMMA8451Q(bool hexModeFlag)
+printSensorData_INA219(bool hexModeFlag)
 {
 	uint16_t	readSensorRegisterValueLSB;
 	uint16_t	readSensorRegisterValueMSB;
@@ -173,10 +173,10 @@ printSensorDataMMA8451Q(bool hexModeFlag)
 	WarpStatus	i2cReadStatus;
 
 
-	warpScaleSupplyVoltage(deviceMMA8451QState.operatingVoltageMillivolts);
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 
 	/*
-	 *	From the MMA8451Q datasheet:
+	 *	From the _INA219 datasheet:
 	 *
 	 *		"A random read access to the LSB registers is not possible.
 	 *		Reading the MSB register and then the LSB register in sequence
@@ -187,9 +187,9 @@ printSensorDataMMA8451Q(bool hexModeFlag)
 	 *	We therefore do 2-byte read transactions, for each of the registers.
 	 *	We could also improve things by doing a 6-byte read transaction.
 	 */
-	i2cReadStatus = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_X_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB = deviceMMA8451QState.i2cBuffer[0];
-	readSensorRegisterValueLSB = deviceMMA8451QState.i2cBuffer[1];
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_X_MSB, 2 /* numberOfBytes */);
+	readSensorRegisterValueMSB = device_INA219State.i2cBuffer[0];
+	readSensorRegisterValueLSB = device_INA219State.i2cBuffer[1];
 	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
 
 	/*
@@ -213,9 +213,9 @@ printSensorDataMMA8451Q(bool hexModeFlag)
 		}
 	}
 
-	i2cReadStatus = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_Y_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB = deviceMMA8451QState.i2cBuffer[0];
-	readSensorRegisterValueLSB = deviceMMA8451QState.i2cBuffer[1];
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_Y_MSB, 2 /* numberOfBytes */);
+	readSensorRegisterValueMSB = device_INA219State.i2cBuffer[0];
+	readSensorRegisterValueLSB = device_INA219State.i2cBuffer[1];
 	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
 
 	/*
@@ -239,9 +239,9 @@ printSensorDataMMA8451Q(bool hexModeFlag)
 		}
 	}
 
-	i2cReadStatus = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_Z_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB = deviceMMA8451QState.i2cBuffer[0];
-	readSensorRegisterValueLSB = deviceMMA8451QState.i2cBuffer[1];
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_Z_MSB, 2 /* numberOfBytes */);
+	readSensorRegisterValueMSB = device_INA219State.i2cBuffer[0];
+	readSensorRegisterValueLSB = device_INA219State.i2cBuffer[1];
 	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
 
 	/*
@@ -267,7 +267,7 @@ printSensorDataMMA8451Q(bool hexModeFlag)
 }
 
 uint8_t
-appendSensorDataMMA8451Q(uint8_t* buf)
+appendSensorData_INA219(uint8_t* buf)
 {
 	uint8_t index = 0;
 	uint16_t readSensorRegisterValueLSB;
@@ -275,10 +275,10 @@ appendSensorDataMMA8451Q(uint8_t* buf)
 	int16_t readSensorRegisterValueCombined;
 	WarpStatus i2cReadStatus;
 
-	warpScaleSupplyVoltage(deviceMMA8451QState.operatingVoltageMillivolts);
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 
 	/*
-	 *	From the MMA8451Q datasheet:
+	 *	From the _INA219 datasheet:
 	 *
 	 *		"A random read access to the LSB registers is not possible.
 	 *		Reading the MSB register and then the LSB register in sequence
@@ -289,9 +289,9 @@ appendSensorDataMMA8451Q(uint8_t* buf)
 	 *	We therefore do 2-byte read transactions, for each of the registers.
 	 *	We could also improve things by doing a 6-byte read transaction.
 	 */
-	i2cReadStatus                   = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_X_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB      = deviceMMA8451QState.i2cBuffer[0];
-	readSensorRegisterValueLSB      = deviceMMA8451QState.i2cBuffer[1];
+	i2cReadStatus                   = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_X_MSB, 2 /* numberOfBytes */);
+	readSensorRegisterValueMSB      = device_INA219State.i2cBuffer[0];
+	readSensorRegisterValueLSB      = device_INA219State.i2cBuffer[1];
 	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
 
 	/*
@@ -319,9 +319,9 @@ appendSensorDataMMA8451Q(uint8_t* buf)
 		index += 1;
 	}
 
-	i2cReadStatus                   = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_Y_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB      = deviceMMA8451QState.i2cBuffer[0];
-	readSensorRegisterValueLSB      = deviceMMA8451QState.i2cBuffer[1];
+	i2cReadStatus                   = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_Y_MSB, 2 /* numberOfBytes */);
+	readSensorRegisterValueMSB      = device_INA219State.i2cBuffer[0];
+	readSensorRegisterValueLSB      = device_INA219State.i2cBuffer[1];
 	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
 
 	/*
@@ -349,9 +349,9 @@ appendSensorDataMMA8451Q(uint8_t* buf)
 		index += 1;
 	}
 
-	i2cReadStatus                   = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_Z_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB      = deviceMMA8451QState.i2cBuffer[0];
-	readSensorRegisterValueLSB      = deviceMMA8451QState.i2cBuffer[1];
+	i2cReadStatus                   = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_Z_MSB, 2 /* numberOfBytes */);
+	readSensorRegisterValueMSB      = device_INA219State.i2cBuffer[0];
+	readSensorRegisterValueLSB      = device_INA219State.i2cBuffer[1];
 	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
 
 	/*
