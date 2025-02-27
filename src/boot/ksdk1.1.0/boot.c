@@ -1573,7 +1573,7 @@ main(void)
 	 *
 	 *	See "Clocks and Low Power modes with KSDK and Processor Expert" document (Low_Power_KSDK_PEx.pdf)
 	 */
-	CLOCK_SYS_Init(	g_defaultClockConfigurations,
+	CLOCK_SYS_Init(g_defaultClockConfigurations,
 			CLOCK_CONFIG_NUM, /* The default value of this is defined in fsl_clock_MKL03Z4.h as 2 */
 			&clockCallbackTable,
 			ARRAY_SIZE(clockCallbackTable)
