@@ -678,6 +678,8 @@ warpEnableI2Cpins(void)
 	 *		PTB3/kWarpPinI2C0_SCL_UART_TX	-->	(ALT2 == I2C)
 	 *		PTB4/kWarpPinI2C0_SDA_UART_RX	-->	(ALT2 == I2C)
 	 */
+
+	 // Assuming that the PORTB_BASE indicates these are PTB_x pins, instead of PTA. 
 	PORT_HAL_SetMuxMode(PORTB_BASE, 3, kPortMuxAlt2);
 	PORT_HAL_SetMuxMode(PORTB_BASE, 4, kPortMuxAlt2);
 	I2C_DRV_MasterDeinit(0 /* I2C instance */);

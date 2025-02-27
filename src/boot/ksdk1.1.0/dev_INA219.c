@@ -40,7 +40,7 @@ writeSensorRegister_INA219(uint16_t deviceRegister, uint16_t payload)
 	uint8_t		payloadByte[2], commandByte[1];
 	i2c_status_t	status;
 
-	switch (deviceRegister)
+	switch (deviceRegister) // Register field truncated into a mutch smaller set - with 16 bit increments
 	{
 		case 0x00:  // Configuration Register
 		case 0x01:  // Shunt Voltage Register (Read-Only)
