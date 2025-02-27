@@ -33,7 +33,7 @@ init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 }
 
 WarpStatus
-writeSensorRegister_INA219(uint8_t deviceRegister, uint8_t payload)
+writeSensorRegister_INA219(uint16_t deviceRegister, uint16_t payload)
 {
 	uint8_t		payloadByte[1], commandByte[1];
 	i2c_status_t	status;
@@ -86,27 +86,36 @@ writeSensorRegister_INA219(uint8_t deviceRegister, uint8_t payload)
 	return kWarpStatusOK;
 }
 
-WarpStatus
-configureSensor_INA219(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1)
+
+
+// Passing in 16 bit values, as compared to the previously function from the MMA8451Q, these are 16 bit fields.
+WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPayload)  
 {
-	WarpStatus	i2cWriteStatus1, i2cWriteStatus2;
+	WarpStatus i2cWriteStatus1, i2cWriteStatus2;
 
-
+	// Set operating voltage for INA219
 	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 
-	i2cWriteStatus1 = writeSensorRegister_INA219(kWarpSensorConfigurationRegister_INA219F_SETUP /* register address F_SETUP */,
-												  payloadF_SETUP /* payload: Disable FIFO */
+	// Write to Configuration Register (0x00)
+	i2cWriteStatus1 = writeSensorRegister_INA219(
+		kWarpSensorConfigurationRegister_INA219_SETUP, // 0x00
+		configPayload // Payload: Operating mode, gain, and resolution
 	);
 
-	i2cWriteStatus2 = writeSensorRegister_INA219(kWarpSensorConfigurationRegister_INA219CTRL_REG1 /* register address CTRL_REG1 */,
-												  payloadCTRL_REG1 /* payload */
+	// Write to Calibration Register (0x05)
+	i2cWriteStatus2 = writeSensorRegister_INA219(
+		kWarpSensorConfigurationRegister_INA219_CTRL, // 0x05
+		calibrationPayload // Payload: Calibration value based on shunt resistor
 	);
 
 	return (i2cWriteStatus1 | i2cWriteStatus2);
 }
 
+
+
+
 WarpStatus
-readSensorRegister_INA219(uint8_t deviceRegister, int numberOfBytes)
+readSensorRegister_INA219(uint16_t deviceRegister, int numberOfBytes)
 {
 	uint8_t		cmdBuf[1] = {0xFF};
 	i2c_status_t	status;
@@ -261,7 +270,7 @@ void printSensorData_INA219(bool hexModeFlag)
 /*
 The above is necessary to print and display the data in the first place - the following function stores the INA219 data in a buffer.
 */
-uint8_t appendSensorData_INA219(uint8_t* buf)
+uint8_t appendSensorData_INA219(uint16_t* buf)
 {
 	uint8_t index = 0;
 	uint16_t readSensorRegisterValue;

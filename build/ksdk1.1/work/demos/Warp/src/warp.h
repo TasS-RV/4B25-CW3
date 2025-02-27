@@ -118,9 +118,11 @@ typedef enum
 	kWarpSensorConfigurationRegisterMMA8451QF_SETUP				= 0x09,
 	kWarpSensorConfigurationRegisterMMA8451QCTRL_REG1			= 0x2A,
 
-	// Just placeholders until the correct values and register buffers are filled in from the datasheet
-	kWarpSensorConfigurationRegister_INA219F_SETUP				= 0x09,
-	kWarpSensorConfigurationRegister_INA219CTRL_REG1			= 0x2A,
+	// Equivalent setup and control - or as described in the INA219 datasheet, conffiguration and calibration registers respectively.
+	kWarpSensorConfigurationRegister_INA219_SETUP				= 0x00, //Configuration register
+	kWarpSensorConfigurationRegister_INA219_CTRL			= 0x05, // Calibration regfister
+	// kWarpSensorConfigurationRegister_INA219_CTRL2			= 0x03, // Optionally can have a 'calibration/ global reading via the power register, but will refrain from using this for now.
+	
 
 	kWarpSensorConfigurationRegisterMAG3110CTRL_REG1			= 0x10,
 	kWarpSensorConfigurationRegisterMAG3110CTRL_REG2			= 0x11,
