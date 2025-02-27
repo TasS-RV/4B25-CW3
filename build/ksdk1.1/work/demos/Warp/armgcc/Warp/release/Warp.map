@@ -2391,12 +2391,12 @@ LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtn.o
  *(.bss*)
  .bss.heap_end.5296
                 0x000000001fffffb8        0x4 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/platform/utilities/src/fsl_misc_utilities.c.obj
- .bss.deviceINA219State
-                0x000000001fffffbc        0x8 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.c.obj
-                0x000000001fffffbc                deviceINA219State
  .bss.deviceMMA8451QState
+                0x000000001fffffbc        0x8 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.c.obj
+                0x000000001fffffbc                deviceMMA8451QState
+ .bss.device_INA219State
                 0x000000001fffffc4        0x8 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.c.obj
-                0x000000001fffffc4                deviceMMA8451QState
+                0x000000001fffffc4                device_INA219State
  .bss.gWarpBooted
                 0x000000001fffffcc        0x1 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.c.obj
                 0x000000001fffffcc                gWarpBooted

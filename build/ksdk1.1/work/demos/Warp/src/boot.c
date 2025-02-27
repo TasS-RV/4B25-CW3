@@ -131,7 +131,7 @@
 
 // Declaring volatile bool for state
 #if (WARP_BUILD_INA219_DRIVER)
-	volatile WarpI2CDeviceState			deviceINA219State;
+	volatile WarpI2CDeviceState			device_INA219State;
 #endif
 
 #if (WARP_BUILD_ENABLE_DEVBNO055)
@@ -4026,7 +4026,7 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 #if (WARP_BUILD_INA219_DRIVER)
 				loopForSensor(	"\r\nINA219:\n\r",		/*	tagString			*/
 						&readSensorRegister_INA219,	/*	readSensorRegisterFunction	*/
-						&deviceINA219State,		/*	i2cDeviceState			*/
+						&device_INA219State,		/*	i2cDeviceState			*/
 						NULL,				/*	spiDeviceState			*/
 						baseAddress,			/*	baseAddress			*/
 						0x00,				/*	minAddress			THIS NEEDS TO BE CHANGED*/

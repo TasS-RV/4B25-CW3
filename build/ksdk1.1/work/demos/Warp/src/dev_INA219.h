@@ -8,7 +8,8 @@ WarpStatus 	configureSensor_INA219(uint8_t payloadF_SETUP, uint8_t payloadCTRL_R
 void		printSensorData_INA219(bool hexModeFlag);
 uint8_t		appendSensorData_INA219(uint8_t* buf);
 
-extern volatile WarpI2CDeviceState	device_INA219State;
+// Overkill to redefine - will throw errors. Commenting out for now. //extern volatile WarpI2CDeviceState	device_INA219State;
+
 const uint8_t bytesPerMeasurement_INA219            = 6; // Will need tyo change this
 const uint8_t bytesPerReading_INA219                = 2;
 const uint8_t numberOfReadingsPerMeasurement_INA219 = 3;
