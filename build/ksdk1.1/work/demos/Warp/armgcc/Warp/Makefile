@@ -744,6 +744,33 @@ home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devTCS34725.c.s:
 	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devTCS34725.c.s
 .PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devTCS34725.c.s
 
+home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.obj
+
+.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.obj
+
+# target to build an object file
+home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.obj:
+	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.obj
+.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.obj
+
+home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.i
+
+.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.i
+
+# target to preprocess a source file
+home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.i:
+	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.i
+.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.i
+
+home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.s
+
+.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.s
+
+# target to generate assembly for a file
+home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.s:
+	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.s
+.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.s
+
 home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.c.obj
 
 .PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.obj
@@ -1047,6 +1074,9 @@ help:
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devTCS34725.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devTCS34725.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devTCS34725.s"
+	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.obj"
+	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.i"
+	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.s"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.s"

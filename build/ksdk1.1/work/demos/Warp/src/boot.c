@@ -3783,7 +3783,7 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 
 // Function to print output for INA219 - will need to be created in the script file.
 #if (WARP_BUILD_INA219_DRIVER)
-		printSensorDataINA219(hexModeFlag);
+		printSensorData_INA219(hexModeFlag);
 #endif
 
 #if (WARP_BUILD_ENABLE_DEVMAG3110)
