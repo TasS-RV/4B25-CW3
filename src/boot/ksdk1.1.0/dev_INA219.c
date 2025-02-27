@@ -42,14 +42,12 @@ writeSensorRegister_INA219(uint16_t deviceRegister, uint16_t payload)
 
 	switch (deviceRegister)
 	{
-		case 0x09: case 0x0a: case 0x0e: case 0x0f:
-		case 0x11: case 0x12: case 0x13: case 0x14:
-		case 0x15: case 0x17: case 0x18: case 0x1d:
-		case 0x1f: case 0x20: case 0x21: case 0x23:
-		case 0x24: case 0x25: case 0x26: case 0x27:
-		case 0x28: case 0x29: case 0x2a: case 0x2b:
-		case 0x2c: case 0x2d: case 0x2e: case 0x2f:
-		case 0x30: case 0x31:
+		case 0x00:  // Configuration Register
+		case 0x01:  // Shunt Voltage Register (Read-Only)
+		case 0x02:  // Bus Voltage Register (Read-Only)
+		case 0x03:  // Power Register
+		case 0x04:  // Current Register
+		case 0x05:  // Calibration Register
 		{
 			/* OK */
 			break;
