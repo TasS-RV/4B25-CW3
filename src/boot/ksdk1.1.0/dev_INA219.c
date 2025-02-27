@@ -164,222 +164,168 @@ readSensorRegister_INA219(uint8_t deviceRegister, int numberOfBytes)
 	return kWarpStatusOK;
 }
 
-void
-printSensorData_INA219(bool hexModeFlag)
+
+
+
+
+void printSensorData_INA219(bool hexModeFlag)
 {
-	uint16_t	readSensorRegisterValueLSB;
-	uint16_t	readSensorRegisterValueMSB;
-	int16_t		readSensorRegisterValueCombined;
-	WarpStatus	i2cReadStatus;
-
-
-	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
-
-	/*
-	 *	From the _INA219 datasheet:
-	 *
-	 *		"A random read access to the LSB registers is not possible.
-	 *		Reading the MSB register and then the LSB register in sequence
-	 *		ensures that both bytes (LSB and MSB) belong to the same data
-	 *		sample, even if a new data sample arrives between reading the
-	 *		MSB and the LSB byte."
-	 *
-	 *	We therefore do 2-byte read transactions, for each of the registers.
-	 *	We could also improve things by doing a 6-byte read transaction.
-	 */
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_X_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB = device_INA219State.i2cBuffer[0];
-	readSensorRegisterValueLSB = device_INA219State.i2cBuffer[1];
-	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
-
-	/*
-	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
-	 */
-	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
-
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		warpPrint(" ----,");
-	}
-	else
-	{
-		if (hexModeFlag)
-		{
-			warpPrint(" 0x%02x 0x%02x,", readSensorRegisterValueMSB, readSensorRegisterValueLSB);
-		}
-		else
-		{
-			warpPrint(" %d,", readSensorRegisterValueCombined);
-		}
-	}
-
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_Y_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB = device_INA219State.i2cBuffer[0];
-	readSensorRegisterValueLSB = device_INA219State.i2cBuffer[1];
-	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
-
-	/*
-	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
-	 */
-	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
-
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		warpPrint(" ----,");
-	}
-	else
-	{
-		if (hexModeFlag)
-		{
-			warpPrint(" 0x%02x 0x%02x,", readSensorRegisterValueMSB, readSensorRegisterValueLSB);
-		}
-		else
-		{
-			warpPrint(" %d,", readSensorRegisterValueCombined);
-		}
-	}
-
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_Z_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB = device_INA219State.i2cBuffer[0];
-	readSensorRegisterValueLSB = device_INA219State.i2cBuffer[1];
-	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
-
-	/*
-	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
-	 */
-	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
-
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		warpPrint(" ----,");
-	}
-	else
-	{
-		if (hexModeFlag)
-		{
-			warpPrint(" 0x%02x 0x%02x,", readSensorRegisterValueMSB, readSensorRegisterValueLSB);
-		}
-		else
-		{
-			warpPrint(" %d,", readSensorRegisterValueCombined);
-		}
-	}
-}
-
-uint8_t
-appendSensorData_INA219(uint8_t* buf)
-{
-	uint8_t index = 0;
-	uint16_t readSensorRegisterValueLSB;
-	uint16_t readSensorRegisterValueMSB;
-	int16_t readSensorRegisterValueCombined;
+	uint16_t readSensorRegisterValue;
 	WarpStatus i2cReadStatus;
 
 	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 
-	/*
-	 *	From the _INA219 datasheet:
-	 *
-	 *		"A random read access to the LSB registers is not possible.
-	 *		Reading the MSB register and then the LSB register in sequence
-	 *		ensures that both bytes (LSB and MSB) belong to the same data
-	 *		sample, even if a new data sample arrives between reading the
-	 *		MSB and the LSB byte."
-	 *
-	 *	We therefore do 2-byte read transactions, for each of the registers.
-	 *	We could also improve things by doing a 6-byte read transaction.
-	 */
-
-	// The functions below require modifying - as we are not reading x,y,y data, but instead current data from the INA219 BoB
-	
-	i2cReadStatus                   = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_X_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB      = device_INA219State.i2cBuffer[0];
-	readSensorRegisterValueLSB      = device_INA219State.i2cBuffer[1];
-	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
-
-	/*
-	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
-	 */
-	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
+	// Read Shunt Voltage (Register 0x01)
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_SHUNT_VOLTAGE, &readSensorRegisterValue);
 
 	if (i2cReadStatus != kWarpStatusOK)
 	{
-		buf[index] = 0;
-		index += 1;
-
-		buf[index] = 0;
-		index += 1;
+		warpPrint(" ----,");
 	}
 	else
 	{
-		/*
-		 * MSB first
-		 */
-		buf[index] = (uint8_t)(readSensorRegisterValueCombined >> 8);
-		index += 1;
-
-		buf[index] = (uint8_t)(readSensorRegisterValueCombined);
-		index += 1;
+		if (hexModeFlag)
+		{
+			warpPrint(" 0x%04x,", readSensorRegisterValue);
+		}
+		else
+		{
+			warpPrint(" %d,", (int16_t)readSensorRegisterValue);
+		}
 	}
 
-	i2cReadStatus                   = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_Y_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB      = device_INA219State.i2cBuffer[0];
-	readSensorRegisterValueLSB      = device_INA219State.i2cBuffer[1];
-	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
-
-	/*
-	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
-	 */
-	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
+	// Read Bus Voltage (Register 0x02)
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_BUS_VOLTAGE, &readSensorRegisterValue);
 
 	if (i2cReadStatus != kWarpStatusOK)
 	{
-		buf[index] = 0;
-		index += 1;
-
-		buf[index] = 0;
-		index += 1;
+		warpPrint(" ----,");
 	}
 	else
 	{
-		/*
-		 * MSB first
-		 */
-		buf[index] = (uint8_t)(readSensorRegisterValueCombined >> 8);
-		index += 1;
+		// Bus voltage register has the last 3 bits reserved, so we shift right by 3
+		readSensorRegisterValue >>= 3;
 
-		buf[index] = (uint8_t)(readSensorRegisterValueCombined);
-		index += 1;
+		if (hexModeFlag)
+		{
+			warpPrint(" 0x%04x,", readSensorRegisterValue);
+		}
+		else
+		{
+			warpPrint(" %d mV,", readSensorRegisterValue * 4); // LSB = 4mV
+		}
 	}
 
-	i2cReadStatus                   = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_Z_MSB, 2 /* numberOfBytes */);
-	readSensorRegisterValueMSB      = device_INA219State.i2cBuffer[0];
-	readSensorRegisterValueLSB      = device_INA219State.i2cBuffer[1];
-	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
-
-	/*
-	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
-	 */
-	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
+	// Read Current (Register 0x04)
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_CURRENT, &readSensorRegisterValue);
 
 	if (i2cReadStatus != kWarpStatusOK)
 	{
-		buf[index] = 0;
-		index += 1;
-
-		buf[index] = 0;
-		index += 1;
+		warpPrint(" ----,");
 	}
 	else
 	{
-		/*
-		 * MSB first
-		 */
-		buf[index] = (uint8_t)(readSensorRegisterValueCombined >> 8);
-		index += 1;
-
-		buf[index] = (uint8_t)(readSensorRegisterValueCombined);
-		index += 1;
+		if (hexModeFlag)
+		{
+			warpPrint(" 0x%04x,", readSensorRegisterValue);
+		}
+		else
+		{
+			warpPrint(" %d mA,", (int16_t)readSensorRegisterValue);
+		}
 	}
+
+	// Read Power (Register 0x03)
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_POWER, &readSensorRegisterValue);
+
+	if (i2cReadStatus != kWarpStatusOK)
+	{
+		warpPrint(" ----");
+	}
+	else
+	{
+		if (hexModeFlag)
+		{
+			warpPrint(" 0x%04x", readSensorRegisterValue);
+		}
+		else
+		{
+			warpPrint(" %d mW", readSensorRegisterValue);
+		}
+	}
+}
+
+
+
+
+/*
+The above is necessary to print and display the data in the first place - the following function stores the INA219 data in a buffer.
+*/
+uint8_t appendSensorData_INA219(uint8_t* buf)
+{
+	uint8_t index = 0;
+	uint16_t readSensorRegisterValue;
+	WarpStatus i2cReadStatus;
+
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
+
+	// Read and store Shunt Voltage (0x01)
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_SHUNT_VOLTAGE, &readSensorRegisterValue);
+
+	if (i2cReadStatus != kWarpStatusOK)
+	{
+		buf[index++] = 0;
+		buf[index++] = 0;
+	}
+	else
+	{
+		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
+		buf[index++] = (uint8_t)(readSensorRegisterValue);
+	}
+
+	// Read and store Bus Voltage (0x02)
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_BUS_VOLTAGE, &readSensorRegisterValue);
+
+	if (i2cReadStatus != kWarpStatusOK)
+	{
+		buf[index++] = 0;
+		buf[index++] = 0;
+	}
+	else
+	{
+		readSensorRegisterValue >>= 3; // Remove last 3 bits
+
+		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
+		buf[index++] = (uint8_t)(readSensorRegisterValue);
+	}
+
+	// Read and store Current (0x04)
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_CURRENT, &readSensorRegisterValue);
+
+	if (i2cReadStatus != kWarpStatusOK)
+	{
+		buf[index++] = 0;
+		buf[index++] = 0;
+	}
+	else
+	{
+		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
+		buf[index++] = (uint8_t)(readSensorRegisterValue);
+	}
+
+	// Read and store Power (0x03)
+	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_POWER, &readSensorRegisterValue);
+
+	if (i2cReadStatus != kWarpStatusOK)
+	{
+		buf[index++] = 0;
+		buf[index++] = 0;
+	}
+	else
+	{
+		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
+		buf[index++] = (uint8_t)(readSensorRegisterValue);
+	}
+
 	return index;
 }
