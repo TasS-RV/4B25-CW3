@@ -210,14 +210,13 @@ typedef enum
 	kWarpSensorOutputRegisterMMA8451QOUT_Z_MSB			= 0x05,
 	kWarpSensorOutputRegisterMMA8451QOUT_Z_LSB			= 0x06,
     
-	// These are clearly incorrect as entirely different data is being read - however leaving the definitions here for now as placeholders
-	kWarpSensorOutputRegister_INA219OUT_X_MSB			= 0x01,
-	kWarpSensorOutputRegister_INA219OUT_X_LSB			= 0x02,
-	kWarpSensorOutputRegister_INA219OUT_Y_MSB			= 0x03,
-	kWarpSensorOutputRegister_INA219OUT_Y_LSB			= 0x04,
-	kWarpSensorOutputRegister_INA219OUT_Z_MSB			= 0x05,
-	kWarpSensorOutputRegister_INA219OUT_Z_LSB			= 0x06,
-	
+	// Register4ed modified as per TI datasheet (page 24)
+	kWarpSensorOutputRegisterINA219_CONFIGURATION   = 0x00,
+    kWarpSensorOutputRegisterINA219_SHUNT_VOLTAGE   = 0x01,
+    kWarpSensorOutputRegisterINA219_BUS_VOLTAGE     = 0x02,
+    kWarpSensorOutputRegisterINA219_POWER           = 0x03,
+    kWarpSensorOutputRegisterINA219_CURRENT         = 0x04,
+    kWarpSensorOutputRegisterINA219_CALIBRATION     = 0x05,
 
 	kWarpSensorOutputRegisterMAG3110OUT_X_MSB			= 0x01,
 	kWarpSensorOutputRegisterMAG3110OUT_X_LSB			= 0x02,
