@@ -131,7 +131,7 @@
 
 // Declaring volatile bool for state
 #if (WARP_BUILD_INA219_DRIVER)
-	volatile WarpI2CDeviceState			deviceINA219State;
+	volatile WarpI2CDeviceState			device_INA219State;
 #endif
 
 #if (WARP_BUILD_ENABLE_DEVBNO055)

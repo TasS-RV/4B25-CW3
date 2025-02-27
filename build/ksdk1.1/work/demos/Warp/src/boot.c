@@ -2325,7 +2325,7 @@ main(void)
 					case '6':
 					{
 						menuTargetSensor = kWarpSensorINA219;
-							menuI2cDevice = &deviceINA219State;
+							menuI2cDevice = &device_INA219State;
 						break;
 					}
 #endif
