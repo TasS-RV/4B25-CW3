@@ -83,6 +83,9 @@ typedef enum
 {
 	kWarpSensorADXL362,
 	kWarpSensorMMA8451Q,
+
+	kWarpSensorINA219,
+	
 	kWarpSensorBME680,
 	kWarpSensorBNO055,
 	kWarpSensorBMX055accel,
@@ -114,6 +117,10 @@ typedef enum
 {
 	kWarpSensorConfigurationRegisterMMA8451QF_SETUP				= 0x09,
 	kWarpSensorConfigurationRegisterMMA8451QCTRL_REG1			= 0x2A,
+
+	// Just placeholders until the correct values and register buffers are filled in from the datasheet
+	kWarpSensorConfigurationRegister_INA219F_SETUP				= 0x09,
+	kWarpSensorConfigurationRegister_INA219CTRL_REG1			= 0x2A,
 
 	kWarpSensorConfigurationRegisterMAG3110CTRL_REG1			= 0x10,
 	kWarpSensorConfigurationRegisterMAG3110CTRL_REG2			= 0x11,
@@ -202,6 +209,15 @@ typedef enum
 	kWarpSensorOutputRegisterMMA8451QOUT_Y_LSB			= 0x04,
 	kWarpSensorOutputRegisterMMA8451QOUT_Z_MSB			= 0x05,
 	kWarpSensorOutputRegisterMMA8451QOUT_Z_LSB			= 0x06,
+    
+	// These are clearly incorrect as entirely different data is being read - however leaving the definitions here for now as placeholders
+	kWarpSensorOutputRegister_INA219OUT_X_MSB			= 0x01,
+	kWarpSensorOutputRegister_INA219OUT_X_LSB			= 0x02,
+	kWarpSensorOutputRegister_INA219OUT_Y_MSB			= 0x03,
+	kWarpSensorOutputRegister_INA219OUT_Y_LSB			= 0x04,
+	kWarpSensorOutputRegister_INA219OUT_Z_MSB			= 0x05,
+	kWarpSensorOutputRegister_INA219OUT_Z_LSB			= 0x06,
+	
 
 	kWarpSensorOutputRegisterMAG3110OUT_X_MSB			= 0x01,
 	kWarpSensorOutputRegisterMAG3110OUT_X_LSB			= 0x02,

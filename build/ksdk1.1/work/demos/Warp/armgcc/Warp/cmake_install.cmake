@@ -1,4 +1,4 @@
-# Install script for directory: /home/students/tes46/4B25-CW3/Warp-firmware-CW3/build/ksdk1.1/work/demos/Warp/armgcc/Warp
+# Install script for directory: /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/armgcc/Warp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/students/tes46/4B25-CW3/Warp-firmware-CW3/build/ksdk1.1/work/demos/Warp/armgcc/Warp/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/armgcc/Warp/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -12,7 +12,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.16.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.3/CMakeSystem.cmake"
   "CMakeLists.txt"
-  "/home/students/tes46/4B25-CW3/Warp-firmware-CW3/build/ksdk1.1/work/tools/cmake_toolchain_files/armgcc.cmake"
+  "/home/students/tes46/4B25-CW3/build/ksdk1.1/work/tools/cmake_toolchain_files/armgcc.cmake"
   "/usr/share/cmake-3.16/Modules/CMakeASMCompiler.cmake.in"
   "/usr/share/cmake-3.16/Modules/CMakeASMInformation.cmake"
   "/usr/share/cmake-3.16/Modules/CMakeCCompiler.cmake.in"

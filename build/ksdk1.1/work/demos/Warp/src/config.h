@@ -107,6 +107,8 @@
 #define WARP_BUILD_ENABLE_DEVSI7021   	0
 #define WARP_BUILD_ENABLE_DEVTCS34725 	0
 #define WARP_BUILD_ENABLE_DEVBNO055 	0
+// Defining a custom variable for the INA219 current sensor 
+#define WARP_BUILD_INA219_DRIVER 		1
 
 
 #else
@@ -181,6 +183,9 @@ typedef enum
 	kWarpDefaultSupplyVoltageMillivoltsBMX055gyro  		= 2600,
 	kWarpDefaultSupplyVoltageMillivoltsBMX055mag   		= 2600,
 	kWarpDefaultSupplyVoltageMillivoltsMMA8451Q    		= 1800,
+
+	DefaultSupplyVoltageMillivolts_INA219				= 4000, // 3.3 - 5V as per the datasheet, this will not actually no anything as we are externally powering it. 
+
 	kWarpDefaultSupplyVoltageMillivoltsLPS25H      		= 1800,
 	kWarpDefaultSupplyVoltageMillivoltsHDC1000     		= 1800,
 	kWarpDefaultSupplyVoltageMillivoltsMAG3110     		= 1800,

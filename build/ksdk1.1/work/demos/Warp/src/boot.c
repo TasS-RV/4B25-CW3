@@ -13,7 +13,7 @@
 		copyright notice, this list of conditions and the following
 		disclaimer.
 
-	*	Redistributions in binary form must reproduce the above
+	*	Redistributions in binary form must reproduce the abovef
 		copyright notice, this list of conditions and the following
 		disclaimer in the documentation and/or other materials
 		provided with the distribution.
@@ -76,6 +76,7 @@
 /*
 * Include all sensors because they will be needed to decode flash.
 */
+#include "dev_INA219.h"
 #include "devADXL362.h"
 #include "devAMG8834.h"
 #include "devMMA8451Q.h"
@@ -90,6 +91,7 @@
 #include "devRF430CL331H.h"
 #include "devSSD1331.h"
 
+//Importing initialisation functions from the header file
 
 
 
@@ -126,6 +128,12 @@
 #if (WARP_BUILD_ENABLE_DEVMMA8451Q)
 	volatile WarpI2CDeviceState			deviceMMA8451QState;
 #endif
+
+// Declaring volatile bool for state
+#if (WARP_BUILD_INA219_DRIVER)
+	volatile WarpI2CDeviceState			deviceINA219State;
+#endif
+
 #if (WARP_BUILD_ENABLE_DEVBNO055)
 	#include "devBNO055.h"
 	volatile WarpI2CDeviceState			deviceBNO055State;	
@@ -1566,7 +1574,7 @@ main(void)
 	 *
 	 *	See "Clocks and Low Power modes with KSDK and Processor Expert" document (Low_Power_KSDK_PEx.pdf)
 	 */
-	CLOCK_SYS_Init(	g_defaultClockConfigurations,
+	CLOCK_SYS_Init(g_defaultClockConfigurations,
 			CLOCK_CONFIG_NUM, /* The default value of this is defined in fsl_clock_MKL03Z4.h as 2 */
 			&clockCallbackTable,
 			ARRAY_SIZE(clockCallbackTable)
@@ -1685,6 +1693,11 @@ main(void)
 #if (WARP_BUILD_ENABLE_DEVMMA8451Q)
 		initMMA8451Q(	0x1D	/* i2cAddress */,	kWarpDefaultSupplyVoltageMillivoltsMMA8451Q	);
 #endif
+
+#if (WARP_BUILD_INA219_DRIVER)
+		init_INA219(	0x40	/* i2cAddress for current sensor */,	DefaultSupplyVoltageMillivolts_INA219 );
+#endif
+
 
 #if (WARP_BUILD_ENABLE_DEVLPS25H)
 		initLPS25H(	0x5C	/* i2cAddress */,	kWarpDefaultSupplyVoltageMillivoltsLPS25H	);
@@ -2169,11 +2182,18 @@ main(void)
 					warpPrint("\r\t- '5' MMA8451Q			(0x00--0x31): 1.95V -- 3.6V (compiled out) \n");
 #endif
 
-#if (WARP_BUILD_ENABLE_DEVLPS25H)
-					warpPrint("\r\t- '6' LPS25H			(0x08--0x24): 1.7V -- 3.6V\n");
+#if (WARP_BUILD_INA219_DRIVER)
+					warpPrint("\r\t- '6' CURRENT_SENSE_INA219			(0x00--0x31): 3.3V -- 5.5V\n");
 #else
-					warpPrint("\r\t- '6' LPS25H			(0x08--0x24): 1.7V -- 3.6V (compiled out) \n");
+					warpPrint("\r\t- '6' CURRENT_SENSE_INA219			(0x00--0x31): 1.95V -- 3.6V (compiled out) \n");
 #endif
+
+
+// #if (WARP_BUILD_ENABLE_DEVLPS25H)
+// 					warpPrint("\r\t- '6' LPS25H			(0x08--0x24): 1.7V -- 3.6V\n");
+// #else
+// 					warpPrint("\r\t- '6' LPS25H			(0x08--0x24): 1.7V -- 3.6V (compiled out) \n");
+// #endif
 
 #if (WARP_BUILD_ENABLE_DEVMAG3110)
 					warpPrint("\r\t- '7' MAG3110			(0x00--0x11): 1.95V -- 3.6V\n");
@@ -2300,14 +2320,25 @@ main(void)
 					}
 #endif
 
-#if (WARP_BUILD_ENABLE_DEVLPS25H)
+// Call these functions as a conditional due to the 'case'
+#if (WARP_BUILD_INA219_DRIVER)
 					case '6':
 					{
-						menuTargetSensor = kWarpSensorLPS25H;
-							menuI2cDevice = &deviceLPS25HState;
+						menuTargetSensor = kWarpSensorINA219;
+							menuI2cDevice = &deviceINA219State;
 						break;
 					}
 #endif
+
+
+// #if (WARP_BUILD_ENABLE_DEVLPS25H)
+// 					case '6':
+// 					{
+// 						menuTargetSensor = kWarpSensorLPS25H;
+// 							menuI2cDevice = &deviceLPS25HState;
+// 						break;
+// 					}
+// #endif
 
 #if (WARP_BUILD_ENABLE_DEVMAG3110)
 					case '7':
@@ -3448,6 +3479,12 @@ writeAllSensorsToFlash(int menuDelayBetweenEachRun, int loopForever)
 		bytesWrittenIndex += appendSensorDataMMA8451Q(flashWriteBuf + bytesWrittenIndex);
 #endif
 
+// Function for appending sensor data - although this is in an inactive loop due to the conditional
+#if (WARP_BUILD_INA219_DRIVER)
+		bytesWrittenIndex += appendSensorData_INA219(flashWriteBuf + bytesWrittenIndex);
+#endif
+
+
 #if (WARP_BUILD_ENABLE_DEVMAG3110)
 		bytesWrittenIndex += appendSensorDataMAG3110(flashWriteBuf + bytesWrittenIndex);
 #endif
@@ -3570,6 +3607,13 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 	);
 #endif
 
+#if (WARP_BUILD_INA219_DRIVER)
+	numberOfConfigErrors += configureSensor_INA219(
+		0x00, /* Payload: Disable FIFO */
+		0x01  /* Normal read 8bit, 800Hz, normal, active mode */
+	);
+#endif
+
 #if (WARP_BUILD_ENABLE_DEVMAG3110)
 	numberOfConfigErrors += configureSensorMAG3110(
 		0x00, /*	Payload: DR 000, OS 00, 80Hz, ADC 1280, Full 16bit, standby mode
@@ -3675,6 +3719,12 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 		warpPrint(" MMA8451 x, MMA8451 y, MMA8451 z,");
 #endif
 
+// Leaving this commented out - not sure of the justification to have this, may use later for print debugging
+// #if (WARP_BUILD_INA219_DRIVER)
+// 		warpPrint(" INA219 driver variable set to true");
+// #endif
+
+
 #if (WARP_BUILD_ENABLE_DEVMAG3110)
 		warpPrint(" MAG3110 x, MAG3110 y, MAG3110 z, MAG3110 Temp,");
 #endif
@@ -3729,6 +3779,11 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 
 #if (WARP_BUILD_ENABLE_DEVMMA8451Q)
 		printSensorDataMMA8451Q(hexModeFlag);
+#endif
+
+// Function to print output for INA219 - will need to be created in the script file.
+#if (WARP_BUILD_INA219_DRIVER)
+		printSensorDataINA219(hexModeFlag);
 #endif
 
 #if (WARP_BUILD_ENABLE_DEVMAG3110)
@@ -3963,19 +4018,19 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 			break;
 		}
 
-		case kWarpSensorMMA8451Q:
+		case kWarpSensorINA219:
 		{
 /*
- *	MMA8451Q: VDD 1.95--3.6
+ *	INA219: VDD 3.3--5.0
  */
-#if (WARP_BUILD_ENABLE_DEVMMA8451Q)
-				loopForSensor(	"\r\nMMA8451Q:\n\r",		/*	tagString			*/
-						&readSensorRegisterMMA8451Q,	/*	readSensorRegisterFunction	*/
-						&deviceMMA8451QState,		/*	i2cDeviceState			*/
+#if (WARP_BUILD_INA219_DRIVER)
+				loopForSensor(	"\r\nINA219:\n\r",		/*	tagString			*/
+						&readSensorRegister_INA219,	/*	readSensorRegisterFunction	*/
+						&deviceINA219State,		/*	i2cDeviceState			*/
 						NULL,				/*	spiDeviceState			*/
 						baseAddress,			/*	baseAddress			*/
-						0x00,				/*	minAddress			*/
-						0x31,				/*	maxAddress			*/
+						0x00,				/*	minAddress			THIS NEEDS TO BE CHANGED*/
+						0x31,				/*	maxAddress			THIS NEEDS TO BE CHANGED*/
 						repetitionsPerAddress,		/*	repetitionsPerAddress		*/
 						chunkReadsPerAddress,		/*	chunkReadsPerAddress		*/
 						spinDelay,			/*	spinDelay			*/
@@ -3986,12 +4041,42 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 						chatty				/*	chatty				*/
 			);
 #else
-			warpPrint("\r\n\tMMA8451Q Read Aborted. Device Disabled :(");
-#endif
+			warpPrint("\r\n\tINA219 Read Aborted. Device Disabled :(");
 
+#endif
 			break;
 		}
 
+			case kWarpSensorMMA8451Q:
+			{
+/*
+ *	MMA8451Q: VDD 1.95--3.6
+ */
+#if (WARP_BUILD_ENABLE_DEVMMA8451Q)
+			loopForSensor(	"\r\nMMA8451Q:\n\r",		/*	tagString			*/
+					&readSensorRegisterMMA8451Q,	/*	readSensorRegisterFunction	*/
+					&deviceMMA8451QState,		/*	i2cDeviceState			*/
+					NULL,				/*	spiDeviceState			*/
+					baseAddress,			/*	baseAddress			*/
+					0x00,				/*	minAddress			*/
+					0x31,				/*	maxAddress			*/
+					repetitionsPerAddress,		/*	repetitionsPerAddress		*/
+					chunkReadsPerAddress,		/*	chunkReadsPerAddress		*/
+					spinDelay,			/*	spinDelay			*/
+					autoIncrement,			/*	autoIncrement			*/
+					sssupplyMillivolts,		/*	sssupplyMillivolts		*/
+					referenceByte,			/*	referenceByte			*/
+					adaptiveSssupplyMaxMillivolts,	/*	adaptiveSssupplyMaxMillivolts	*/
+					chatty				/*	chatty				*/
+		);
+#else
+		warpPrint("\r\n\tMMA8451Q Read Aborted. Device Disabled :(");
+
+#endif
+			break;
+		}
+
+// Start of next block - new case
 		case kWarpSensorBME680:
 		{
 /*

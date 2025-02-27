@@ -76,6 +76,7 @@
 /*
 * Include all sensors because they will be needed to decode flash.
 */
+#include "dev_INA219.h"
 #include "devADXL362.h"
 #include "devAMG8834.h"
 #include "devMMA8451Q.h"
@@ -91,7 +92,7 @@
 #include "devSSD1331.h"
 
 //Importing initialisation functions from the header file
-#include "Current_Sensor_INA219.h"
+
 
 
 #if (WARP_BUILD_ENABLE_DEVADXL362)

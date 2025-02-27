@@ -1,4 +1,4 @@
-# Install script for directory: /home/students/tes46/4B25-CW3/Warp-firmware-CW3/build/ksdk1.1/work/lib/ksdk_platform_lib/armgcc/KL03Z4
+# Install script for directory: /Volumes/doos/bare-metal-arm-git-clone/KSDK_1.1.0/lib/ksdk_platform_lib/armgcc/KL03Z4
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -27,11 +27,6 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
-# Is this installation the result of a crosscompile?
-if(NOT DEFINED CMAKE_CROSSCOMPILING)
-  set(CMAKE_CROSSCOMPILING "TRUE")
-endif()
-
 if(CMAKE_INSTALL_COMPONENT)
   set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
 else()
@@ -40,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/students/tes46/4B25-CW3/Warp-firmware-CW3/build/ksdk1.1/work/lib/ksdk_platform_lib/armgcc/KL03Z4/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Volumes/doos/bare-metal-arm-git-clone/KSDK_1.1.0/lib/ksdk_platform_lib/armgcc/KL03Z4/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
