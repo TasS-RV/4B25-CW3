@@ -289,6 +289,9 @@ appendSensorData_INA219(uint8_t* buf)
 	 *	We therefore do 2-byte read transactions, for each of the registers.
 	 *	We could also improve things by doing a 6-byte read transaction.
 	 */
+
+	// The functions below require modifying - as we are not reading x,y,y data, but instead current data from the INA219 BoB
+	
 	i2cReadStatus                   = readSensorRegister_INA219(kWarpSensorOutputRegister_INA219OUT_X_MSB, 2 /* numberOfBytes */);
 	readSensorRegisterValueMSB      = device_INA219State.i2cBuffer[0];
 	readSensorRegisterValueLSB      = device_INA219State.i2cBuffer[1];
