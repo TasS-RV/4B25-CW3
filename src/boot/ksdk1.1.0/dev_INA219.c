@@ -86,24 +86,33 @@ writeSensorRegister_INA219(uint8_t deviceRegister, uint8_t payload)
 	return kWarpStatusOK;
 }
 
-WarpStatus
-configureSensor_INA219(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1)
+
+
+// Passing in 16 bit values, as compared to the previously function from the MMA8451Q, these are 16 bit fields.
+WarpStatus configureSensorINA219(uint16_t configPayload, uint16_t calibrationPayload)  
 {
-	WarpStatus	i2cWriteStatus1, i2cWriteStatus2;
+	WarpStatus i2cWriteStatus1, i2cWriteStatus2;
 
-
+	// Set operating voltage for INA219
 	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 
-	i2cWriteStatus1 = writeSensorRegister_INA219(kWarpSensorConfigurationRegister_INA219F_SETUP /* register address F_SETUP */,
-												  payloadF_SETUP /* payload: Disable FIFO */
+	// Write to Configuration Register (0x00)
+	i2cWriteStatus1 = writeSensorRegisterINA219(
+		kWarpSensorConfigurationRegister_INA219_SETUP, // 0x00
+		configPayload // Payload: Operating mode, gain, and resolution
 	);
 
-	i2cWriteStatus2 = writeSensorRegister_INA219(kWarpSensorConfigurationRegister_INA219CTRL_REG1 /* register address CTRL_REG1 */,
-												  payloadCTRL_REG1 /* payload */
+	// Write to Calibration Register (0x05)
+	i2cWriteStatus2 = writeSensorRegisterINA219(
+		kWarpSensorConfigurationRegister_INA219_CTRL, // 0x05
+		calibrationPayload // Payload: Calibration value based on shunt resistor
 	);
 
 	return (i2cWriteStatus1 | i2cWriteStatus2);
 }
+
+
+
 
 WarpStatus
 readSensorRegister_INA219(uint8_t deviceRegister, int numberOfBytes)
