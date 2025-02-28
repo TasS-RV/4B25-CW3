@@ -6,10 +6,9 @@ WarpStatus	readSensorRegister_INA219(uint16_t deviceRegister, int numberOfBytes)
 WarpStatus	writeSensorRegister_INA219(uint16_t deviceRegister, uint16_t payloadBtye);
 WarpStatus 	configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPayload);
 void		printSensorData_INA219(bool hexModeFlag);
-uint8_t		appendSensorData_INA219(uint8_t* buf);
+uint8_t		appendSensorData_INA219(uint16_t* buf);
 
-// Overkill to redefine - will throw errors. Commenting out for now. //extern volatile WarpI2CDeviceState	device_INA219State;
 
-const uint8_t bytesPerMeasurement_INA219            = 6; // Will need tyo change this
+const uint8_t bytesPerMeasurement_INA219            = 6; // Will need to change this - maybe not, as we are still just reading voltage, current and power - each comprising of 2 bytes each 
 const uint8_t bytesPerReading_INA219                = 2;
 const uint8_t numberOfReadingsPerMeasurement_INA219 = 3;
