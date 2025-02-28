@@ -161,18 +161,21 @@ readSensorRegisterMMA8451Q(uint8_t deviceRegister, uint16_t *readValue) //No nee
 	warpEnableI2Cpins();
 
 	status = I2C_DRV_MasterReceiveDataBlocking(
-		0 /* I2C peripheral instance */,
-		&slave,
-		cmdBuf,
-		1,
-		(uint8_t *)device_INA219State.i2cBuffer,
-		numberOfBytes,
+		0,           // I2C instance
+		&slave,      // I2C device
+		NULL,        // No command, just read
+		0,           // No extra command bytes
+		dataBuf,     // Data buffer (MSB + LSB)
+		2,           // Read 2 bytes
 		gWarpI2cTimeoutMilliseconds);
 
 	if (status != kStatus_I2C_Success)
 	{
 		return kWarpStatusDeviceCommunicationFailed;
 	}
+
+	// Combine MSB and LSB into a 16-bit value
+	*readValue = ((uint16_t)dataBuf[0] << 8) | dataBuf[1];
 
 	return kWarpStatusOK;
 }
