@@ -92,6 +92,67 @@ writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payload)
 	return kWarpStatusOK;
 }
 
+WarpStatus
+readSensorRegister_INA219(uint8_t deviceRegister, uint16_t *readValue) //No need to pass number of bytes - will always be 2 (16 bits) read buffer
+{
+	uint8_t		cmdBuf[1] = {deviceRegister};
+	uint8_t dataBuf[2];  // Buffer to store the 2-byte register data
+	i2c_status_t	status;
+
+
+	// USED(numberOfBytes); --> This is throwing an error so will NOT use for now
+	switch (deviceRegister)
+	{
+		case 0x00:  // Configuration Register
+		case 0x01:  // Shunt Voltage Register (Read-Only)
+		case 0x02:  // Bus Voltage Register (Read-Only)
+		case 0x03:  // Power Register
+		case 0x04:  // Current Register
+		case 0x05:  // Calibration Register
+		{
+			break;
+		}
+		{
+			/* OK */
+			break;
+		}
+
+		default:
+		{
+			return kWarpStatusBadDeviceCommand;
+		}
+	}
+
+	i2c_device_t slave =
+		{
+		.address = device_INA219State.i2cAddress,
+		.baudRate_kbps = gWarpI2cBaudRateKbps
+	};
+
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
+	cmdBuf[0] = deviceRegister;
+	warpEnableI2Cpins();
+
+	status = I2C_DRV_MasterReceiveDataBlocking(
+		0,           // I2C instance
+		&slave,      // I2C device
+		NULL,        // No command, just read
+		0,           // No extra command bytes
+		dataBuf,     // Data buffer (MSB + LSB)
+		2,           // Read 2 bytes
+		gWarpI2cTimeoutMilliseconds);
+
+	if (status != kStatus_I2C_Success)
+	{
+		return kWarpStatusDeviceCommunicationFailed;
+	}
+
+	// Combine MSB and LSB into a 16-bit value
+	*readValue = ((uint16_t)dataBuf[0] << 8) | dataBuf[1];
+
+	return kWarpStatusOK;
+}
+
 
 
 // Passing in 16 bit values, as compared to the previously function from the MMA8451Q, these are 16 bit fields.

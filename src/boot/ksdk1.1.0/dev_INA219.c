@@ -92,42 +92,15 @@ writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payload)
 	return kWarpStatusOK;
 }
 
-
-
-// Passing in 16 bit values, as compared to the previously function from the MMA8451Q, these are 16 bit fields.
-WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPayload)  
-{
-	WarpStatus i2cWriteStatus1, i2cWriteStatus2;
-
-	// Set operating voltage for INA219
-	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
-
-	// Write to Configuration Register (0x00)
-	i2cWriteStatus1 = writeSensorRegister_INA219(
-		kWarpSensorConfigurationRegister_INA219_SETUP, // 0x00
-		configPayload // Payload: Operating mode, gain, and resolution
-	);
-
-	// Write to Calibration Register (0x05)
-	i2cWriteStatus2 = writeSensorRegister_INA219(
-		kWarpSensorConfigurationRegister_INA219_CTRL, // 0x05
-		calibrationPayload // Payload: Calibration value based on shunt resistor
-	);
-
-	return (i2cWriteStatus1 | i2cWriteStatus2);
-}
-
-
-
 WarpStatus
-readSensorRegisterMMA8451Q(uint8_t deviceRegister, uint16_t *readValue) //No need to pass number of bytes - will always be 2 (16 bits) read buffer
+readSensorRegister_INA219(uint8_t deviceRegister, uint16_t *readValue) //No need to pass number of bytes - will always be 2 (16 bits) read buffer
 {
 	uint8_t		cmdBuf[1] = {deviceRegister};
 	uint8_t dataBuf[2];  // Buffer to store the 2-byte register data
 	i2c_status_t	status;
 
 
-	USED(numberOfBytes);
+	// USED(numberOfBytes); --> This is throwing an error so will NOT use for now
 	switch (deviceRegister)
 	{
 		case 0x00:  // Configuration Register
@@ -179,6 +152,33 @@ readSensorRegisterMMA8451Q(uint8_t deviceRegister, uint16_t *readValue) //No nee
 
 	return kWarpStatusOK;
 }
+
+
+
+// Passing in 16 bit values, as compared to the previously function from the MMA8451Q, these are 16 bit fields.
+WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPayload)  
+{
+	WarpStatus i2cWriteStatus1, i2cWriteStatus2;
+
+	// Set operating voltage for INA219
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
+
+	// Write to Configuration Register (0x00)
+	i2cWriteStatus1 = writeSensorRegister_INA219(
+		kWarpSensorConfigurationRegister_INA219_SETUP, // 0x00
+		configPayload // Payload: Operating mode, gain, and resolution
+	);
+
+	// Write to Calibration Register (0x05)
+	i2cWriteStatus2 = writeSensorRegister_INA219(
+		kWarpSensorConfigurationRegister_INA219_CTRL, // 0x05
+		calibrationPayload // Payload: Calibration value based on shunt resistor
+	);
+
+	return (i2cWriteStatus1 | i2cWriteStatus2);
+}
+
+
 
 
 
