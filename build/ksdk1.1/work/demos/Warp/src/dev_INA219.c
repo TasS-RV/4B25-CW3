@@ -32,22 +32,22 @@ init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 	return;
 }
 
+
+
 WarpStatus
 writeSensorRegister_INA219(uint16_t deviceRegister, uint16_t payload)
 {
-	uint8_t		payloadByte[1], commandByte[1];
+	uint8_t		payloadByte[2], commandByte[1];
 	i2c_status_t	status;
 
-	switch (deviceRegister)
+	switch (deviceRegister) // Register field truncated into a mutch smaller set - with 16 bit increments
 	{
-		case 0x09: case 0x0a: case 0x0e: case 0x0f:
-		case 0x11: case 0x12: case 0x13: case 0x14:
-		case 0x15: case 0x17: case 0x18: case 0x1d:
-		case 0x1f: case 0x20: case 0x21: case 0x23:
-		case 0x24: case 0x25: case 0x26: case 0x27:
-		case 0x28: case 0x29: case 0x2a: case 0x2b:
-		case 0x2c: case 0x2d: case 0x2e: case 0x2f:
-		case 0x30: case 0x31:
+		case 0x00:  // Configuration Register
+		case 0x01:  // Shunt Voltage Register (Read-Only)
+		case 0x02:  // Bus Voltage Register (Read-Only)
+		case 0x03:  // Power Register
+		case 0x04:  // Current Register
+		case 0x05:  // Calibration Register
 		{
 			/* OK */
 			break;
@@ -67,16 +67,22 @@ writeSensorRegister_INA219(uint16_t deviceRegister, uint16_t payload)
 
 	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 	commandByte[0] = deviceRegister;
-	payloadByte[0] = payload;
+	// Split up the payload into MSB and LSB - assuming little endian for now, may need to correct if transformations of bit data to values is incorrect
+	payloadByte[0] = (payload >> 8) & 0xFF; // MSB
+	payloadByte[1] = payload & 0xFF;        // LSB
+
+	
+	// This is required to drive the I2C pins - NEED TO CHECK THE PINMAPPING
 	warpEnableI2Cpins();
 
+	// Send a 1 bytre command, then a 2 byte payload
 	status = I2C_DRV_MasterSendDataBlocking(
 		0 /* I2C instance */,
 		&slave,
 		commandByte,
 		1,
 		payloadByte,
-		1,
+		2,
 		gWarpI2cTimeoutMilliseconds);
 	if (status != kStatus_I2C_Success)
 	{
