@@ -2185,7 +2185,7 @@ main(void)
 #endif
 
 #if (WARP_BUILD_INA219_DRIVER)
-					warpPrint("\r\t- '6' CURRENT_SENSE_INA219			(0x00--0x31): 3.3V -- 5.5V\n");
+					warpPrint("\r\t- '6' CURRENT_SENSE_INA219			(0x00--0x05): 3.3V -- 5.5V\n");
 #else
 					warpPrint("\r\t- '6' CURRENT_SENSE_INA219			(0x00--0x31): 1.95V -- 3.6V (compiled out) \n");
 #endif
@@ -4022,17 +4022,25 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 
 		case kWarpSensorINA219:
 		{
+			
 /*
  *	INA219: VDD 3.3--5.0
  */
 #if (WARP_BUILD_INA219_DRIVER)
-				loopForSensor(	"\r\nINA219:\n\r",		/*	tagString			*/
+
+				// NEED TO CHECK IF THIS IS DONE AT AN EARLIER STAGE! --> Configuration should be done when sensor is selected.
+				uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
+				uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value?
+
+				configureSensor_INA219(configPayload, calibrationPayload);
+
+				loopForSensor(	"\r\nINA219 register reading:\n\r",		/*	tagString			*/
 						&readSensorRegister_INA219,	/*	readSensorRegisterFunction	*/
 						&device_INA219State,		/*	i2cDeviceState			*/
 						NULL,				/*	spiDeviceState			*/
 						baseAddress,			/*	baseAddress			*/
-						0x00,				/*	minAddress			THIS NEEDS TO BE CHANGED*/
-						0x31,				/*	maxAddress			THIS NEEDS TO BE CHANGED*/
+						0x00,				/*	minAddress			Starting from the configuration register.*/
+						0x05,				/*	maxAddress			Goes up to the calibration register.*/
 						repetitionsPerAddress,		/*	repetitionsPerAddress		*/
 						chunkReadsPerAddress,		/*	chunkReadsPerAddress		*/
 						spinDelay,			/*	spinDelay			*/
@@ -4055,6 +4063,8 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
  *	MMA8451Q: VDD 1.95--3.6
  */
 #if (WARP_BUILD_ENABLE_DEVMMA8451Q)
+		
+
 			loopForSensor(	"\r\nMMA8451Q:\n\r",		/*	tagString			*/
 					&readSensorRegisterMMA8451Q,	/*	readSensorRegisterFunction	*/
 					&deviceMMA8451QState,		/*	i2cDeviceState			*/
