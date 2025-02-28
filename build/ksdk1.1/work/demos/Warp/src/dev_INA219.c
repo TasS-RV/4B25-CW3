@@ -35,7 +35,7 @@ init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 
 
 WarpStatus
-writeSensorRegister_INA219(uint16_t deviceRegister, uint16_t payload)
+writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payload)
 {
 	uint8_t		payloadByte[2], commandByte[1];
 	i2c_status_t	status;
@@ -117,67 +117,6 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 	return (i2cWriteStatus1 | i2cWriteStatus2);
 }
 
-
-
-
-WarpStatus
-readSensorRegister_INA219(uint16_t deviceRegister, int numberOfBytes)
-{
-	uint8_t		cmdBuf[1] = {0xFF};
-	i2c_status_t	status;
-
-
-	USED(numberOfBytes);
-	switch (deviceRegister)
-	{
-		case 0x00: case 0x01: case 0x02: case 0x03:
-		case 0x04: case 0x05: case 0x06: case 0x09:
-		case 0x0a: case 0x0b: case 0x0c: case 0x0d:
-		case 0x0e: case 0x0f: case 0x10: case 0x11:
-		case 0x12: case 0x13: case 0x14: case 0x15:
-		case 0x16: case 0x17: case 0x18: case 0x1d:
-		case 0x1e: case 0x1f: case 0x20: case 0x21:
-		case 0x22: case 0x23: case 0x24: case 0x25:
-		case 0x26: case 0x27: case 0x28: case 0x29:
-		case 0x2a: case 0x2b: case 0x2c: case 0x2d:
-		case 0x2e: case 0x2f: case 0x30: case 0x31:
-		{
-			/* OK */
-			break;
-		}
-
-		default:
-		{
-			return kWarpStatusBadDeviceCommand;
-		}
-	}
-
-	i2c_device_t slave =
-		{
-		.address = device_INA219State.i2cAddress,
-		.baudRate_kbps = gWarpI2cBaudRateKbps
-	};
-
-	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
-	cmdBuf[0] = deviceRegister;
-	warpEnableI2Cpins();
-
-	status = I2C_DRV_MasterReceiveDataBlocking(
-		0 /* I2C peripheral instance */,
-		&slave,
-		cmdBuf,
-		1,
-		(uint8_t *)device_INA219State.i2cBuffer,
-		numberOfBytes,
-		gWarpI2cTimeoutMilliseconds);
-
-	if (status != kStatus_I2C_Success)
-	{
-		return kWarpStatusDeviceCommunicationFailed;
-	}
-
-	return kWarpStatusOK;
-}
 
 
 
