@@ -29,6 +29,12 @@ init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 	device_INA219State.i2cAddress					= i2cAddress;
 	device_INA219State.operatingVoltageMillivolts	= operatingVoltageMillivolts;
 
+	// Moved the config sensor function from boot.c in loopForSensor - to initialisaation function
+
+	uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
+	uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value?
+
+	configureSensor_INA219(configPayload, calibrationPayload);
 	return;
 }
 
