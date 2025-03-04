@@ -2,13 +2,12 @@
 void		init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts);
 
 // The remaining lines will need to be reconfigured as per the data - to set the appropriate register buffers 
-WarpStatus	readSensorRegister_INA219(uint8_t deviceRegister,  uint16_t *readValue); // All registers are actually 8 bit - 16 bit is the payload
-WarpStatus	readSensorRegister_INA219v2(uint8_t deviceRegister,  int numberOfBytes); // All registers are actually 8 bit - 16 bit is the payload
+WarpStatus	readSensorRegister_INA219(uint8_t deviceRegister,  int numberOfBytes); // All registers are actually 8 bit - 16 bit is the payload
 WarpStatus	writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payloadBtye);
 WarpStatus 	configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPayload);
+const char* formatINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb);
 void		printSensorData_INA219(bool hexModeFlag);
 uint8_t		appendSensorData_INA219(uint16_t* buf);
-
 
 /*
 WarpStatus	readSensorRegister_INA219(uint8_t deviceRegister,  uint16_t *readValue); // All registers are actually 8 bit - 16 bit is the payload
