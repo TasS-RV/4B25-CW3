@@ -180,23 +180,27 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 float parseINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb) {
     int16_t rawValue = (msb << 8) | lsb;  // Combine MSB and LSB
 
-    switch (regAddress) {
-        case 0x01:  // Shunt Voltage Register
-            return rawValue * SHUNT_LSB;  // Convert to Volts
+    warpPrint("\r\tDEBUG printout when called: Reg 0x%02x, Raw: 0x%04x\n", regAddress, rawValue);
 
-        case 0x02: {  // Bus Voltage Register
+    switch ((uint8_t)regAddress) {
+        case (uint8_t)0x01:  // Shunt Voltage Register
+            return rawValue * 10e-6;  // Convert to Volts
+
+        case (uint8_t)0x02: {  // Bus Voltage Register
             uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-            return busRaw * BUS_LSB;  // Convert to Volts
+            return busRaw * 4e-3;  // Convert to Volts
         }
 
-        case 0x04: {  // Current Register
-            return (rawValue * 1.0) / CALIBRATION_VALUE;  // Convert to Amps (assuming correct calibration)
+        case (uint8_t)0x04: {  // Current Register
+            return (rawValue * 1.0) / 4096;  // Convert to Amps (assuming default calibration)
         }
 
-        default:  // Unknown register
-            return 0.0;  // Return 0 if the register is not recognized
+        default:
+            warpPrint("\r\tWARNING: Unknown Register 0x%02x\n", regAddress);
+            return 0.0;  // Return 0 value if the register is not recognized
     }
 }
+
 
 
 
