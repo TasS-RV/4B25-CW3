@@ -35,12 +35,12 @@ init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 
 
 WarpStatus
-writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payload)
+writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payload) // This has 2 bytes per payload - registers are still 2 nibble addresses 
 {
 	uint8_t		payloadByte[2], commandByte[1];
 	i2c_status_t	status;
 
-	switch (deviceRegister) // Register field truncated into a mutch smaller set - with 16 bit increments
+	switch (deviceRegister)
 	{
 		case 0x00:  // Configuration Register
 		case 0x01:  // Shunt Voltage Register (Read-Only)
@@ -67,15 +67,11 @@ writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payload)
 
 	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 	commandByte[0] = deviceRegister;
-	// Split up the payload into MSB and LSB - assuming little endian for now, may need to correct if transformations of bit data to values is incorrect
-	payloadByte[0] = (payload >> 8) & 0xFF; // MSB
+	payloadByte[0] = (payload >> 8) & 0xFF; // MSB - need to modify to accomodate 2 bytes
 	payloadByte[1] = payload & 0xFF;        // LSB
 
-	
-	// This is required to drive the I2C pins - NEED TO CHECK THE PINMAPPING
 	warpEnableI2Cpins();
 
-	// Send a 1 bytre command, then a 2 byte payload
 	status = I2C_DRV_MasterSendDataBlocking(
 		0 /* I2C instance */,
 		&slave,
@@ -92,74 +88,12 @@ writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payload)
 	return kWarpStatusOK;
 }
 
-WarpStatus
-readSensorRegister_INA219(uint8_t deviceRegister, uint16_t *readValue) //No need to pass number of bytes - will always be 2 (16 bits) read buffer
-{
-	uint8_t		cmdBuf[1] = {deviceRegister};
-	uint8_t dataBuf[2];  // Buffer to store the 2-byte register data
-	i2c_status_t	status;
-
-
-	// USED(numberOfBytes); --> This is throwing an error so will NOT use for now
-	switch (deviceRegister)
-	{
-		case 0x00:  // Configuration Register
-		case 0x01:  // Shunt Voltage Register (Read-Only)
-		case 0x02:  // Bus Voltage Register (Read-Only)
-		case 0x03:  // Power Register
-		case 0x04:  // Current Register
-		case 0x05:  // Calibration Register
-		{
-			break;
-		}
-		{
-			/* OK */
-			break;
-		}
-
-		default:
-		{
-			return kWarpStatusBadDeviceCommand;
-		}
-	}
-
-	i2c_device_t slave =
-		{
-		.address = device_INA219State.i2cAddress,
-		.baudRate_kbps = gWarpI2cBaudRateKbps
-	};
-
-	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
-	cmdBuf[0] = deviceRegister;
-	warpEnableI2Cpins();
-
-	status = I2C_DRV_MasterReceiveDataBlocking(
-		0,           // I2C instance
-		&slave,      // I2C device
-		NULL,        // No command, just read
-		0,           // No extra command bytes
-		dataBuf,     // Data buffer (MSB + LSB)
-		2,           // Read 2 bytes
-		gWarpI2cTimeoutMilliseconds);
-
-	if (status != kStatus_I2C_Success)
-	{
-		return kWarpStatusDeviceCommunicationFailed;
-	}
-
-	// Combine MSB and LSB into a 16-bit value
-	*readValue = ((uint16_t)dataBuf[0] << 8) | dataBuf[1];
-
-	return kWarpStatusOK;
-}
-
-
 
 
 WarpStatus
-readSensorRegister_INA219v2(uint8_t deviceRegister, int numberOfBytes)
+readSensorRegister_INA219(uint8_t deviceRegister, int numberOfBytes)
 {
-	uint8_t		cmdBuf[1] = {0xFF}; // This may require changing - is this the configuration register?
+	uint8_t		cmdBuf[1] = {0xFF}; // Command buff Hex vaalue is correct, identical to MMA8451Q
 	i2c_status_t	status;
 
 
@@ -197,7 +131,7 @@ readSensorRegister_INA219v2(uint8_t deviceRegister, int numberOfBytes)
 		0 /* I2C peripheral instance - does thhis need incrementing? Given it is another i2c peripheral*/,
 		&slave,
 		cmdBuf,
-		2,  // 2 bytes? 
+		2,  // 2 bytes being read - instead of 1, then concatenated for the MMA8251Q
 		(uint8_t *)device_INA219State.i2cBuffer,
 		numberOfBytes,
 		gWarpI2cTimeoutMilliseconds);
@@ -209,10 +143,6 @@ readSensorRegister_INA219v2(uint8_t deviceRegister, int numberOfBytes)
 
 	return kWarpStatusOK;
 }
-
-
-
-
 
 
 

@@ -4197,7 +4197,7 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 				// configureSensor_INA219(configPayload, calibrationPayload);
 
 				loopForCurrentSensor(	"\r\nINA219 register reading:\n\r",		/*	tagString			*/
-						&readSensorRegister_INA219,	/*	readSensorRegisterFunction	*/
+						&readSensorRegister_INA219v2,	/*	readSensorRegisterFunction	*/
 						&device_INA219State,		/*	i2cDeviceState			*/
 						NULL,				/*	spiDeviceState			*/
 						baseAddress,			/*	baseAddress			*/
