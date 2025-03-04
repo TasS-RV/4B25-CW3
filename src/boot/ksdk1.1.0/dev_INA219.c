@@ -178,47 +178,47 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 
 
 // Function to convert 16-bit raw register values into meaningful voltage/current values
-const char* formatINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb) {
-    static char outputStr[50];  // Static to persist after function returns
-    int16_t rawValue = (msb << 8) | lsb;  // Concatenate MSB and LSB
+// const char* formatINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb) {
+//     static char outputStr[50];  // Static to persist after function returns
+//     int16_t rawValue = (msb << 8) | lsb;  // Concatenate MSB and LSB
 
-    switch (regAddress) {
-        case 0x01: {  // Shunt Voltage Register
-            float vShunt = rawValue * 10.0e-6;  // Convert to volts (LSB = 10µV)
-            snprintf(outputStr, sizeof(outputStr), "Shunt Voltage: %.5f V", vShunt);
-            break;
-        }
+//     switch (regAddress) {
+//         case 0x01: {  // Shunt Voltage Register
+//             float vShunt = rawValue * 10.0e-6;  // Convert to volts (LSB = 10µV)
+//             snprintf(outputStr, sizeof(outputStr), "Shunt Voltage: %.5f V", vShunt);
+//             break;
+//         }
 
-        case 0x02: {  // Bus Voltage Register
-            uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-            float vBus = busRaw * 4.0e-3;  // Convert to volts (LSB = 4mV)
-            snprintf(outputStr, sizeof(outputStr), "Bus Voltage: %.3f V", vBus);
-            break;
-        }
+//         case 0x02: {  // Bus Voltage Register
+//             uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
+//             float vBus = busRaw * 4.0e-3;  // Convert to volts (LSB = 4mV)
+//             snprintf(outputStr, sizeof(outputStr), "Bus Voltage: %.3f V", vBus);
+//             break;
+//         }
 
-        case 0x03: {  // Power Register (Not yet implemented)
-            snprintf(outputStr, sizeof(outputStr), "Power Register: 0x%04X", rawValue);
-            break;
-        }
+//         case 0x03: {  // Power Register (Not yet implemented)
+//             snprintf(outputStr, sizeof(outputStr), "Power Register: 0x%04X", rawValue);
+//             break;
+//         }
 
-        case 0x04: {  // Current Register (Needs calibration value)
-            snprintf(outputStr, sizeof(outputStr), "Current Register: 0x%04X", rawValue);
-            break;
-        }
+//         case 0x04: {  // Current Register (Needs calibration value)
+//             snprintf(outputStr, sizeof(outputStr), "Current Register: 0x%04X", rawValue);
+//             break;
+//         }
 
-        case 0x00: {  // Configuration Register
-            snprintf(outputStr, sizeof(outputStr), "Config Register: 0x%04X", rawValue);
-            break;
-        }
+//         case 0x00: {  // Configuration Register
+//             snprintf(outputStr, sizeof(outputStr), "Config Register: 0x%04X", rawValue);
+//             break;
+//         }
 
-        default: {  // Any unknown register
-            snprintf(outputStr, sizeof(outputStr), "Reg 0x%02X: 0x%04X", regAddress, rawValue);
-            break;
-        }
-    }
+//         default: {  // Any unknown register
+//             snprintf(outputStr, sizeof(outputStr), "Reg 0x%02X: 0x%04X", regAddress, rawValue);
+//             break;
+//         }
+//     }
 
-    return outputStr;
-}
+//     return outputStr;
+// }
 
 
 
