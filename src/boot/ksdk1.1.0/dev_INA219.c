@@ -21,7 +21,10 @@ extern volatile uint32_t			gWarpI2cBaudRateKbps;
 extern volatile uint32_t			gWarpI2cTimeoutMilliseconds;
 extern volatile uint32_t			gWarpSupplySettlingDelayMilliseconds;
 
-
+// Required for parsing the 2 byte values from each of the registers based on conversions from the datasheet
+#define SHUNT_LSB 10e-6  // 10 µV per LSB
+#define BUS_LSB 4e-3     // 4 mV per LSB
+#define CALIBRATION_VALUE 4096  // Example calibration (needs tuning based on actual setup)
 
 void
 init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
@@ -173,52 +176,27 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 
 
 
+// Function to compute the value based on the register being read
+float parseINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb) {
+    int16_t rawValue = (msb << 8) | lsb;  // Combine MSB and LSB
 
+    switch (regAddress) {
+        case 0x01:  // Shunt Voltage Register
+            return rawValue * SHUNT_LSB;  // Convert to Volts
 
+        case 0x02: {  // Bus Voltage Register
+            uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
+            return busRaw * BUS_LSB;  // Convert to Volts
+        }
 
+        case 0x04: {  // Current Register
+            return (rawValue * 1.0) / CALIBRATION_VALUE;  // Convert to Amps (assuming correct calibration)
+        }
 
-// Function to convert 16-bit raw register values into meaningful voltage/current values
-// const char* formatINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb) {
-//     static char outputStr[50];  // Static to persist after function returns
-//     int16_t rawValue = (msb << 8) | lsb;  // Concatenate MSB and LSB
-
-//     switch (regAddress) {
-//         case 0x01: {  // Shunt Voltage Register
-//             float vShunt = rawValue * 10.0e-6;  // Convert to volts (LSB = 10µV)
-//             snprintf(outputStr, sizeof(outputStr), "Shunt Voltage: %.5f V", vShunt);
-//             break;
-//         }
-
-//         case 0x02: {  // Bus Voltage Register
-//             uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-//             float vBus = busRaw * 4.0e-3;  // Convert to volts (LSB = 4mV)
-//             snprintf(outputStr, sizeof(outputStr), "Bus Voltage: %.3f V", vBus);
-//             break;
-//         }
-
-//         case 0x03: {  // Power Register (Not yet implemented)
-//             snprintf(outputStr, sizeof(outputStr), "Power Register: 0x%04X", rawValue);
-//             break;
-//         }
-
-//         case 0x04: {  // Current Register (Needs calibration value)
-//             snprintf(outputStr, sizeof(outputStr), "Current Register: 0x%04X", rawValue);
-//             break;
-//         }
-
-//         case 0x00: {  // Configuration Register
-//             snprintf(outputStr, sizeof(outputStr), "Config Register: 0x%04X", rawValue);
-//             break;
-//         }
-
-//         default: {  // Any unknown register
-//             snprintf(outputStr, sizeof(outputStr), "Reg 0x%02X: 0x%04X", regAddress, rawValue);
-//             break;
-//         }
-//     }
-
-//     return outputStr;
-// }
+        default:  // Unknown register
+            return 0.0;  // Return 0 if the register is not recognized
+    }
+}
 
 
 
