@@ -4073,13 +4073,13 @@ loopForCurrentSensor(	const char *  tagString,
 
 						if (chatty)
 						{
-						// warpPrint("\r\t0x%02x --> 0x%02x%02x\n|  Value: %.3f\n",    // Modified to paste 2 bytes side by side 
-						// 	address+j,
-						// 			  i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1],
-						// 					value);
+						warpPrint("\r\t0x%02x --> 0x%02x%02x\n|  Value: %.3f\n",    // Modified to paste 2 bytes side by side 
+							address+j,
+									  i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1],
+									  parseINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]));
 						
 						
-						parseINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);							  
+						//parseINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);							  
 						}
 					}
 				}
