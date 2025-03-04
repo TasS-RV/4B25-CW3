@@ -174,93 +174,6 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 
 
 
-void printSensorData_INA219(bool hexModeFlag)
-{
-	uint16_t readSensorRegisterValue;
-	WarpStatus i2cReadStatus;
-
-	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
-
-	// Read Shunt Voltage (Register 0x01)
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_SHUNT_VOLTAGE, &readSensorRegisterValue);
-
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		warpPrint(" ----,");
-	}
-	else
-	{
-		if (hexModeFlag)
-		{
-			warpPrint(" 0x%04x,", readSensorRegisterValue);
-		}
-		else
-		{
-			warpPrint(" %d,", (int16_t)readSensorRegisterValue);
-		}
-	}
-
-	// Read Bus Voltage (Register 0x02)
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_BUS_VOLTAGE, &readSensorRegisterValue);
-
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		warpPrint(" ----,");
-	}
-	else
-	{
-		// Bus voltage register has the last 3 bits reserved, so we shift right by 3
-		readSensorRegisterValue >>= 3;
-
-		if (hexModeFlag)
-		{
-			warpPrint(" 0x%04x,", readSensorRegisterValue);
-		}
-		else
-		{
-			warpPrint(" %d mV,", readSensorRegisterValue * 4); // LSB = 4mV
-		}
-	}
-
-	// Read Current (Register 0x04)
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_CURRENT, &readSensorRegisterValue);
-
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		warpPrint(" ----,");
-	}
-	else
-	{
-		if (hexModeFlag)
-		{
-			warpPrint(" 0x%04x,", readSensorRegisterValue);
-		}
-		else
-		{
-			warpPrint(" %d mA,", (int16_t)readSensorRegisterValue);
-		}
-	}
-
-	// Read Power (Register 0x03)
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_POWER, &readSensorRegisterValue);
-
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		warpPrint(" ----");
-	}
-	else
-	{
-		if (hexModeFlag)
-		{
-			warpPrint(" 0x%04x", readSensorRegisterValue);
-		}
-		else
-		{
-			warpPrint(" %d mW", readSensorRegisterValue);
-		}
-	}
-}
-
 
 
 
@@ -310,74 +223,163 @@ const char* formatINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb) {
 
 
 
-/*
-The above is necessary to print and display the data in the first place - the following function stores the INA219 data in a buffer.
-*/
-uint8_t appendSensorData_INA219(uint16_t* buf)
-{
-	uint8_t index = 0;
-	uint16_t readSensorRegisterValue;
-	WarpStatus i2cReadStatus;
+// void printSensorData_INA219(bool hexModeFlag)
+// {
+// 	uint16_t readSensorRegisterValue;
+// 	WarpStatus i2cReadStatus;
 
-	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
+// 	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
 
-	// Read and store Shunt Voltage (0x01)
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_SHUNT_VOLTAGE, &readSensorRegisterValue);
+// 	// Read Shunt Voltage (Register 0x01)
+// 	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_SHUNT_VOLTAGE, &readSensorRegisterValue);
 
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		buf[index++] = 0;
-		buf[index++] = 0;
-	}
-	else
-	{
-		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
-		buf[index++] = (uint8_t)(readSensorRegisterValue);
-	}
+// 	if (i2cReadStatus != kWarpStatusOK)
+// 	{
+// 		warpPrint(" ----,");
+// 	}
+// 	else
+// 	{
+// 		if (hexModeFlag)
+// 		{
+// 			warpPrint(" 0x%04x,", readSensorRegisterValue);
+// 		}
+// 		else
+// 		{
+// 			warpPrint(" %d,", (int16_t)readSensorRegisterValue);
+// 		}
+// 	}
 
-	// Read and store Bus Voltage (0x02)
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_BUS_VOLTAGE, &readSensorRegisterValue);
+// 	// Read Bus Voltage (Register 0x02)
+// 	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_BUS_VOLTAGE, &readSensorRegisterValue);
 
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		buf[index++] = 0;
-		buf[index++] = 0;
-	}
-	else
-	{
-		readSensorRegisterValue >>= 3; // Remove last 3 bits
+// 	if (i2cReadStatus != kWarpStatusOK)
+// 	{
+// 		warpPrint(" ----,");
+// 	}
+// 	else
+// 	{
+// 		// Bus voltage register has the last 3 bits reserved, so we shift right by 3
+// 		readSensorRegisterValue >>= 3;
 
-		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
-		buf[index++] = (uint8_t)(readSensorRegisterValue);
-	}
+// 		if (hexModeFlag)
+// 		{
+// 			warpPrint(" 0x%04x,", readSensorRegisterValue);
+// 		}
+// 		else
+// 		{
+// 			warpPrint(" %d mV,", readSensorRegisterValue * 4); // LSB = 4mV
+// 		}
+// 	}
 
-	// Read and store Current (0x04)
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_CURRENT, &readSensorRegisterValue);
+// 	// Read Current (Register 0x04)
+// 	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_CURRENT, &readSensorRegisterValue);
 
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		buf[index++] = 0;
-		buf[index++] = 0;
-	}
-	else
-	{
-		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
-		buf[index++] = (uint8_t)(readSensorRegisterValue);
-	}
+// 	if (i2cReadStatus != kWarpStatusOK)
+// 	{
+// 		warpPrint(" ----,");
+// 	}
+// 	else
+// 	{
+// 		if (hexModeFlag)
+// 		{
+// 			warpPrint(" 0x%04x,", readSensorRegisterValue);
+// 		}
+// 		else
+// 		{
+// 			warpPrint(" %d mA,", (int16_t)readSensorRegisterValue);
+// 		}
+// 	}
 
-	// Read and store Power (0x03)
-	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_POWER, &readSensorRegisterValue);
+// 	// Read Power (Register 0x03)
+// 	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_POWER, &readSensorRegisterValue);
 
-	if (i2cReadStatus != kWarpStatusOK)
-	{
-		buf[index++] = 0;
-		buf[index++] = 0;
-	}
-	else
-	{
-		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
-		buf[index++] = (uint8_t)(readSensorRegisterValue);
-	}
+// 	if (i2cReadStatus != kWarpStatusOK)
+// 	{
+// 		warpPrint(" ----");
+// 	}
+// 	else
+// 	{
+// 		if (hexModeFlag)
+// 		{
+// 			warpPrint(" 0x%04x", readSensorRegisterValue);
+// 		}
+// 		else
+// 		{
+// 			warpPrint(" %d mW", readSensorRegisterValue);
+// 		}
+// 	}
+// }
 
-	return index;
-}
+
+
+// /*
+// The above is necessary to print and display the data in the first place - the following function stores the INA219 data in a buffer.
+// */
+// uint8_t appendSensorData_INA219(uint16_t* buf)
+// {
+// 	uint8_t index = 0;
+// 	uint16_t readSensorRegisterValue;
+// 	WarpStatus i2cReadStatus;
+
+// 	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
+
+// 	// Read and store Shunt Voltage (0x01)
+// 	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_SHUNT_VOLTAGE, &readSensorRegisterValue);
+
+// 	if (i2cReadStatus != kWarpStatusOK)
+// 	{
+// 		buf[index++] = 0;
+// 		buf[index++] = 0;
+// 	}
+// 	else
+// 	{
+// 		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
+// 		buf[index++] = (uint8_t)(readSensorRegisterValue);
+// 	}
+
+// 	// Read and store Bus Voltage (0x02)
+// 	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_BUS_VOLTAGE, &readSensorRegisterValue);
+
+// 	if (i2cReadStatus != kWarpStatusOK)
+// 	{
+// 		buf[index++] = 0;
+// 		buf[index++] = 0;
+// 	}
+// 	else
+// 	{
+// 		readSensorRegisterValue >>= 3; // Remove last 3 bits
+
+// 		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
+// 		buf[index++] = (uint8_t)(readSensorRegisterValue);
+// 	}
+
+// 	// Read and store Current (0x04)
+// 	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_CURRENT, &readSensorRegisterValue);
+
+// 	if (i2cReadStatus != kWarpStatusOK)
+// 	{
+// 		buf[index++] = 0;
+// 		buf[index++] = 0;
+// 	}
+// 	else
+// 	{
+// 		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
+// 		buf[index++] = (uint8_t)(readSensorRegisterValue);
+// 	}
+
+// 	// Read and store Power (0x03)
+// 	i2cReadStatus = readSensorRegister_INA219(kWarpSensorOutputRegisterINA219_POWER, &readSensorRegisterValue);
+
+// 	if (i2cReadStatus != kWarpStatusOK)
+// 	{
+// 		buf[index++] = 0;
+// 		buf[index++] = 0;
+// 	}
+// 	else
+// 	{
+// 		buf[index++] = (uint8_t)(readSensorRegisterValue >> 8);
+// 		buf[index++] = (uint8_t)(readSensorRegisterValue);
+// 	}
+
+// 	return index;
+// }

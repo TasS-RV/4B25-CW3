@@ -3784,9 +3784,9 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 #endif
 
 // Function to print output for INA219 - will need to be created in the script file.
-#if (WARP_BUILD_INA219_DRIVER)
-		printSensorData_INA219(hexModeFlag);
-#endif
+// #if (WARP_BUILD_INA219_DRIVER)
+// 		printSensorData_INA219(hexModeFlag);
+// #endif
 
 #if (WARP_BUILD_ENABLE_DEVMAG3110)
 		printSensorDataMAG3110(hexModeFlag);
@@ -4073,10 +4073,14 @@ loopForCurrentSensor(	const char *  tagString,
 
 						if (chatty)
 						{
-						warpPrint("\r\t0x%02x --> 0x%02x%02x\n",    // Modified to paste 2 bytes side by side 
-							address+j,
-									  i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);
-						
+						// Uncomment out - previous version: warpPrint("\r\t0x%02x --> 0x%02x%02x\n",    // Modified to paste 2 bytes side by side 
+						// 	address+j,
+						// 			  i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);
+						warpPrint("\r\t0x%02x --> 0x%02x%02x | %s\n", 
+							address + j,
+							i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1],
+							formatINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]));
+							  
 						}
 					}
 				}
@@ -4203,10 +4207,6 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 		
 	while (1)		
 		{
-        char buffer[50];
-        snprintf(buffer, sizeof(buffer), "INA219 register reading started.\n\r");
-        SEGGER_RTT_WriteString(0, buffer);
-
         // Call the function to read sensor registers
         loopForCurrentSensor(("\r\nINA219 register reading iteration: %lu\n\r", iteration),
                              &readSensorRegister_INA219,
