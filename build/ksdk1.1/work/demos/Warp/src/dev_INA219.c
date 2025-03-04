@@ -178,28 +178,31 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 
 // Function to compute the value based on the register being read
 float parseINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb) {
-    int16_t rawValue = (msb << 8) | lsb;  // Combine MSB and LSB
+    int16_t rawValue = (int16_t)((msb << 8) | lsb);  // Combine MSB and LSB correctly
 
+    // Debugging printout
     warpPrint("\r\tDEBUG printout when called: Reg 0x%02x, Raw: 0x%04x\n", regAddress, rawValue);
 
-    switch ((uint8_t)regAddress) {
-        case (uint8_t)0x01:  // Shunt Voltage Register
-            return rawValue * 10e-6;  // Convert to Volts
+    // Ensure valid register selection using explicit bit checking
+    if ((regAddress & 0xFE) == 0x00) {  // Check if regAddress is 0x00 exactly
+        return rawValue * 1.0;  // Config register - usually ignored for calculations
 
-        case (uint8_t)0x02: {  // Bus Voltage Register
-            uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-            return busRaw * 4e-3;  // Convert to Volts
-        }
+    } else if ((regAddress & 0xFE) == 0x01) {  // Shunt Voltage Register
+        return rawValue * 10e-6;  // Convert to Volts
 
-        case (uint8_t)0x04: {  // Current Register
-            return (rawValue * 1.0) / 4096;  // Convert to Amps (assuming default calibration)
-        }
+    } else if ((regAddress & 0xFC) == 0x02) {  // Bus Voltage Register
+        uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
+        return busRaw * 4e-3;  // Convert to Volts
 
-        default:
-            warpPrint("\r\tWARNING: Unknown Register 0x%02x\n", regAddress);
-            return 0.0;  // Return 0 value if the register is not recognized
+    } else if ((regAddress & 0xFC) == 0x04) {  // Current Register
+        return (rawValue * 1.0) / 4096;  // Convert to Amps (assuming default calibration)
+
+    } else {
+        warpPrint("\r\tWARNING: Unknown Register 0x%02x\n", regAddress);
+        return 0.0;  // Return 0 if the register is not recognized
     }
 }
+
 
 
 
