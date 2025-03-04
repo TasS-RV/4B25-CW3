@@ -4190,12 +4190,11 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
  *	INA219: VDD 3.3--5.0
  */
 #if (WARP_BUILD_INA219_DRIVER)
+				// Not sure if wwe necessarily need to rrun this - likely do, keeping here for now 	
+				// uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
+				// uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value?
 
-				// NEED TO CHECK IF THIS IS DONE AT AN EARLIER STAGE! --> Configuration should be done when sensor is selected.
-				uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
-				uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value?
-
-				configureSensor_INA219(configPayload, calibrationPayload);
+				// configureSensor_INA219(configPayload, calibrationPayload);
 
 				loopForCurrentSensor(	"\r\nINA219 register reading:\n\r",		/*	tagString			*/
 						&readSensorRegister_INA219,	/*	readSensorRegisterFunction	*/

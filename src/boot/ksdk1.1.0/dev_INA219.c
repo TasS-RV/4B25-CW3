@@ -29,12 +29,6 @@ init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 	device_INA219State.i2cAddress					= i2cAddress;
 	device_INA219State.operatingVoltageMillivolts	= operatingVoltageMillivolts;
 
-	// Moved the config sensor function from boot.c in loopForSensor - to initialisaation function
-
-	uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
-	uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value?
-
-	configureSensor_INA219(configPayload, calibrationPayload);
 	return;
 }
 
@@ -158,6 +152,67 @@ readSensorRegister_INA219(uint8_t deviceRegister, uint16_t *readValue) //No need
 
 	return kWarpStatusOK;
 }
+
+
+
+
+WarpStatus
+readSensorRegister_INA219v2(uint8_t deviceRegister, int numberOfBytes)
+{
+	uint8_t		cmdBuf[1] = {0xFF}; // This may require changing - is this the configuration register?
+	i2c_status_t	status;
+
+
+	USED(numberOfBytes);
+	switch (deviceRegister)
+	{
+		case 0x00:  // Configuration Register
+		case 0x01:  // Shunt Voltage Register (Read-Only)
+		case 0x02:  // Bus Voltage Register (Read-Only)
+		case 0x03:  // Power Register
+		case 0x04:  // Current Register
+		case 0x05:  // Calibration Register
+		{
+			/* OK */
+			break;
+		}
+
+		default:
+		{
+			return kWarpStatusBadDeviceCommand;
+		}
+	}
+
+	i2c_device_t slave =
+		{
+		.address = device_INA219State.i2cAddress,
+		.baudRate_kbps = gWarpI2cBaudRateKbps
+	};
+
+	warpScaleSupplyVoltage(device_INA219State.operatingVoltageMillivolts);
+	cmdBuf[0] = deviceRegister;
+	warpEnableI2Cpins();
+
+	status = I2C_DRV_MasterReceiveDataBlocking(
+		0 /* I2C peripheral instance - does thhis need incrementing? Given it is another i2c peripheral*/,
+		&slave,
+		cmdBuf,
+		2,  // 2 bytes? 
+		(uint8_t *)device_INA219State.i2cBuffer,
+		numberOfBytes,
+		gWarpI2cTimeoutMilliseconds);
+
+	if (status != kStatus_I2C_Success)
+	{
+		return kWarpStatusDeviceCommunicationFailed;
+	}
+
+	return kWarpStatusOK;
+}
+
+
+
+
 
 
 
