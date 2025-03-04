@@ -4076,6 +4076,7 @@ loopForCurrentSensor(	const char *  tagString,
 						warpPrint("\r\t0x%02x --> 0x%02x%02x\n",    // Modified to paste 2 bytes side by side 
 							address+j,
 									  i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);
+						
 						}
 					}
 				}
@@ -4192,26 +4193,69 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 #if (WARP_BUILD_INA219_DRIVER)
 				// Not sure if wwe necessarily need to rrun this - likely do, keeping here for now 	
 				// uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
-				// uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value?
-
+				// uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value
 				// configureSensor_INA219(configPayload, calibrationPayload);
+	uint32_t iteration = 0; // Create the variable which will store the iteration number
+	
+	char buffer[50];
+	snprintf(buffer, sizeof(buffer), "Starting INA219 register reading \n\r");
+	SEGGER_RTT_WriteString(0, buffer);
+		
+	while (1)		
+		{
+        char buffer[50];
+        snprintf(buffer, sizeof(buffer), "INA219 register reading started.\n\r");
+        SEGGER_RTT_WriteString(0, buffer);
 
-				loopForCurrentSensor(	"\r\nINA219 register reading:\n\r",		/*	tagString			*/
-						&readSensorRegister_INA219,	/*	readSensorRegisterFunction	*/
-						&device_INA219State,		/*	i2cDeviceState			*/
-						NULL,				/*	spiDeviceState			*/
-						baseAddress,			/*	baseAddress			*/
-						0x00,				/*	minAddress			Starting from the configuration register.*/
-						0x05,				/*	maxAddress			Goes up to the calibration register.*/
-						repetitionsPerAddress,		/*	repetitionsPerAddress		*/
-						chunkReadsPerAddress,		/*	chunkReadsPerAddress		*/
-						spinDelay,			/*	spinDelay			*/
-						autoIncrement,			/*	autoIncrement			*/
-						sssupplyMillivolts,		/*	sssupplyMillivolts		*/
-						referenceByte,			/*	referenceByte			*/
-						adaptiveSssupplyMaxMillivolts,	/*	adaptiveSssupplyMaxMillivolts	*/
-						chatty				/*	chatty				*/
-			);
+        // Call the function to read sensor registers
+        loopForCurrentSensor(("\r\nINA219 register reading iteration: %lu\n\r", iteration),
+                             &readSensorRegister_INA219,
+                             &device_INA219State,
+                             NULL,
+                             baseAddress,
+                             0x00,
+                             0x05,
+                             repetitionsPerAddress,
+                             chunkReadsPerAddress,
+                             spinDelay,
+                             autoIncrement,
+                             sssupplyMillivolts,
+                             referenceByte,
+                             adaptiveSssupplyMaxMillivolts,
+                             chatty);
+
+        // Delay reading printouts for 1 second
+        OSA_TimeDelay(1000);
+
+        // Check for keypress
+        if (SEGGER_RTT_HasKey())  // Checks for keypress in the client
+        {
+            SEGGER_RTT_Read(0, buffer, sizeof(buffer));  // Clear input buffer for next print out on client
+            SEGGER_RTT_WriteString(0, "\r\nKeypress detected, stopping loop.\n\r");
+            break;
+        }
+
+        iteration++;
+    	}
+
+	// Removed the endif - maybe not required
+
+			// 	loopForCurrentSensor(	"\r\nINA219 register reading:\n\r",		/*	tagString			*/
+			// 			&readSensorRegister_INA219,	/*	readSensorRegisterFunction	*/
+			// 			&device_INA219State,		/*	i2cDeviceState			*/
+			// 			NULL,				/*	spiDeviceState			*/
+			// 			baseAddress,			/*	baseAddress			*/
+			// 			0x00,				/*	minAddress			Starting from the configuration register.*/
+			// 			0x05,				/*	maxAddress			Goes up to the calibration register.*/
+			// 			repetitionsPerAddress,		/*	repetitionsPerAddress		*/
+			// 			chunkReadsPerAddress,		/*	chunkReadsPerAddress		*/
+			// 			spinDelay,			/*	spinDelay			*/
+			// 			autoIncrement,			/*	autoIncrement			*/
+			// 			sssupplyMillivolts,		/*	sssupplyMillivolts		*/
+			// 			referenceByte,			/*	referenceByte			*/
+			// 			adaptiveSssupplyMaxMillivolts,	/*	adaptiveSssupplyMaxMillivolts	*/
+			// 			chatty				/*	chatty				*/
+			// );
 #else
 			warpPrint("\r\n\tINA219 Read Aborted. Device Disabled :(");
 
