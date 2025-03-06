@@ -4098,17 +4098,20 @@ loopForCurrentSensor(	const char *  tagString,
 
 						} else if ((int)regAddress == 1) {  // Shunt Voltage Register
 							float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
-							warpPrint("\r\tShunt Voltage as float: %8.4f V\n", (float)((int)rawValue));
-							warpPrint("\r\tShunt Voltage as int: %d V\n", (int)rawValue);
+							warpPrint("\r\tShunt Voltage: %d uV\n", (int)rawValue*10);
 
 						} else if ((int)regAddress == 2) {  // Bus Voltage Register
 							uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
 							float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
-							warpPrint("\r\tBus Voltage: %d V\n",(int)rawValue);
+							warpPrint("\r\tBus Voltage: %d mV\n",(int)rawValue*4);
 
+						// } else if ((int)regAddress == 4) {  // Current Register
+						// 	float current = ((float)((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps - this certainly will require float typecasting
+						// 	warpPrint("\r\tCurrent: %.6f A\n", current);
+						
 						} else if ((int)regAddress == 4) {  // Current Register
-							float current = ((float)((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps
-							warpPrint("\r\tCurrent: %.6f A\n", current);
+							warpPrint("\r\tCurrent raw int: %d \n", (int)rawValue);
+	
 
 						} else {
 							warpPrint("\r\tWARNING: Unknown Register %d\n", regAddress);
@@ -4228,16 +4231,24 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
  *	INA219: VDD 3.3--5.0
  */
 #if (WARP_BUILD_INA219_DRIVER)
+
+	int CALIB_value = 4096;
 				// Not sure if wwe necessarily need to rrun this - likely do, keeping here for now 	
 				// uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
 				// uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value
 				// configureSensor_INA219(configPayload, calibrationPayload);
 	uint32_t iteration = 0; // Create the variable which will store the iteration number
 	
+	writeSensorRegister_INA219(
+		kWarpSensorConfigurationRegister_INA219_CALIB, // 0x05 - calibration
+		CALIB_value // Payload: Operating mode, gain, and resolution
+	);
+
 	char buffer[50];
-	snprintf(buffer, sizeof(buffer), "Starting INA219 register reading \n\r");
+	snprintf(buffer, sizeof(buffer), "Set INA219 calibration value. \n\r");
 	SEGGER_RTT_WriteString(0, buffer);
-		
+	
+	
 	while (1)		
 		{
         // Call the function to read sensor registers

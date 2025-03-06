@@ -165,7 +165,7 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 
 	// Write to Calibration Register (0x05)
 	i2cWriteStatus2 = writeSensorRegister_INA219(
-		kWarpSensorConfigurationRegister_INA219_CTRL, // 0x05
+		kWarpSensorConfigurationRegister_INA219_CALIB, // 0x05
 		calibrationPayload // Payload: Calibration value based on shunt resistor
 	);
 

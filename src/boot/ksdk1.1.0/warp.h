@@ -120,7 +120,7 @@ typedef enum
 
 	// Equivalent setup and control - or as described in the INA219 datasheet, conffiguration and calibration registers respectively.
 	kWarpSensorConfigurationRegister_INA219_SETUP				= 0x00, //Configuration register
-	kWarpSensorConfigurationRegister_INA219_CTRL			= 0x05, // Calibration regfister
+	kWarpSensorConfigurationRegister_INA219_CALIB			= 0x05, // Calibration regfister
 	// kWarpSensorConfigurationRegister_INA219_CTRL2			= 0x03, // Optionally can have a 'calibration/ global reading via the power register, but will refrain from using this for now.
 	
 
