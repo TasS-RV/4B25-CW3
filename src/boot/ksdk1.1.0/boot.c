@@ -4077,52 +4077,19 @@ loopForCurrentSensor(	const char *  tagString,
 
 						if (chatty)
 						{
-						// warpPrint("\r\t0x%02x --> 0x%02x%02x\n|  Value: %.3f\n",    // Modified to paste 2 bytes side by side 
-						// 	address+j,
-						// 			  i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1],
-						// 			  parseINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]));
 						
-						// Old method of printing, but it wworks:
+							/*Old method of printing, but it wworks:
 						// warpPrint("\r\t0x%02x --> 0x%02x%02x\n",    // Modified to paste 2 bytes side by side 
 						// address+j,
 						// 			i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);
-					
-						
+						*/
 
 						// Combine MSB and LSB to get a 16-bit raw value
 						int16_t rawValue = (i2cDeviceState->i2cBuffer[0] << 8) | i2cDeviceState->i2cBuffer[1];
-
 						// Identify the register (printing for debugging)
 						uint8_t regAddress = address + j;
 
-						warpPrint("\r\tRegister Address (Dec): %d\n", regAddress);
-						
 						parseINA219Register(regAddress, rawValue, CALIBRATION_VALUE);
-
-						// // Process based on the actual decimal values observed
-						// if ((int)regAddress == 0) {  // Configuration Register
-						// 	warpPrint("\r\tConfiguration Register: 0x%04x\n", rawValue);
-
-						// } else if ((int)regAddress == 1) {  // Shunt Voltage Register
-						// 	float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
-						// 	warpPrint("\r\tShunt Voltage: %d uV\n", (int)rawValue*10);
-
-						// } else if ((int)regAddress == 2) {  // Bus Voltage Register
-						// 	uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-						// 	float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
-						// 	warpPrint("\r\tBus Voltage: %d mV\n",(int)busRaw*4);
-
-						// } else if ((int)regAddress == 3) {  // Power Register
-						// 	int power = (((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps - this certainly will require float typecasting
-						// 	warpPrint("\r\tPower: %.6f A\n", power);
-						
-						// } else if ((int)regAddress == 4) {  // Current Register --> 4096 as forced integer calibration value division
-						// 	int current = ((int)rawValue * 1000 * 4096)/4096;
-						// 	warpPrint("\r\tCurrent scaled: %d mA\n", current);
-
-						// } else {
-						// 	warpPrint("\r\tWARNING: Unknown Register %d\n", regAddress);
-						// }
 						
 						}
 					}
