@@ -4093,20 +4093,21 @@ loopForCurrentSensor(	const char *  tagString,
 						warpPrint("\r\tRegister Address (Dec): %d\n", regAddress);
 
 						// Process based on the actual decimal values observed
-						if (regAddress == 0) {  // Configuration Register
+						if ((int)regAddress == 0) {  // Configuration Register
 							warpPrint("\r\tConfiguration Register: 0x%04x\n", rawValue);
 
-						} else if (regAddress == 1) {  // Shunt Voltage Register
-							float shuntVoltage = rawValue * 10e-6;  // Convert to Volts
-							warpPrint("\r\tShunt Voltage: %.6f V\n", shuntVoltage);
+						} else if ((int)regAddress == 1) {  // Shunt Voltage Register
+							float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
+							warpPrint("\r\tShunt Voltage as float: %8.4f V\n", (float)((int)rawValue));
+							warpPrint("\r\tShunt Voltage as int: %d V\n", (int)rawValue);
 
-						} else if (regAddress == 2) {  // Bus Voltage Register
+						} else if ((int)regAddress == 2) {  // Bus Voltage Register
 							uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-							float busVoltage = busRaw * 4e-3;  // Convert to Volts
-							warpPrint("\r\tBus Voltage: %.3f V\n", busVoltage);
+							float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
+							warpPrint("\r\tBus Voltage: %d V\n",(int)rawValue);
 
-						} else if (regAddress == 4) {  // Current Register
-							float current = (rawValue * 1.0) / 4096;  // Convert to Amps
+						} else if ((int)regAddress == 4) {  // Current Register
+							float current = ((float)((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps
 							warpPrint("\r\tCurrent: %.6f A\n", current);
 
 						} else {
