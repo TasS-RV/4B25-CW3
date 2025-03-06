@@ -91,6 +91,7 @@
 #include "devRF430CL331H.h"
 #include "devSSD1331.h"
 
+
 //Importing initialisation functions from the header file
 
 
@@ -1698,6 +1699,8 @@ main(void)
 
 #if (WARP_BUILD_INA219_DRIVER)
 		init_INA219(	0x40	/* i2cAddress for current sensor */,	DefaultSupplyVoltageMillivolts_INA219 );
+
+
 #endif
 
 
@@ -4103,14 +4106,15 @@ loopForCurrentSensor(	const char *  tagString,
 						} else if ((int)regAddress == 2) {  // Bus Voltage Register
 							uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
 							float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
-							warpPrint("\r\tBus Voltage: %d mV\n",(int)rawValue*4);
+							warpPrint("\r\tBus Voltage: %d mV\n",(int)busRaw*4);
 
-						// } else if ((int)regAddress == 4) {  // Current Register
-						// 	float current = ((float)((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps - this certainly will require float typecasting
-						// 	warpPrint("\r\tCurrent: %.6f A\n", current);
+						} else if ((int)regAddress == 3) {  // Power Register
+							int power = (((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps - this certainly will require float typecasting
+							warpPrint("\r\tPower: %.6f A\n", power);
 						
 						} else if ((int)regAddress == 4) {  // Current Register
-							warpPrint("\r\tCurrent raw int: %d \n", (int)rawValue);
+							int current = ((int)rawValue * 1000 * CALIB)/4096
+							warpPrint("\r\tCurrent scaled: %d mA\n", current);
 	
 
 						} else {
@@ -4232,22 +4236,17 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
  */
 #if (WARP_BUILD_INA219_DRIVER)
 
-	int CALIB_value = 4096;
-				// Not sure if wwe necessarily need to rrun this - likely do, keeping here for now 	
-				// uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
-				// uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value
-				// configureSensor_INA219(configPayload, calibrationPayload);
+
+	// Not sure if wwe necessarily need to rrun this - likely do, keeping here for now 	
+	// uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
+	// uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value
 	uint32_t iteration = 0; // Create the variable which will store the iteration number
 	
-	writeSensorRegister_INA219(
-		kWarpSensorConfigurationRegister_INA219_CALIB, // 0x05 - calibration
-		CALIB_value // Payload: Operating mode, gain, and resolution
-	);
 
 	char buffer[50];
 	snprintf(buffer, sizeof(buffer), "Set INA219 calibration value. \n\r");
 	SEGGER_RTT_WriteString(0, buffer);
-	
+	// M<igrated calibration writing into init function
 	
 	while (1)		
 		{

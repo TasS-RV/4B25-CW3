@@ -4103,7 +4103,7 @@ loopForCurrentSensor(	const char *  tagString,
 						} else if ((int)regAddress == 2) {  // Bus Voltage Register
 							uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
 							float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
-							warpPrint("\r\tBus Voltage: %d mV\n",(int)rawValue*4);
+							warpPrint("\r\tBus Voltage: %d mV\n",(int)busRaw*4);
 
 						// } else if ((int)regAddress == 4) {  // Current Register
 						// 	float current = ((float)((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps - this certainly will require float typecasting
