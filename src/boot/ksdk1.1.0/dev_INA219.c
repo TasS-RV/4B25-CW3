@@ -25,7 +25,7 @@ extern volatile uint32_t			gWarpSupplySettlingDelayMilliseconds;
 #define SHUNT_LSB_micro 10  // 10 µV per LSB
 #define BUS_LSB_milli 4     // 4 mV per LSB
 uint32_t current_LSB_micro = 1562;    // 5.117 V / 0.1 = 51.17 A/ 2^15 bits = 1.56e-3 A/bit --> Scale by 1e6 for uA/ bit 
-
+                                    // Note that the calibraiton register might still need to be set manually - the 2011 datasheet suggests just picvk a value that will NOT result in overflows and scale the calibration accordingly.
 void
 init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 {	
@@ -177,38 +177,36 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 
 // Function to compute the value based on the register being read
 void parseINA219Register(uint8_t regAddress, uint16_t rawValue, int CALIB_VALUE) {
-	warpPrint("\r\t\nRegister Address (Dec): %d -->", regAddress); 
+	warpPrint("\r\tRegister Address (Dec): %d \n-->", regAddress); 
 
 	// Process based on the actual decimal values observed
 	if ((int)regAddress == 0) {  // Configuration Register
 		warpPrint("\r\tConfiguration Register: 0x%04x\n", rawValue);
 
-	} else if ((int)regAddress == 1) {  // Shunt Voltage Register --> Will also print expected current
-		//float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
+	} else if ((int)regAddress == 1) {  // Shunt Voltage Register --> Will also print expected current, * 1000 so units is in mA
 		warpPrint("\r\tShunt Voltage: %d uV\n", (int)rawValue*SHUNT_LSB_micro);
-		int current_expected = (((int)rawValue * 1000 * CALIB_VALUE)/4096);
+		int current_expected = (((int)rawValue * 1000 * CALIB_VALUE)/4096);  
 		warpPrint("\r\tExpected current: %d mA\n", current_expected);
 
 	} else if ((int)regAddress == 2) {  // Bus Voltage Register
 		uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits - right shift
-		//float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
 		warpPrint("\r\tBus Voltage: %d mV\n",(int)busRaw * BUS_LSB_milli);
 
 		// Equation 5 - Current_LSB * 20 * Power register contents gives power in W, as current_LSB = uA/bit gets rescaled
-	} else if ((int)regAddress == 3) {  // Power Register
+	} else if ((int)regAddress == 3) {  
 		int power = ((int)rawValue) * 20 * current_LSB_micro;  
 		warpPrint("\r\tPower: %.d uW\n", power);
 	
 	} else if ((int)regAddress == 4) {  // Current Register - x Current_LSB gives value in A
 		warpPrint("\r\tCurrent scaled: %d uA\n", (int)rawValue * current_LSB_micro);
 
-	} else {
+	} else if ((int)regAddress == 5){ // Calibration register - set at the start 
+		warpPrint("\r\t Calibration Register raw value: %d \n", rawValue);
+	}
+	else {
 		warpPrint("\r\tWARNING: Unknown Register %d\n", regAddress);
 	}
 }
-
-
-
 
 
 
