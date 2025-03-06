@@ -49,10 +49,7 @@ CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/s
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAMG8834.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBNO055.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBMX055.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.h \
@@ -157,13 +154,7 @@ CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/s
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.h:
 
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devL3GD20H.h:
-
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBNO055.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBMX055.h:
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.h:
 

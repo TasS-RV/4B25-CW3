@@ -81,10 +81,10 @@
 #include "devAMG8834.h"
 #include "devMMA8451Q.h"
 #include "devMAG3110.h"
-#include "devL3GD20H.h"
+//#include "devL3GD20H.h"
 #include "devBME680.h"
-#include "devBNO055.h"
-#include "devBMX055.h"
+//#include "devBNO055.h"
+//#include "devBMX055.h"
 #include "devCCS811.h"
 #include "devHDC1000.h"
 #include "devRV8803C7.h"
@@ -4079,13 +4079,13 @@ loopForCurrentSensor(	const char *  tagString,
 						// 			  parseINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]));
 						
 						// Old method of printing, but it wworks:
-						// warpPrint("\r\t0x%02x --> 0x%02x%02x\n",    // Modified to paste 2 bytes side by side 
-						// address+j,
-						// 			i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);
+						warpPrint("\r\t0x%02x --> 0x%02x%02x\n",    // Modified to paste 2 bytes side by side 
+						address+j,
+									i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);
 					
 						
 
-						// Combine MSB and LSB to get a 16-bit raw value
+						//Combine MSB and LSB to get a 16-bit raw value
 						int16_t rawValue = (i2cDeviceState->i2cBuffer[0] << 8) | i2cDeviceState->i2cBuffer[1];
 
 						// Check which register is being accessed
