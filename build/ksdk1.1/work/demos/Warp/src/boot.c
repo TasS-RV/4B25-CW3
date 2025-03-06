@@ -4073,13 +4073,47 @@ loopForCurrentSensor(	const char *  tagString,
 
 						if (chatty)
 						{
-						warpPrint("\r\t0x%02x --> 0x%02x%02x\n|  Value: %.3f\n",    // Modified to paste 2 bytes side by side 
-							address+j,
-									  i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1],
-									  parseINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]));
+						// warpPrint("\r\t0x%02x --> 0x%02x%02x\n|  Value: %.3f\n",    // Modified to paste 2 bytes side by side 
+						// 	address+j,
+						// 			  i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1],
+						// 			  parseINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]));
 						
+						// Old method of printing, but it wworks:
+						// warpPrint("\r\t0x%02x --> 0x%02x%02x\n",    // Modified to paste 2 bytes side by side 
+						// address+j,
+						// 			i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);
+					
 						
-						//parseINA219Register(address + j, i2cDeviceState->i2cBuffer[0], i2cDeviceState->i2cBuffer[1]);							  
+
+						// Combine MSB and LSB to get a 16-bit raw value
+						int16_t rawValue = (i2cDeviceState->i2cBuffer[0] << 8) | i2cDeviceState->i2cBuffer[1];
+
+						// Check which register is being accessed
+						char formattedAddress[10];
+						snprintf(formattedAddress, sizeof(formattedAddress), "0x%02x", address + j);
+
+						// Identify the register and process the value accordingly
+						if (strcmp(formattedAddress, "0x00") == 0) {
+							warpPrint("\r\tConfiguration Register: 0x%04x\n", rawValue);
+
+						} else if (strcmp(formattedAddress, "0x01") == 0) { // Shunt Voltage Register
+							float shuntVoltage = rawValue * 10e-6;  // Convert to Volts
+							warpPrint("\r\tShunt Voltage: %.6f V\n", shuntVoltage);
+
+						} else if (strcmp(formattedAddress, "0x02") == 0) { // Bus Voltage Register
+							uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
+							float busVoltage = busRaw * 4e-3;  // Convert to Volts
+							warpPrint("\r\tBus Voltage: %.3f V\n", busVoltage);
+
+						} else if (strcmp(formattedAddress, "0x04") == 0) { // Current Register
+							float current = (rawValue * 1.0) / 4096;  // Convert to Amps
+							warpPrint("\r\tCurrent: %.6f A\n", current);
+
+						} else {
+							warpPrint("\r\tWARNING: Unknown Register %s\n", formattedAddress);
+						}
+
+
 						}
 					}
 				}
