@@ -7,7 +7,7 @@ WarpStatus	writeSensorRegister_INA219(uint8_t deviceRegister, uint16_t payloadBt
 WarpStatus 	configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPayload);
 void		printSensorData_INA219(bool hexModeFlag);
 uint8_t		appendSensorData_INA219(uint16_t* buf);
-float parseINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb);
+void parseINA219Register(uint8_t regAddress, uint16_t rawValue, int CALIB_VALUE); 
 
 /*
 WarpStatus	readSensorRegister_INA219(uint8_t deviceRegister,  uint16_t *readValue); // All registers are actually 8 bit - 16 bit is the payload

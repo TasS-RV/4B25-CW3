@@ -92,6 +92,7 @@
 #include "devSSD1331.h"
 
 
+int CALIBRATION_VALUE = 4096; // --> Will implement a way to set it later
 //Importing initialisation functions from the header file
 
 
@@ -4093,33 +4094,35 @@ loopForCurrentSensor(	const char *  tagString,
 
 						// Identify the register (printing for debugging)
 						uint8_t regAddress = address + j;
+
 						warpPrint("\r\tRegister Address (Dec): %d\n", regAddress);
-
-						// Process based on the actual decimal values observed
-						if ((int)regAddress == 0) {  // Configuration Register
-							warpPrint("\r\tConfiguration Register: 0x%04x\n", rawValue);
-
-						} else if ((int)regAddress == 1) {  // Shunt Voltage Register
-							float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
-							warpPrint("\r\tShunt Voltage: %d uV\n", (int)rawValue*10);
-
-						} else if ((int)regAddress == 2) {  // Bus Voltage Register
-							uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-							float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
-							warpPrint("\r\tBus Voltage: %d mV\n",(int)busRaw*4);
-
-						} else if ((int)regAddress == 3) {  // Power Register
-							int power = (((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps - this certainly will require float typecasting
-							warpPrint("\r\tPower: %.6f A\n", power);
 						
-						} else if ((int)regAddress == 4) {  // Current Register
-							int current = ((int)rawValue * 1000 * CALIB)/4096
-							warpPrint("\r\tCurrent scaled: %d mA\n", current);
-	
+						parseINA219Register(regAddress, rawValue, CALIBRATION_VALUE);
 
-						} else {
-							warpPrint("\r\tWARNING: Unknown Register %d\n", regAddress);
-						}
+						// // Process based on the actual decimal values observed
+						// if ((int)regAddress == 0) {  // Configuration Register
+						// 	warpPrint("\r\tConfiguration Register: 0x%04x\n", rawValue);
+
+						// } else if ((int)regAddress == 1) {  // Shunt Voltage Register
+						// 	float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
+						// 	warpPrint("\r\tShunt Voltage: %d uV\n", (int)rawValue*10);
+
+						// } else if ((int)regAddress == 2) {  // Bus Voltage Register
+						// 	uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
+						// 	float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
+						// 	warpPrint("\r\tBus Voltage: %d mV\n",(int)busRaw*4);
+
+						// } else if ((int)regAddress == 3) {  // Power Register
+						// 	int power = (((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps - this certainly will require float typecasting
+						// 	warpPrint("\r\tPower: %.6f A\n", power);
+						
+						// } else if ((int)regAddress == 4) {  // Current Register --> 4096 as forced integer calibration value division
+						// 	int current = ((int)rawValue * 1000 * 4096)/4096;
+						// 	warpPrint("\r\tCurrent scaled: %d mA\n", current);
+
+						// } else {
+						// 	warpPrint("\r\tWARNING: Unknown Register %d\n", regAddress);
+						// }
 						
 						}
 					}
@@ -4236,18 +4239,22 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
  */
 #if (WARP_BUILD_INA219_DRIVER)
 
-
+	
 	// Not sure if wwe necessarily need to rrun this - likely do, keeping here for now 	
 	// uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
 	// uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value
 	uint32_t iteration = 0; // Create the variable which will store the iteration number
-	
 
 	char buffer[50];
 	snprintf(buffer, sizeof(buffer), "Set INA219 calibration value. \n\r");
 	SEGGER_RTT_WriteString(0, buffer);
-	// M<igrated calibration writing into init function
-	
+	 
+	// Wriute appropriate calibration scaling value
+	writeSensorRegister_INA219(
+		kWarpSensorConfigurationRegister_INA219_CALIB, // 0x05 - calibration
+		CALIBRATION_VALUE // Payload: Operating mode, gain, and resolution
+	);
+
 	while (1)		
 		{
         // Call the function to read sensor registers

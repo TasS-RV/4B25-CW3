@@ -24,7 +24,6 @@ extern volatile uint32_t			gWarpSupplySettlingDelayMilliseconds;
 // Required for parsing the 2 byte values from each of the registers based on conversions from the datasheet
 #define SHUNT_LSB 10e-6  // 10 µV per LSB
 #define BUS_LSB 4e-3     // 4 mV per LSB
-int CALIBRATION_VALUE = 4096;  // Example calibration (needs tuning based on actual setup)
 
 
 void
@@ -33,11 +32,7 @@ init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 	device_INA219State.i2cAddress					= i2cAddress;
 	device_INA219State.operatingVoltageMillivolts	= operatingVoltageMillivolts;
 
-	// Writing the correct ccalibraiton scaling factor
-	writeSensorRegister_INA219(
-		kWarpSensorConfigurationRegister_INA219_CALIB, // 0x05 - calibration
-		CALIBRATION_VALUE // Payload: Operating mode, gain, and resolution
-	);
+
 
 	return;
 }
@@ -184,7 +179,7 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 
 
 // Function to compute the value based on the register being read
-void parseINA219Register(uint8_t regAddress, uint16_t rawValue) {
+void parseINA219Register(uint8_t regAddress, uint16_t rawValue, int CALIB_VALUE) {
 	warpPrint("\r\tRegister Address (Dec): %d\n", regAddress);
 
 	// Process based on the actual decimal values observed
@@ -192,20 +187,20 @@ void parseINA219Register(uint8_t regAddress, uint16_t rawValue) {
 		warpPrint("\r\tConfiguration Register: 0x%04x\n", rawValue);
 
 	} else if ((int)regAddress == 1) {  // Shunt Voltage Register
-		float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
+		//float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
 		warpPrint("\r\tShunt Voltage: %d uV\n", (int)rawValue*10);
 
 	} else if ((int)regAddress == 2) {  // Bus Voltage Register
 		uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-		float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
+		//float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
 		warpPrint("\r\tBus Voltage: %d mV\n",(int)busRaw*4);
 
 	} else if ((int)regAddress == 3) {  // Power Register
-		int power = (((int)rawValue) * 1.0) / 4096.0;  // Convert to Amps - this certainly will require float typecasting
+		int power = (((int)rawValue) * 1.0) / 4096.0;  // NEEDS WORK - NOT SCLAED CORRECTLY
 		warpPrint("\r\tPower: %.6f A\n", power);
 	
 	} else if ((int)regAddress == 4) {  // Current Register
-		int current = (((int)rawValue * 1000 * CALIBRATION_VALUE)/4096);
+		int current = (((int)rawValue * 1000 * CALIB_VALUE)/4096);
 		warpPrint("\r\tCurrent scaled: %d mA\n", current);
 
 	} else {

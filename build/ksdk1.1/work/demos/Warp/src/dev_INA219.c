@@ -24,13 +24,15 @@ extern volatile uint32_t			gWarpSupplySettlingDelayMilliseconds;
 // Required for parsing the 2 byte values from each of the registers based on conversions from the datasheet
 #define SHUNT_LSB 10e-6  // 10 µV per LSB
 #define BUS_LSB 4e-3     // 4 mV per LSB
-#define CALIBRATION_VALUE 4096  // Example calibration (needs tuning based on actual setup)
+
 
 void
 init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
-{
+{	
 	device_INA219State.i2cAddress					= i2cAddress;
 	device_INA219State.operatingVoltageMillivolts	= operatingVoltageMillivolts;
+
+
 
 	return;
 }
@@ -177,33 +179,34 @@ WarpStatus configureSensor_INA219(uint16_t configPayload, uint16_t calibrationPa
 
 
 // Function to compute the value based on the register being read
-// float parseINA219Register(uint8_t regAddress, uint8_t msb, uint8_t lsb) {
-//     int16_t rawValue = (int16_t)((msb << 8) | lsb);  // Combine MSB and LSB correctly
+void parseINA219Register(uint8_t regAddress, uint16_t rawValue, int CALIB_VALUE) {
+	warpPrint("\r\tRegister Address (Dec): %d\n", regAddress);
 
-//     // Debugging printout
-//     //warpPrint("\r\tDEBUG printout when called: Reg 0x%02x, Raw: 0x%04x\n", regAddress, rawValue);
+	// Process based on the actual decimal values observed
+	if ((int)regAddress == 0) {  // Configuration Register
+		warpPrint("\r\tConfiguration Register: 0x%04x\n", rawValue);
 
-//     // Ensure valid register selection using explicit bit checking
-//     if ((regAddress & 0xFE) == 0x00) {  // Check if regAddress is 0x00 exactly
-//         return rawValue * 1.0;  // Config register - usually ignored for calculations
+	} else if ((int)regAddress == 1) {  // Shunt Voltage Register
+		//float shuntVoltage = (float)((int)rawValue) * 10e-6;  // Convert to Volts
+		warpPrint("\r\tShunt Voltage: %d uV\n", (int)rawValue*10);
 
-//     } else if ((regAddress & 0xFE) == 0x01) {  // Shunt Voltage Register
-//         warpPrint("\r\tRaw: %04x V\n", rawValue * 10e-6);
-// 		return rawValue * 10e-6;  // Convert to Volts
+	} else if ((int)regAddress == 2) {  // Bus Voltage Register
+		uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
+		//float busVoltage = (float)((int)busRaw) * 4e-3;  // Convert to Volts
+		warpPrint("\r\tBus Voltage: %d mV\n",(int)busRaw*4);
 
-//     } else if ((regAddress & 0xFC) == 0x02) {  // Bus Voltage Register
-//         uint16_t busRaw = (rawValue >> 3) & 0x1FFF;  // Ignore lower 3 bits
-//         return busRaw * 4e-3;  // Convert to Volts
+	} else if ((int)regAddress == 3) {  // Power Register
+		int power = (((int)rawValue) * 1.0) / 4096.0;  // NEEDS WORK - NOT SCLAED CORRECTLY
+		warpPrint("\r\tPower: %.6f A\n", power);
+	
+	} else if ((int)regAddress == 4) {  // Current Register
+		int current = (((int)rawValue * 1000 * CALIB_VALUE)/4096);
+		warpPrint("\r\tCurrent scaled: %d mA\n", current);
 
-//     } else if ((regAddress & 0xFC) == 0x04) {  // Current Register
-//         warpPrint("\r\tRaw: %04x A\n", (rawValue * 1.0) / 4096);
-// 		return (rawValue * 1.0) / 4096;  // Convert to Amps (assuming default calibration)
-
-//     } else {
-//         warpPrint("\r\tWARNING: Unknown Register 0x%02x\n", regAddress);
-//         return 0.0;  // Return 0 if the register is not recognized
-//     }
-// }
+	} else {
+		warpPrint("\r\tWARNING: Unknown Register %d\n", regAddress);
+	}
+}
 
 
 
