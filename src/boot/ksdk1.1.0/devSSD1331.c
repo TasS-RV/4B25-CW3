@@ -138,7 +138,7 @@ devSSD1331init(void)
 	writeCommand(0xFF);
 	writeCommand(kSSD1331CommandCONTRASTC);		// 0x83
 	writeCommand(0xFF);
-	writeCommand(kSSD1331CommandDISPLAYON);		// Turn on oled panel
+	//writeCommand(kSSD1331CommandDISPLAYON);		// Turn on oled panel
 	SEGGER_RTT_WriteString(0, "\r\n\tDone various steps from precharge, turning on display and others...\n");
 
 	/*
@@ -168,7 +168,7 @@ devSSD1331init(void)
 
 //	SEGGER_RTT_WriteString(0, "\r\n\tDone with draw rectangle...\n");
 
-	writeCommand(kSSD1331CommandDISPLAYON);
+	//writeCommand(kSSD1331CommandDISPLAYON);
 
 // To 'fill' the screen with green - as per the datasheet, require an outline (reactangle) and inside (fill) to be green. Follow order of filling up the instruction buffer.
 	writeCommand(kSSD1331CommandDRAWRECT);
