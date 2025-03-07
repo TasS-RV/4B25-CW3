@@ -4221,6 +4221,7 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 		CALIBRATION_VALUE // Payload: Operating mode, gain, and resolution
 	);
 
+	/*
 	while (1)		
 		{
         // Call the function to read sensor registers
@@ -4253,6 +4254,30 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 
         iteration++;
     	}
+    */
+
+	for (uint32_t iteration = 0; iteration < 1000; iteration++)
+		{
+			// Call the function to read sensor registers
+			loopForCurrentSensor(("\r\nINA219 register reading iteration: %d \n\r", iteration),
+				&readSensorRegister_INA219,
+				&device_INA219State,
+				NULL,
+				baseAddress,
+				0x00,
+				0x05,
+				repetitionsPerAddress,
+				chunkReadsPerAddress,
+				spinDelay,
+				autoIncrement,
+				sssupplyMillivolts,
+				referenceByte,
+				adaptiveSssupplyMaxMillivolts,
+				chatty
+			);
+			OSA_TimeDelay(10); //10 ms delay
+		}
+
 
 	// Removed the endif - maybe not required
 
