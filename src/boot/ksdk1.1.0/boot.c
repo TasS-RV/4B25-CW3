@@ -92,9 +92,8 @@
 #include "devSSD1331.h"
 
 
-int CALIBRATION_VALUE = 216; // --> Will implement a way to set it later
+int CALIBRATION_VALUE = 40960; // --> Will implement a way to set it later
 //Importing initialisation functions from the header file
-
 
 
 #if (WARP_BUILD_ENABLE_DEVADXL362)

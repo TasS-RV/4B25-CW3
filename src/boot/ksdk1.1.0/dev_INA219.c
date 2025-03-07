@@ -24,7 +24,9 @@ extern volatile uint32_t			gWarpSupplySettlingDelayMilliseconds;
 // Required for parsing the 2 byte values from each of the registers based on conversions from the datasheet
 #define SHUNT_LSB_micro 10  // 10 µV per LSB
 #define BUS_LSB_milli 4     // 4 mV per LSB
-uint32_t current_LSB_micro = 1562;    // 5.117 V / 0.1 = 51.17 A/ 2^15 bits = 1.56e-3 A/bit --> Scale by 1e6 for uA/ bit 
+uint32_t current_LSB_micro = 1.83;   // 60 mA - SSD1331 datasheet based.  /2^15 --> 1.83 microAmps/ bit 
+
+// 5.117 V / 0.1 = 51.17 A/ 2^15 bits = 1.56e-3 A/bit --> Scale by 1e6 for uA/ bit 
                                     // Note that the calibraiton register might still need to be set manually - the 2011 datasheet suggests just picvk a value that will NOT result in overflows and scale the calibration accordingly.
 void
 init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
@@ -197,7 +199,7 @@ void parseINA219Register(uint8_t regAddress, uint16_t rawValue, int CALIB_VALUE)
 		int power = ((int)rawValue) * 20 * current_LSB_micro;  
 		warpPrint("\r\tPower: %.d uW\n", power);
 	
-	} else if ((int)regAddress == 4) {  // Current Register - x Current_LSB gives value in A
+	} else if ((int)regAddress == 4) {  // Current Register DECC value x Current_LSB gives value in uA/ bit. 
 		warpPrint("\r\tCurrent scaled: %d uA\n", (int)rawValue * current_LSB_micro);
 
 	} else if ((int)regAddress == 5){ // Calibration register - set at the start 
