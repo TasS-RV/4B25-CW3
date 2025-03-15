@@ -63,6 +63,12 @@
 #include "SEGGER_RTT.h"
 
 
+/*
+* Include all sensors because they will be needed to decode flash.
+*/
+#include "devMMA8451Q.h"
+#include "devRV8803C7.h"
+
 #define							kWarpConstantStringI2cFailure		"\rI2C failed, reg 0x%02x, code %d\n"
 #define							kWarpConstantStringErrorInvalidVoltage	"\rInvalid supply voltage [%d] mV!"
 #define							kWarpConstantStringErrorSanity		"\rSanity check failed!"
@@ -73,24 +79,8 @@
 	#define WARP_BUILD_ENABLE_FLASH 0
 #endif
 
-/*
-* Include all sensors because they will be needed to decode flash.
-*/
-#include "dev_INA219.h"
-#include "devADXL362.h"
-#include "devAMG8834.h"
-#include "devMMA8451Q.h"
-#include "devMAG3110.h"
-//#include "devL3GD20H.h"
-#include "devBME680.h"
-//#include "devBNO055.h"
-//#include "devBMX055.h"
-#include "devCCS811.h"
-#include "devHDC1000.h"
-#include "devRV8803C7.h"
-#include "devRF430CL331H.h"
-#include "devSSD1331.h"
 
+//#include "Detector.h" // Script for handling the byte buffer to acceleation conversions
 
 int CALIBRATION_VALUE = 40960; // --> Will implement a way to set it later
 //Importing initialisation functions from the header file
@@ -2094,9 +2084,42 @@ main(void)
 	}
 #endif
 
-	// Run the init for the screen
-	warpPrint("\n Calling display initialisation function, before menu of options.\n");
-	devSSD1331init();
+
+	/* 
+	FREQUENCCY DETECTOR SECTION - 
+	1. Sensor will be initiialised
+	2. Convert MSB and LSB readings into a set of X, Y and Z accelerations before doing any form of post processing
+	*/
+
+	initMMA8451Q(	0x1D	/* i2cAddress */,	kWarpDefaultSupplyVoltageMillivoltsMMA8451Q	);
+	OSA_TimeDelay(5000);
+
+	warpPrint("\nFinished initialising sensor.\n");
+	
+	for (int i = 0; i < 600; i++){
+	//   timeBefore = OSA_TimeGetMsec();
+	//   classifierAlgorithm();
+	//   timeAfter = OSA_TimeGetMsec();
+	//   timeDifference = timeAfter - timeBefore;
+	//   warpPrint("EXECUTION TIME of classiferAlgorithm() = %d - %d = %dms.\n", timeAfter, timeBefore, timeDifference);
+	//   if(timeDifference < SAMPLE_PERIOD){
+	//     OSA_TimeDelay(SAMPLE_PERIOD - timeDifference);
+	//   }
+    //       else{ // If this error occurs, try commenting out some warpPrint() statements.
+	//     warpPrint("Error: timeDifference of %dms > %dms.\n", timeDifference, SAMPLE_PERIOD);
+	//     break;
+	//   }
+	//byte_to_state_conversion();
+	// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
+	OSA_TimeDelay(500);
+
+	}
+	
+
+
+
+
+
 
 	while (1)
 	{
@@ -3336,6 +3359,7 @@ writeAllSensorsToFlash(int menuDelayBetweenEachRun, int loopForever)
 	numberOfConfigErrors += configureSensorMMA8451Q(
 		0x00, /* Payload: Disable FIFO */
 		0x01  /* Normal read 8bit, 800Hz, normal, active mode */
+		0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
 	);
 	sensorBitField = sensorBitField | kWarpFlashMMA8451QBitField;
 #endif
@@ -3608,7 +3632,8 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 #if (WARP_BUILD_ENABLE_DEVMMA8451Q)
 	numberOfConfigErrors += configureSensorMMA8451Q(
 		0x00, /* Payload: Disable FIFO */
-		0x01  /* Normal read 8bit, 800Hz, normal, active mode */
+		0x05  /* [Control Register1] Higher read 14bit, 800Hz, normal, active mode --> LNOISE mode on */
+//		0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
 	);
 #endif
 
@@ -4285,14 +4310,15 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 			break;
 		}
 
-			case kWarpSensorMMA8451Q:
+case kWarpSensorMMA8451Q:
 			{
 /*
  *	MMA8451Q: VDD 1.95--3.6
  */
 #if (WARP_BUILD_ENABLE_DEVMMA8451Q)
 		
-
+		while (1)
+		{
 			loopForSensor(	"\r\nMMA8451Q:\n\r",		/*	tagString			*/
 					&readSensorRegisterMMA8451Q,	/*	readSensorRegisterFunction	*/
 					&deviceMMA8451QState,		/*	i2cDeviceState			*/
@@ -4309,6 +4335,17 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 					adaptiveSssupplyMaxMillivolts,	/*	adaptiveSssupplyMaxMillivolts	*/
 					chatty				/*	chatty				*/
 		);
+		OSA_TimeDelay(1000);
+
+        // Check for keypress - terminate readings if detected
+        if (SEGGER_RTT_HasKey())  // Checks for keypress in the client
+        {
+            SEGGER_RTT_WriteString(0, "\r\nKeypress detected, stopping loop.\n\r");
+            break;
+        }
+
+       }	
+
 #else
 		warpPrint("\r\n\tMMA8451Q Read Aborted. Device Disabled :(");
 

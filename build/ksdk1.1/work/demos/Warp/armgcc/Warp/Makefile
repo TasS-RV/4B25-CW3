@@ -231,33 +231,6 @@ home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.c.s:
 	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.c.s
 .PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.c.s
 
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.c.s
-
 home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.obj
 
 .PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.obj
@@ -284,222 +257,6 @@ home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.s: home
 home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.s:
 	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.s
 .PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.c.s
 
 home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
 
@@ -554,60 +311,6 @@ home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.s: ho
 home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.c.s:
 	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.c.s
 .PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.c.s
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.c.s
 
 home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.c.obj
 
@@ -855,48 +558,15 @@ help:
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/boot.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.s"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBGX.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devIS25xP.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devISL23415.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devLPS25H.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.s"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.s"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.s"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/errstrsEN.s"

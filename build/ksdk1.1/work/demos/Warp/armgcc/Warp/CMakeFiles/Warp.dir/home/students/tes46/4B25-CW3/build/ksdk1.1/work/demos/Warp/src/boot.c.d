@@ -44,17 +44,8 @@ CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/s
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/gpio_pins.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT_Conf.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAMG8834.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRF430CL331H.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.h
+ /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.h
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/config.h:
 
@@ -144,24 +135,6 @@ CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/s
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT_Conf.h:
 
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/dev_INA219.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devADXL362.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAMG8834.h:
-
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.h:
 
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMAG3110.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devBME680.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devCCS811.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devHDC1000.h:
-
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRV8803C7.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devRF430CL331H.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devSSD1331.h:
