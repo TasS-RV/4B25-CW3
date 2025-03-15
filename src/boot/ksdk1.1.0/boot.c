@@ -3632,8 +3632,8 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 #if (WARP_BUILD_ENABLE_DEVMMA8451Q)
 	numberOfConfigErrors += configureSensorMMA8451Q(
 		0x00, /* Payload: Disable FIFO */
-		0x05  /* [Control Register1] Higher read 14bit, 800Hz, normal, active mode --> LNOISE mode on */
-//		0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
+		0x05,  /* [Control Register1] Higher read 14bit, 800Hz, normal, active mode --> LNOISE mode on */
+		0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
 	);
 #endif
 

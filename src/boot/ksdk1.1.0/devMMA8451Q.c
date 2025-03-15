@@ -128,9 +128,9 @@ writeSensorRegisterMMA8451Q(uint8_t deviceRegister, uint8_t payload)
 }
 
 WarpStatus
-configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1)
+configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_t payloadXYZ_DATA_CFG)
 {
-	WarpStatus	i2cWriteStatus1, i2cWriteStatus2;
+	WarpStatus	i2cWriteStatus1, i2cWriteStatus2, i2cWriteStatus3;
 
 
 	warpScaleSupplyVoltage(deviceMMA8451QState.operatingVoltageMillivolts);
@@ -143,7 +143,11 @@ configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1)
 												  payloadCTRL_REG1 /* payload */
 	);
 
-	return (i2cWriteStatus1 | i2cWriteStatus2);
+	i2cWriteStatus3 = writeSensorRegisterMMA8451Q(kWarpSensorConfigurationRegisterMMA8451QXYZ_DATA_CFG /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */,
+		payloadXYZ_DATA_CFG /* payload */
+	);
+
+	return (i2cWriteStatus1 | i2cWriteStatus2 | i2cWriteStatus3);
 }
 
 WarpStatus
