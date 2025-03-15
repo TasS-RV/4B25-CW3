@@ -4278,25 +4278,6 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 			OSA_TimeDelay(10); //10 ms delay
 		}
 
-
-	// Removed the endif - maybe not required
-
-			// 	loopForCurrentSensor(	"\r\nINA219 register reading:\n\r",		/*	tagString			*/
-			// 			&readSensorRegister_INA219,	/*	readSensorRegisterFunction	*/
-			// 			&device_INA219State,		/*	i2cDeviceState			*/
-			// 			NULL,				/*	spiDeviceState			*/
-			// 			baseAddress,			/*	baseAddress			*/
-			// 			0x00,				/*	minAddress			Starting from the configuration register.*/
-			// 			0x05,				/*	maxAddress			Goes up to the calibration register.*/
-			// 			repetitionsPerAddress,		/*	repetitionsPerAddress		*/
-			// 			chunkReadsPerAddress,		/*	chunkReadsPerAddress		*/
-			// 			spinDelay,			/*	spinDelay			*/
-			// 			autoIncrement,			/*	autoIncrement			*/
-			// 			sssupplyMillivolts,		/*	sssupplyMillivolts		*/
-			// 			referenceByte,			/*	referenceByte			*/
-			// 			adaptiveSssupplyMaxMillivolts,	/*	adaptiveSssupplyMaxMillivolts	*/
-			// 			chatty				/*	chatty				*/
-			// );
 #else
 			warpPrint("\r\n\tINA219 Read Aborted. Device Disabled :(");
 

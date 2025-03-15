@@ -34,8 +34,6 @@ init_INA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 	device_INA219State.i2cAddress					= i2cAddress;
 	device_INA219State.operatingVoltageMillivolts	= operatingVoltageMillivolts;
 
-
-
 	return;
 }
 
