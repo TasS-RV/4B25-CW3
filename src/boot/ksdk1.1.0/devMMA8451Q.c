@@ -73,11 +73,11 @@ initMMA8451Q(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 	WarpStatus configErrorState = 1;
 	//configErrorState = 
 	
-	configureSensorMMA8451Q(
-		0x00, /* [F_SETUP] Payload: Disable FIFO (use AccelerationBuffer[39] instead). */
-		0x05, /* [CTRL_REG1] Normal read 14-bit (F_READ = 0), 800Hz output data rate, LNOISE mode on (change to 0x01 to turn LNOISE mode off), active mode (changed to standby when writing to CTRL_REG1). */
-		0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
-	);
+	// configureSensorMMA8451Q(
+	// 	0x00, /* [F_SETUP] Payload: Disable FIFO (use AccelerationBuffer[39] instead). */
+	// 	0x05, /* [CTRL_REG1] Normal read 14-bit (F_READ = 0), 800Hz output data rate, LNOISE mode on (change to 0x01 to turn LNOISE mode off), active mode (changed to standby when writing to CTRL_REG1). */
+	// 	0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
+	// );
 	warpPrint("MMA8451Q Config Error State: %d\n", configErrorState);
 
 	// Initialise all Buffers to fill them with 0s - otherwise unfilled buffers will have garbage that has no physical meaning:  AccelerationBuffer and LPFBuffer to 0.
