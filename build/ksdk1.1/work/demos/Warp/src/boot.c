@@ -2087,18 +2087,20 @@ main(void)
 
 	/* 
 	FREQUENCY DETECTOR SECTION - 
-	1. Sensor will be initiialised
-	2. Convert MSB and LSB readings into a set of X, Y and Z accelerations before doing any form of post processing
+	1. Sensor will be initialised into active mode.
+	2. Set the correct HPF @ 1Hz cutoff - alongside full range 8g acceleration to use higher resolution - all 14 bits
+	3. Convert MSB and LSB readings into a set of X, Y and Z accelerations before doing any form of post processing
+	
+	Datasheet: https://www.alldatasheet.com/datasheet-pdf/download/460022/FREESCALE/MMA8451Q.html
 	*/
-
 	initMMA8451Q(	0x1D	/* i2cAddress */,	kWarpDefaultSupplyVoltageMillivoltsMMA8451Q	);
-	// When this function is un from within iniMMA8451Q,   error: conflicting types for 'configureSensorMMA8451Q' is thrown, but not when it is called outside in boot.c 
+	// When this function is called from within iniMMA8451Q,   error: conflicting types for 'configureSensorMMA8451Q' is thrown, but not when it is called outside in boot.c 
 	warpPrint("MMA8451Q Config Error State: %d\n", 
 		configureSensorMMA8451Q(
 			0x00, /* [F_SETUP] Payload: Disable FIFO (use AccelerationBuffer[39] instead). */
 			0x05, /* [CTRL_REG1] Normal read 14-bit (F_READ = 0), 800Hz output data rate, LNOISE mode on (change to 0x01 to turn LNOISE mode off), active mode (changed to standby when writing to CTRL_REG1). */
 			0x12, /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
-			0x00  /*Dummy palceholder to test compilation with HPF register*/
+			0x03  /*Datasheet Table 23 - normal Oversmapling Mode with 1Hz frequency cutoff requires Sel0 and Sel1 both = 1 - this corresponds to Bin 00000011 = 0x03 */
 		));
 	
 	OSA_TimeDelay(5000);
@@ -3631,8 +3633,7 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 		0x00, /* Payload: Disable FIFO */
 		0x05,  /* [Control Register1] Higher read 14bit, 800Hz, normal, active mode --> LNOISE mode on */
 		0x12, /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
-		0x00 // Dummy placeholder - we will not actually get to this point for running the algorithm
-	);
+		0x03);  /* 1Hz cutoff for HPF - for normal Oversmapling mode*/
 #endif
 
 #if (WARP_BUILD_INA219_DRIVER)
