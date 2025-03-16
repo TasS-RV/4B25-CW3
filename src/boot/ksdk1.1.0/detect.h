@@ -21,5 +21,7 @@ int buffer_index = 0;
 uint32_t accel_magnitude_buffer[BUFF_SIZE];
 uint16_t time_steps_buffer[BUFF_SIZE];
 
+uint16_t timeBefore = 0;
+uint16_t timeAft = 0;
 
 //int delay_ms = 500; --> Removing as this will take more symbol space

@@ -2106,15 +2106,9 @@ main(void)
 	OSA_TimeDelay(5000);
 	warpPrint("\nFinished initialising sensor.\n");
 	
-	uint16_t timeBefore = 0;
-	uint16_t timeAft = 0;
-
 	for (int i = 0; i < 600; i++){
 		//timeBefore = OSA_TimeGetMsec();
 		byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
-		//timeAft = OSA_TimeGetMsec();
-		//update_buffers(accel_mag, (uint16_t)((timeBefore - timeAft) + 100));	
-		//warpPrint("Current time difference: %d \n", (timeBefore - timeAft) + 100);
 
 		// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
 	OSA_TimeDelay(100);
