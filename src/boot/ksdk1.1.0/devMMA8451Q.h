@@ -36,7 +36,7 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 
-void		initINA219(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts);
+void		initMMA8451Q(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts);
 
 // the remainder will all need to be renamed and recconfigured as per the datasheet
 WarpStatus	readSensorRegisterMMA8451Q(uint8_t deviceRegister, int numberOfBytes);
@@ -51,6 +51,3 @@ const uint8_t bytesPerMeasurementMMA8451Q            = 6;
 const uint8_t bytesPerReadingMMA8451Q                = 2;
 const uint8_t numberOfReadingsPerMeasurementMMA8451Q = 3;
 
-#define BUFF_SIZE 40
-extern volatile uint32_t AccelerationBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
-extern volatile uint32_t LPFBuffer[BUFF_SIZE] = {0}; // Initialised to 0.

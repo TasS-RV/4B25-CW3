@@ -2106,7 +2106,7 @@ main(void)
 	
 	for (int i = 0; i < 600; i++){
 
-	//byte_to_state_conversion();
+	byte_to_state_conversion();
 	// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
 	OSA_TimeDelay(500);
 

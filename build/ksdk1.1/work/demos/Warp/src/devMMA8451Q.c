@@ -63,14 +63,12 @@ extern volatile uint32_t			gWarpI2cTimeoutMilliseconds;
 extern volatile uint32_t			gWarpSupplySettlingDelayMilliseconds;
 
 
-
 void
 initMMA8451Q(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 {
 	deviceMMA8451QState.i2cAddress					= i2cAddress;
 	deviceMMA8451QState.operatingVoltageMillivolts	= operatingVoltageMillivolts;
-	
-	
+
 	// Initialise all Buffers to fill them with 0s - otherwise unfilled buffers will have garbage that has no physical meaning:  AccelerationBuffer and LPFBuffer to 0.
 	for(int i = 0; i < BUFF_SIZE; i++) {
 	 	AccelerationBuffer[i] = 0;

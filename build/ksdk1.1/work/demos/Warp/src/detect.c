@@ -14,3 +14,8 @@
 #include "gpio_pins.h"
 #include "SEGGER_RTT.h"
 #include "warp.h"
+
+
+void byte_to_state_conversion(){
+    return;
+}
