@@ -18,7 +18,6 @@ Variables for updating a rolling buffer for storing acceleration magntiudes and 
 may be called multiple times. this may overwrite and reset the circular buffer and associated variables each time.
 */
 
-
 uint16_t timeBefore = 0;
 uint16_t timeAft = 0;
 

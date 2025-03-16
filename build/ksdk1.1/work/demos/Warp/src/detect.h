@@ -17,8 +17,6 @@ uint32_t LPFBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
 Variables for updating a rolling buffer for storing acceleration magntiudes and times  - thes eneed to be in the header, as the script file and internal functions 
 may be called multiple times. this may overwrite and reset the circular buffer and associated variables each time.
 */
-int buffer_index = 0;
-
 
 uint16_t timeBefore = 0;
 uint16_t timeAft = 0;

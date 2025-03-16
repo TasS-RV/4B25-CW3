@@ -81,13 +81,13 @@ initMMA8451Q(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 
 
 
-
 void update_buffers(uint32_t acc_mag, uint16_t time_diff){
     accel_magnitude_buffer[buffer_index] = acc_mag;
     time_steps_buffer[buffer_index] = 10;    
     // Update buffer index (circular - reset using modulo) - print debug to check if being reset or updated
     warpPrint("Buffer_index: %d \n", buffer_index);
     buffer_index = (buffer_index + 1) % BUFF_SIZE;
+	return; //Maybe got stuck without return statement?
 }
 
 

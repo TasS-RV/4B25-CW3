@@ -44,15 +44,15 @@ WarpStatus	writeSensorRegisterMMA8451Q(uint8_t deviceRegister, uint8_t payloadBt
 WarpStatus 	configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_t payloadHP_FILTER_CUTOFF, uint8_t payloadXYZ_DATA_CFG);
 void		printSensorDataMMA8451Q(bool hexModeFlag);
 uint8_t		appendSensorDataMMA8451Q(uint8_t* buf);
-
+void update_buffers(uint32_t acc_mag, uint16_t time_diff);
 
 extern volatile WarpI2CDeviceState	deviceMMA8451QState;
 
 
-
+//#define BUFF_SIZE 40; // Normally defined in the detector.h but trying something
 volatile int buffer_index = 0;
-static uint32_t accel_magnitude_buffer[BUFF_SIZE];
-static uint16_t time_steps_buffer[BUFF_SIZE];
+static uint32_t accel_magnitude_buffer[40]; //<-- SHould be BUFF_size
+static uint16_t time_steps_buffer[40];
 
 
 const uint8_t bytesPerMeasurementMMA8451Q            = 6;
