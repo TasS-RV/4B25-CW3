@@ -44,7 +44,7 @@ void byte_to_state_conversion(){
     x_LSB = deviceMMA8451QState.i2cBuffer[1];
     XCombined = ((x_MSB & 0xFF) << 6) | (x_LSB >> 2);
     XCombined = (XCombined ^ (1 << 13)) - (1 << 13);
-    warpPrint("x_MSB: %d, x_MSB: %d, XCombined - Decimal: %d, Hexadecimal: %x.\n", x_MSB, x_LSB, XCombined, XCombined);
+    //warpPrint("x_MSB: %d, x_MSB: %d, XCombined - Decimal: %d, Hexadecimal: %x.\n", x_MSB, x_LSB, XCombined, XCombined);
     XAcceleration = convertAcceleration(XCombined);
     warpPrint("XAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", XAcceleration, XAcceleration);
 
@@ -57,9 +57,9 @@ void byte_to_state_conversion(){
     y_LSB = deviceMMA8451QState.i2cBuffer[3];
     YCombined = ((y_MSB & 0xFF) << 6) | (y_LSB >> 2);
     YCombined = (YCombined ^ (1 << 13)) - (1 << 13);
-    warpPrint("y_MSB: %d, y_MSB: %d, YCombined - Decimal: %d, Hexadecimal: %x.\n", y_MSB, y_LSB, YCombined, YCombined);
+    //warpPrint("y_MSB: %d, y_MSB: %d, YCombined - Decimal: %d, Hexadecimal: %x.\n", y_MSB, y_LSB, YCombined, YCombined);
     YAcceleration = convertAcceleration(YCombined);
-    //warpPrint("YAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", YAcceleration, YAcceleration);
+    warpPrint("YAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", YAcceleration, YAcceleration);
 
     // YVariance *= (totalSamples - 1); // Undo the division by n when the variance was calculated last.
     // YVariance += (YAcceleration*YAcceleration);
@@ -70,8 +70,8 @@ void byte_to_state_conversion(){
     z_LSB = deviceMMA8451QState.i2cBuffer[5];
     ZCombined = ((z_MSB & 0xFF) << 6) | (z_LSB >> 2);
     ZCombined = (ZCombined ^ (1 << 13)) - (1 << 13);
-    warpPrint("z_MSB: %d, z_MSB: %d, ZCombined - Decimal: %d, Hexadecimal: %x.\n", z_MSB, z_LSB, ZCombined, ZCombined);
+    //warpPrint("z_MSB: %d, z_MSB: %d, ZCombined - Decimal: %d, Hexadecimal: %x.\n", z_MSB, z_LSB, ZCombined, ZCombined);
     ZAcceleration = convertAcceleration(ZCombined);
-    //warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", ZAcceleration, ZAcceleration);
+    warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);
 
 }
