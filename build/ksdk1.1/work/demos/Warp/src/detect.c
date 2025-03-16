@@ -18,6 +18,17 @@
 #include "devMMA8451Q.h"
 
 
+
+int32_t get_sqrt(uint32_t magntiude){
+    if (magntiude == 0) return 0;  // Avoid division by zero
+
+    uint32_t x =  magntiude / 2;  // Initial guess - larger values will want a higher iterations and greater initial division
+    for (int i = 0; i < 6; i++) {  // Higher iterations will give higher accuracy
+        x = (x + magntiude / x)/2;
+    }
+    return x;
+}
+
 int32_t convertAcceleration(int16_t number){ // Convert the acceleration from multiples of (1/1024)g to mms^-2. 
     // Acceleration is given in multiples of (1/1024)g with the chosen +/- 8g range and 14-bit resolution of the MMA8451Q readings.
     // Hence, multiply by 9810 and then divide by 1024 to convert to mms^-2. Therefore, there is an implicit scaling factor of 1,000.
@@ -73,5 +84,11 @@ void byte_to_state_conversion(){
     //warpPrint("z_MSB: %d, z_MSB: %d, ZCombined - Decimal: %d, Hexadecimal: %x.\n", z_MSB, z_LSB, ZCombined, ZCombined);
     ZAcceleration = convertAcceleration(ZCombined);
     warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);
+
+    
+    //uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
+    // Testing with known values
+    uint32_t acc_magntiude = get_sqrt((uint32_t)1000);
+    warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
 
 }

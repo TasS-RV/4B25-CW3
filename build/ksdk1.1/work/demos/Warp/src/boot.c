@@ -2111,7 +2111,7 @@ main(void)
 
 	byte_to_state_conversion();
 	// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
-	OSA_TimeDelay(20);
+	OSA_TimeDelay(500);
 
 	}
 	
