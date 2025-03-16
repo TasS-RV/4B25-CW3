@@ -2099,8 +2099,8 @@ main(void)
 		configureSensorMMA8451Q(
 			0x00, /* [F_SETUP] Payload: Disable FIFO (use AccelerationBuffer[39] instead). */
 			0x05, /* [CTRL_REG1] Normal read 14-bit (F_READ = 0), 800Hz output data rate, LNOISE mode on (change to 0x01 to turn LNOISE mode off), active mode (changed to standby when writing to CTRL_REG1). */
-			0x12, /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
-			0x01  /*Datasheet Table 23 - normal Oversmapling Mode with 1Hz frequency cutoff requires Sel0 and Sel1 both = 1 - this corresponds to Bin 00000011 = 0x03 */
+			0x03, /* Datasheet Table 23 - normal Oversmapling Mode with 1Hz frequency cutoff requires Sel0 and Sel1 both = 1 - this corresponds to Bin 00000011 = 0x03 */
+			0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
 		));
 	
 	OSA_TimeDelay(5000);

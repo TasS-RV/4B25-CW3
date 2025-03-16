@@ -134,9 +134,9 @@ writeSensorRegisterMMA8451Q(uint8_t deviceRegister, uint8_t payload)
 }
 
 WarpStatus
-configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_t payloadXYZ_DATA_CFG, uint8_t payloadHP_FILTER_CUTOFF)
+configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_t payloadHP_FILTER_CUTOFF, uint8_t payloadXYZ_DATA_CFG)
 {
-	WarpStatus	i2cWriteStatus1, i2cWriteStatus2, i2cWriteStatus3, i2cWriteStatus4;
+	WarpStatus	i2cWriteStatus1, i2cWriteStatus2_1, i2cWriteStatus2_2, i2cWriteStatus3, i2cWriteStatus4;
 
 
 	warpScaleSupplyVoltage(deviceMMA8451QState.operatingVoltageMillivolts);
@@ -145,19 +145,23 @@ configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_
 												  payloadF_SETUP /* payload: Disable FIFO */
 	);
 
-	i2cWriteStatus2 = writeSensorRegisterMMA8451Q(MMA8451QCTRL_REG1_Register /* register address CTRL_REG1 */,
-		(payloadCTRL_REG1 & 0xF) /* payload - active mode */
+	i2cWriteStatus2_1 = writeSensorRegisterMMA8451Q(MMA8451QCTRL_REG1_Register /* register address CTRL_REG1 */,
+		(payloadCTRL_REG1 & 0xE) /* payload - standby mode for setting filters and range */
 	);
 
-	i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_DATA_CFG_Register /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */,
-		payloadXYZ_DATA_CFG /* payload */
-	);
-
-	i2cWriteStatus4 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
+	i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
 		payloadHP_FILTER_CUTOFF /* payload */
 	);
 
-	return (i2cWriteStatus1 | i2cWriteStatus2 | i2cWriteStatus3 | i2cWriteStatus4);
+	i2cWriteStatus4 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_DATA_CFG_Register /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */,
+		payloadXYZ_DATA_CFG /* payload */
+	);
+
+	i2cWriteStatus2_2 = writeSensorRegisterMMA8451Q(MMA8451QCTRL_REG1_Register /* register address CTRL_REG1 */,
+		(payloadCTRL_REG1 & 0xF) /* payload - active mode */
+	);
+
+	return (i2cWriteStatus1 | i2cWriteStatus2_1 | i2cWriteStatus3 | i2cWriteStatus4 | i2cWriteStatus2_2 );
 }
 
 
