@@ -2084,7 +2084,7 @@ main(void)
 	}
 #endif
 
-
+	volatile uint32_t accel_mag; // Defining local variable to pass into rolling buffer
 	/* 
 	FREQUENCY DETECTOR SECTION - 
 	1. Sensor will be initialised into active mode.
@@ -2104,19 +2104,27 @@ main(void)
 		));
 	
 	OSA_TimeDelay(5000);
-
 	warpPrint("\nFinished initialising sensor.\n");
 	
+	uint16_t timeBefore = 0;
+	uint16_t timeNow = 0;
+	uint16_t local_diff = 0;
+
 	for (int i = 0; i < 600; i++){
-
-	byte_to_state_conversion();
+		
+		local_diff = timeNow - timeBefore; // This is used to measure a non-blocking delay before polling the IMU registers
+		if (local_diff >= 500){
+			accel_mag = byte_to_state_conversion();
+			timeBefore = OSA_TimeGetMsec();
+			update_buffers(accel_mag, (uint16_t)((timeBefore - timeNow) + local_diff));	
+		} 
+		timeNow = OSA_TimeGetMsec();
+		warpPrint("Current time difference: %d \n", local_diff);
+	
 	// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
-	OSA_TimeDelay(500);
-
+	//OSA_TimeDelay(500);
 	}
 	
-
-
 
 
 	while (1)

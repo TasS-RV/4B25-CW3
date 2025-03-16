@@ -19,7 +19,6 @@
 
 
 
-extern volatile uint32_t accel_mag;
 
 
 int32_t get_sqrt(uint32_t magntiude){
@@ -98,9 +97,10 @@ uint32_t byte_to_state_conversion(){
 }
 
 
-void update_buffers(uint32_t acc_mag){
+void update_buffers(uint32_t acc_mag, uint16_t time_diff){
     accel_magnitude_buffer[buffer_index] = acc_mag;
     time_steps_buffer[buffer_index] = 10;    
-    // Update buffer index (circular - reset using modulo)
+    // Update buffer index (circular - reset using modulo) - print debug to check if being reset or updated
+    warpPrint("Buffer_index: %d \n", buffer_index);
     buffer_index = (buffer_index + 1) % BUFF_SIZE;
 }

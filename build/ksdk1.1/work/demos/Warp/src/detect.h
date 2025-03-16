@@ -1,5 +1,7 @@
 
-void byte_to_state_conversion();
+uint32_t byte_to_state_conversion();
+void update_buffers(uint32_t acc_mag, uint16_t time_diff);
+
 int32_t convertAcceleration(int16_t number);
 int32_t get_sqrt(uint32_t magntiude); //<-- Magntiude will be an unsigned int, so uint32 - want large integer size for the calculation
 
@@ -18,3 +20,6 @@ may be called multiple times. this may overwrite and reset the circular buffer a
 int buffer_index = 0;
 uint32_t accel_magnitude_buffer[BUFF_SIZE];
 uint16_t time_steps_buffer[BUFF_SIZE];
+
+
+//int delay_ms = 500; --> Removing as this will take more symbol space
