@@ -40,7 +40,8 @@ CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/s
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT_Conf.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/warp.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.h
+ /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.h \
+ /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.h
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/config.h:
 
@@ -123,3 +124,5 @@ CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/s
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/warp.h:
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.h:
+
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.h:

@@ -46,6 +46,7 @@ void		printSensorDataMMA8451Q(bool hexModeFlag);
 uint8_t		appendSensorDataMMA8451Q(uint8_t* buf);
 
 
+extern volatile WarpI2CDeviceState	deviceMMA8451QState;
 
 const uint8_t bytesPerMeasurementMMA8451Q            = 6;
 const uint8_t bytesPerReadingMMA8451Q                = 2;

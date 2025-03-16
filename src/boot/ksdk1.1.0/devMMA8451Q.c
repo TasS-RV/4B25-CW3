@@ -56,8 +56,8 @@
 #include "SEGGER_RTT.h"
 #include "warp.h"
 #include "detect.h"
+#include "devMMA8451Q.h"
 
-extern volatile WarpI2CDeviceState	deviceMMA8451QState;
 extern volatile uint32_t			gWarpI2cBaudRateKbps;
 extern volatile uint32_t			gWarpI2cTimeoutMilliseconds;
 extern volatile uint32_t			gWarpSupplySettlingDelayMilliseconds;
