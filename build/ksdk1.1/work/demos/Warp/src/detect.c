@@ -86,9 +86,14 @@ void byte_to_state_conversion(){
     warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);
 
     
-    //uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
+    uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
     // Testing with known values
-    uint32_t acc_magntiude = get_sqrt((uint32_t)1000);
+    //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
     warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
 
+
+    accel_magnitude_buffer[buffer_index] = acc_magntiude;
+    time_steps_buffer[buffer_index] = 10;    
+    // Update buffer index (circular - reset using modulo)
+    buffer_index = (buffer_index + 1) % BUFF_SIZE;    
 }
