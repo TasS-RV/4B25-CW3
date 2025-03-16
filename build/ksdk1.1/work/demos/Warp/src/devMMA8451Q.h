@@ -49,12 +49,6 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff);
 extern volatile WarpI2CDeviceState	deviceMMA8451QState;
 
 
-//#define BUFF_SIZE 40; // Normally defined in the detector.h but trying something
-volatile int buffer_index = 0;
-static uint32_t accel_magnitude_buffer[40]; //<-- SHould be BUFF_size
-static uint16_t time_steps_buffer[40];
-
-
 const uint8_t bytesPerMeasurementMMA8451Q            = 6;
 const uint8_t bytesPerReadingMMA8451Q                = 2;
 const uint8_t numberOfReadingsPerMeasurementMMA8451Q = 3;

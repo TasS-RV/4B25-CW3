@@ -18,6 +18,10 @@ Variables for updating a rolling buffer for storing acceleration magntiudes and 
 may be called multiple times. this may overwrite and reset the circular buffer and associated variables each time.
 */
 
+volatile int buffer_index = 0;
+static uint32_t accel_magnitude_buffer[BUFF_SIZE]; //<-- SHould be BUFF_size
+static uint16_t time_steps_buffer[BUFF_SIZE];
+
 uint16_t timeBefore = 0;
 uint16_t timeAft = 0;
 

@@ -100,12 +100,11 @@ uint32_t byte_to_state_conversion(){
     timeAft = OSA_TimeGetMsec();
 
     //update_buffers(1000, (uint16_t)((timeBefore - timeAft) + 100));
-    update_buffers(1000, 10); //Debugging sample
+    update_buffers(acc_magntiude, (uint16_t)((timeBefore - timeAft) + 100)); //Debugging sample
     //accel_magnitude_buffer[buffer_index] = acc_magntiude;
   //  time_steps_buffer[buffer_index] = (uint16_t)(timeAft - timeBefore) + 100;    
     // Update buffer index (circular - reset using modulo) - print debug to check if being reset or updated
-    warpPrint("Buffer_index: %d \n", buffer_index);
-  
+    
     return acc_magntiude;
 }
 
