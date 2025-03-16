@@ -115,9 +115,10 @@ typedef enum
 
 typedef enum
 {
-	kWarpSensorConfigurationRegisterMMA8451QF_SETUP				= 0x09,
-	kWarpSensorConfigurationRegisterMMA8451QCTRL_REG1			= 0x2A,
-	kWarpSensorConfigurationRegisterMMA8451QXYZ_DATA_CFG		= 0x0E,
+	MMA8451QF_SETUP_Register				= 0x09,
+	MMA8451QCTRL_REG1_Register				= 0x2A,
+	MMA8451QXYZ_DATA_CFG_Register			= 0x0E,    // Register for setting the Dynamic range and sets the HPF for output data
+	MMA8451QXYZ_HP_FILTER_CUTOFF_Register 	= 0x0F,  //Register for setting Highpass cutoff frequency and removal of offset
 
 	// Equivalent setup and control - or as described in the INA219 datasheet, conffiguration and calibration registers respectively.
 	kWarpSensorConfigurationRegister_INA219_SETUP				= 0x00, //Configuration register

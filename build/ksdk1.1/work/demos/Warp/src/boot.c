@@ -2097,7 +2097,8 @@ main(void)
 		configureSensorMMA8451Q(
 			0x00, /* [F_SETUP] Payload: Disable FIFO (use AccelerationBuffer[39] instead). */
 			0x05, /* [CTRL_REG1] Normal read 14-bit (F_READ = 0), 800Hz output data rate, LNOISE mode on (change to 0x01 to turn LNOISE mode off), active mode (changed to standby when writing to CTRL_REG1). */
-			0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
+			0x12, /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
+			0x00  /*Dummy palceholder to test compilation with HPF register*/
 		));
 	
 	OSA_TimeDelay(5000);
@@ -3353,9 +3354,10 @@ writeAllSensorsToFlash(int menuDelayBetweenEachRun, int loopForever)
 #if (WARP_BUILD_ENABLE_DEVMMA8451Q)
 	numberOfConfigErrors += configureSensorMMA8451Q(
 		0x00, /* Payload: Disable FIFO */
-		0x01  /* Normal read 8bit, 800Hz, normal, active mode */
-		0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
-	);
+		0x01,  /* Normal read 8bit, 800Hz, normal, active mode */
+		0x12, /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
+		0x00
+	);	
 	sensorBitField = sensorBitField | kWarpFlashMMA8451QBitField;
 #endif
 
@@ -3628,7 +3630,8 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag,
 	numberOfConfigErrors += configureSensorMMA8451Q(
 		0x00, /* Payload: Disable FIFO */
 		0x05,  /* [Control Register1] Higher read 14bit, 800Hz, normal, active mode --> LNOISE mode on */
-		0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
+		0x12, /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
+		0x00 // Dummy placeholder - we will not actually get to this point for running the algorithm
 	);
 #endif
 
