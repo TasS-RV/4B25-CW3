@@ -2084,6 +2084,8 @@ main(void)
 	}
 #endif
 
+	volatile uint32_t accel_mag; // Defining local variable to pass into rolling buffer
+
 
 	/* 
 	FREQUENCY DETECTOR SECTION - 
@@ -2107,16 +2109,25 @@ main(void)
 
 	warpPrint("\nFinished initialising sensor.\n");
 	
-	for (int i = 0; i < 600; i++){
+	uint16_t timeBefore = 0;
+	uint16_t timeNow = 0;
+	uint16_t local_diff = 0;
 
-	byte_to_state_conversion();
+		
+	for (int i = 0; i < 600; i++){
+		
+		local_diff = timeNow - timeBefore; // This is used to measure a non-blocking delay 
+		if (local_diff >= 200){
+			accel_mag = byte_to_state_conversion();
+			timeBefore = OSA_TimeGetMsec();
+		} 
+		timeNow = OSA_TimeGetMsec();
+		
 	// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
 	OSA_TimeDelay(500);
 
 	}
 	
-
-
 
 
 	while (1)

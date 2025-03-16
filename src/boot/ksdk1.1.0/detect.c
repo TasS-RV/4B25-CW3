@@ -19,6 +19,9 @@
 
 
 
+extern volatile uint32_t accel_mag;
+
+
 int32_t get_sqrt(uint32_t magntiude){
     if (magntiude == 0) return 0;  // Avoid division by zero
 
@@ -38,7 +41,7 @@ int32_t convertAcceleration(int16_t number){ // Convert the acceleration from mu
   }
 
 
-void byte_to_state_conversion(){
+uint32_t byte_to_state_conversion(){
     uint16_t x_LSB, y_LSB, z_LSB; // Least significant byte of each acceleration measurement.
     uint16_t x_MSB, y_MSB, z_MSB; // Most significant byte of each acceleration measurement.
     int32_t XAcceleration, YAcceleration, ZAcceleration; // Actual acceleration values for checking their accuracy.
@@ -90,10 +93,14 @@ void byte_to_state_conversion(){
     // Testing with known values
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
     warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
+    
+    return acc_magntiude;
+}
 
 
-    accel_magnitude_buffer[buffer_index] = acc_magntiude;
+void update_buffers(uint32_t acc_mag){
+    accel_magnitude_buffer[buffer_index] = acc_mag;
     time_steps_buffer[buffer_index] = 10;    
     // Update buffer index (circular - reset using modulo)
-    buffer_index = (buffer_index + 1) % BUFF_SIZE;    
+    buffer_index = (buffer_index + 1) % BUFF_SIZE;
 }
