@@ -2095,6 +2095,8 @@ main(void)
 	*/
 	initMMA8451Q(	0x1D	/* i2cAddress */,	kWarpDefaultSupplyVoltageMillivoltsMMA8451Q	);
 	// When this function is called from within iniMMA8451Q,   error: conflicting types for 'configureSensorMMA8451Q' is thrown, but not when it is called outside in boot.c 
+	
+	
 	warpPrint("MMA8451Q Config Error State: %d\n", 
 		configureSensorMMA8451Q(
 			0x00, /* [F_SETUP] Payload: Disable FIFO (use AccelerationBuffer[39] instead). */
@@ -2111,7 +2113,7 @@ main(void)
 		byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
 
 		// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
-	OSA_TimeDelay(100);
+		OSA_TimeDelay(100);
 	}
 	
 

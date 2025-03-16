@@ -48,6 +48,13 @@ uint8_t		appendSensorDataMMA8451Q(uint8_t* buf);
 
 extern volatile WarpI2CDeviceState	deviceMMA8451QState;
 
+
+
+volatile int buffer_index = 0;
+static uint32_t accel_magnitude_buffer[BUFF_SIZE];
+static uint16_t time_steps_buffer[BUFF_SIZE];
+
+
 const uint8_t bytesPerMeasurementMMA8451Q            = 6;
 const uint8_t bytesPerReadingMMA8451Q                = 2;
 const uint8_t numberOfReadingsPerMeasurementMMA8451Q = 3;
