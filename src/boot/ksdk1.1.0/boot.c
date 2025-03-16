@@ -2086,37 +2086,32 @@ main(void)
 
 
 	/* 
-	FREQUENCCY DETECTOR SECTION - 
+	FREQUENCY DETECTOR SECTION - 
 	1. Sensor will be initiialised
 	2. Convert MSB and LSB readings into a set of X, Y and Z accelerations before doing any form of post processing
 	*/
 
 	initMMA8451Q(	0x1D	/* i2cAddress */,	kWarpDefaultSupplyVoltageMillivoltsMMA8451Q	);
+	// When this function is un from within iniMMA8451Q,   error: conflicting types for 'configureSensorMMA8451Q' is thrown, but not when it is called outside in boot.c 
+	warpPrint("MMA8451Q Config Error State: %d\n", 
+		configureSensorMMA8451Q(
+			0x00, /* [F_SETUP] Payload: Disable FIFO (use AccelerationBuffer[39] instead). */
+			0x05, /* [CTRL_REG1] Normal read 14-bit (F_READ = 0), 800Hz output data rate, LNOISE mode on (change to 0x01 to turn LNOISE mode off), active mode (changed to standby when writing to CTRL_REG1). */
+			0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
+		));
+	
 	OSA_TimeDelay(5000);
 
 	warpPrint("\nFinished initialising sensor.\n");
 	
 	for (int i = 0; i < 600; i++){
-	//   timeBefore = OSA_TimeGetMsec();
-	//   classifierAlgorithm();
-	//   timeAfter = OSA_TimeGetMsec();
-	//   timeDifference = timeAfter - timeBefore;
-	//   warpPrint("EXECUTION TIME of classiferAlgorithm() = %d - %d = %dms.\n", timeAfter, timeBefore, timeDifference);
-	//   if(timeDifference < SAMPLE_PERIOD){
-	//     OSA_TimeDelay(SAMPLE_PERIOD - timeDifference);
-	//   }
-    //       else{ // If this error occurs, try commenting out some warpPrint() statements.
-	//     warpPrint("Error: timeDifference of %dms > %dms.\n", timeDifference, SAMPLE_PERIOD);
-	//     break;
-	//   }
+
 	//byte_to_state_conversion();
 	// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
 	OSA_TimeDelay(500);
 
 	}
 	
-
-
 
 
 

@@ -906,6 +906,38 @@ devBGX.h
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/config.h
 
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c
+stdlib.h
+-
+config.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/config.h
+fsl_misc_utilities.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_misc_utilities.h
+fsl_device_registers.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_device_registers.h
+fsl_i2c_master_driver.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_i2c_master_driver.h
+fsl_spi_master_driver.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_spi_master_driver.h
+fsl_rtc_driver.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_rtc_driver.h
+fsl_clock_manager.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_clock_manager.h
+fsl_power_manager.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_power_manager.h
+fsl_mcglite_hal.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_mcglite_hal.h
+fsl_port_hal.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/fsl_port_hal.h
+gpio_pins.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/gpio_pins.h
+SEGGER_RTT.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT.h
+warp.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/warp.h
+
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.h
+
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c
 stdlib.h
 -
@@ -973,6 +1005,8 @@ SEGGER_RTT.h
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT.h
 warp.h
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/warp.h
+detect.h
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.h
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.h
 

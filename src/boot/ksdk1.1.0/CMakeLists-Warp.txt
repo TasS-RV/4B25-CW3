@@ -97,7 +97,7 @@ ADD_EXECUTABLE(Warp
 
 
     "${ProjDirPath}/../../src/devRV8803C7.c"
- #   "${ProjDirPath}/../../src/Detector.c"
+   "${ProjDirPath}/../../src/detect.c"
 #  "${ProjDirPath}/../../src/dev_INA219.c"
 
     "${ProjDirPath}/../../src/SEGGER_RTT.c"

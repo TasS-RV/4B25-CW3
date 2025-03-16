@@ -1,5 +1,5 @@
-CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj: \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c \
+CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj: \
+ /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/config.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/armgcc/Warp/../../../../platform/utilities/inc/fsl_misc_utilities.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/armgcc/Warp/../../../../platform/CMSIS/Include/device/fsl_device_registers.h \
@@ -39,8 +39,7 @@ CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/s
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/gpio_pins.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT.h \
  /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT_Conf.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/warp.h \
- /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.h
+ /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/warp.h
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/config.h:
 
@@ -121,5 +120,3 @@ CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/s
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/SEGGER_RTT_Conf.h:
 
 /home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/warp.h:
-
-/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.h:

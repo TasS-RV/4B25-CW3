@@ -14,7 +14,7 @@
 	cp ../../src/boot/ksdk1.1.0/warp.h				work/demos/Warp/src/
 	cp ../../src/boot/ksdk1.1.0/devMMA8451Q.*			work/demos/Warp/src/
 	#cp ../../src/boot/ksdk1.1.0/dev_INA219.*			work/demos/Warp/src/
-	#cp ../../src/boot/ksdk1.1.0/Detector.*				work/boards/Warp/src/
+	cp ../../src/boot/ksdk1.1.0/detect.*				work/boards/Warp/src/
 
 	cp ../../src/boot/ksdk1.1.0/CMakeLists.txt			work/demos/Warp/armgcc/Warp/
 	cp ../../src/boot/ksdk1.1.0/startup_MKL03Z4.S			work/platform/startup/MKL03Z4/gcc/startup_MKL03Z4.S

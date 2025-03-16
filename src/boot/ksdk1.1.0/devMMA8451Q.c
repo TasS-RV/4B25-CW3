@@ -55,7 +55,7 @@
 #include "gpio_pins.h"
 #include "SEGGER_RTT.h"
 #include "warp.h"
-
+#include "detect.h"
 
 extern volatile WarpI2CDeviceState	deviceMMA8451QState;
 extern volatile uint32_t			gWarpI2cBaudRateKbps;
@@ -70,21 +70,12 @@ initMMA8451Q(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 	deviceMMA8451QState.i2cAddress					= i2cAddress;
 	deviceMMA8451QState.operatingVoltageMillivolts	= operatingVoltageMillivolts;
 	
-	WarpStatus configErrorState = 1;
-	//configErrorState = 
 	
-	// configureSensorMMA8451Q(
-	// 	0x00, /* [F_SETUP] Payload: Disable FIFO (use AccelerationBuffer[39] instead). */
-	// 	0x05, /* [CTRL_REG1] Normal read 14-bit (F_READ = 0), 800Hz output data rate, LNOISE mode on (change to 0x01 to turn LNOISE mode off), active mode (changed to standby when writing to CTRL_REG1). */
-	// 	0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
-	// );
-	warpPrint("MMA8451Q Config Error State: %d\n", configErrorState);
-
 	// Initialise all Buffers to fill them with 0s - otherwise unfilled buffers will have garbage that has no physical meaning:  AccelerationBuffer and LPFBuffer to 0.
-	// for(int i = 0; i < BUFFER_SIZE; i++) {
-	// 	AccelerationBuffer[i] = 0;
-	// 	LPFBuffer[i] = 0;
-	// }
+	for(int i = 0; i < BUFF_SIZE; i++) {
+	 	AccelerationBuffer[i] = 0;
+	 	LPFBuffer[i] = 0;
+	}
 
 	warpPrint("Finished initialising MMA8451Q accelerometer.\n");
 	return;
@@ -157,7 +148,7 @@ configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_
 	);
 
 	i2cWriteStatus2 = writeSensorRegisterMMA8451Q(kWarpSensorConfigurationRegisterMMA8451QCTRL_REG1 /* register address CTRL_REG1 */,
-												  payloadCTRL_REG1 /* payload */
+		(payloadCTRL_REG1 & 0xF) /* payload - active mode */
 	);
 
 	i2cWriteStatus3 = writeSensorRegisterMMA8451Q(kWarpSensorConfigurationRegisterMMA8451QXYZ_DATA_CFG /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */,
@@ -166,6 +157,8 @@ configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_
 
 	return (i2cWriteStatus1 | i2cWriteStatus2 | i2cWriteStatus3);
 }
+
+
 
 WarpStatus
 readSensorRegisterMMA8451Q(uint8_t deviceRegister, int numberOfBytes)
