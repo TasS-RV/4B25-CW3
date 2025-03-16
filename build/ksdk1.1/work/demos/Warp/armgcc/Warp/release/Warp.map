@@ -990,7 +990,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crti.o
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtbegin.o
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/../../../arm-none-eabi/lib/thumb/v6-m/nofp/crt0.o
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/../../../arm-none-eabi/lib/thumb/v6-m/nofp/libm.a
-                0x0000000000000200                __stack_size__ = 0x200
+                0x0000000000000100                __stack_size__ = 0x100
                 0x0000000000000000                __heap_size__ = 0x0
 LOAD CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/platform/utilities/src/fsl_misc_utilities.c.obj
 LOAD CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/platform/startup/MKL03Z4/gcc/startup_MKL03Z4.S.obj
@@ -1027,7 +1027,7 @@ END GROUP
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtend.o
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtn.o
                 0x0000000000000000                HEAP_SIZE = DEFINED (__heap_size__)?__heap_size__:0x200
-                0x0000000000000200                STACK_SIZE = DEFINED (__stack_size__)?__stack_size__:0x50
+                0x0000000000000100                STACK_SIZE = DEFINED (__stack_size__)?__stack_size__:0x50
                 0x0000000000000000                M_VECTOR_RAM_SIZE = DEFINED (__ram_vector_table__)?0x100:0x0
 
 .interrupts     0x0000000000000000       0xc0
@@ -2002,12 +2002,12 @@ LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtn.o
                 0x0000000020000420                . = (. + HEAP_SIZE)
                 0x0000000020000420                __HeapLimit = .
 
-.stack          0x0000000020000420      0x200 load address 0x0000000000006e28
+.stack          0x0000000020000420      0x100 load address 0x0000000000006e28
                 0x0000000020000420                . = ALIGN (0x8)
-                0x0000000020000620                . = (. + STACK_SIZE)
- *fill*         0x0000000020000420      0x200 
+                0x0000000020000520                . = (. + STACK_SIZE)
+ *fill*         0x0000000020000420      0x100 
                 0x0000000020000600                __StackTop = (ORIGIN (m_data) + LENGTH (m_data))
-                0x0000000020000400                __StackLimit = (__StackTop - STACK_SIZE)
+                0x0000000020000500                __StackLimit = (__StackTop - STACK_SIZE)
                 0x0000000020000600                PROVIDE (__stack = __StackTop)
 
 .ARM.attributes
@@ -2165,7 +2165,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtn.o
                 0x0000000000000c72       0x2c /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtend.o
  .ARM.attributes
                 0x0000000000000c9e       0x1e /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtn.o
-                0x0000000000000000                ASSERT ((__StackLimit >= __HeapLimit), region m_data overflowed with stack and heap)
+                0x0000000000000001                ASSERT ((__StackLimit >= __HeapLimit), region m_data overflowed with stack and heap)
 OUTPUT(release/Warp.elf elf32-littlearm)
 LOAD linker stubs
 
