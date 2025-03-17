@@ -86,7 +86,16 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
     time_steps_buffer[buffer_index] = 10;    
     // Update buffer index (circular - reset using modulo) - print debug to check if being reset or updated
     warpPrint("Buffer_index: %d \n", buffer_index);
-    buffer_index = (buffer_index + 1) % BUFF_SIZE;
+    
+	uint32_t x_n = acc_mag;
+
+	if ((int)buffer_index == BUFF_SIZE - 1)
+	{
+		compute_Goertzel_power();
+	}
+	
+	buffer_index = (buffer_index + 1) % BUFF_SIZE;
+
 	return; 
 }
 

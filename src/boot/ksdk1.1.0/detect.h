@@ -22,7 +22,11 @@ volatile int buffer_index = 0;
 static uint32_t accel_magnitude_buffer[BUFF_SIZE]; //<-- SHould be BUFF_size
 static uint16_t time_steps_buffer[BUFF_SIZE];
 
+// For computing thhe added time delay resulting in a reduction in effective polling frequency
 uint16_t timeBefore = 0;
 uint16_t timeAft = 0;
 
-//int delay_ms = 500; --> Removing as this will take more symbol space
+#define NUM_FREQS 5
+// Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
+uint32_t y_values[NUM_FREQS][2] = {0};
+
