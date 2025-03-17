@@ -31,5 +31,5 @@ void update_goertzel(uint32_t x_n);
 
 #define NUM_FREQS 5
 // Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
-uint32_t y_values[NUM_FREQS][2] = {0};
+int32_t y_values[NUM_FREQS][2] = {0};
 

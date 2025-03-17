@@ -57,12 +57,13 @@ void update_goertzel(uint32_t x_n) {
         int32_t coeff = coeffs[i];
 
         // Compute y_N - 1000*cos() * Y_n-1/ 1000 scaled for integer math
-        uint32_t y_N = ((2*coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
+        int32_t y_N = ((2*coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
 
         // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
     }
+    return;
 }
 
 
