@@ -112,7 +112,7 @@ uint32_t byte_to_state_conversion(){
     XCombined = (XCombined ^ (1 << 13)) - (1 << 13);
     //warpPrint("x_MSB: %d, x_MSB: %d, XCombined - Decimal: %d, Hexadecimal: %x.\n", x_MSB, x_LSB, XCombined, XCombined);
     XAcceleration = convertAcceleration(XCombined);
-    warpPrint("XAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", XAcceleration, XAcceleration);
+    //warpPrint("XAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", XAcceleration, XAcceleration);
 
     // XVariance *= (totalSamples - 1); // Undo the division by n when the variance was calculated last.
     // XVariance += (XAcceleration*XAcceleration);
@@ -125,7 +125,7 @@ uint32_t byte_to_state_conversion(){
     YCombined = (YCombined ^ (1 << 13)) - (1 << 13);
     //warpPrint("y_MSB: %d, y_MSB: %d, YCombined - Decimal: %d, Hexadecimal: %x.\n", y_MSB, y_LSB, YCombined, YCombined);
     YAcceleration = convertAcceleration(YCombined);
-    warpPrint("YAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", YAcceleration, YAcceleration);
+    //warpPrint("YAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", YAcceleration, YAcceleration);
 
     // YVariance *= (totalSamples - 1); // Undo the division by n when the variance was calculated last.
     // YVariance += (YAcceleration*YAcceleration);
@@ -138,13 +138,13 @@ uint32_t byte_to_state_conversion(){
     ZCombined = (ZCombined ^ (1 << 13)) - (1 << 13);
     //warpPrint("z_MSB: %d, z_MSB: %d, ZCombined - Decimal: %d, Hexadecimal: %x.\n", z_MSB, z_LSB, ZCombined, ZCombined);
     ZAcceleration = convertAcceleration(ZCombined);
-    warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);
+    //warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);
 
     
     uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
     // Testing with known values
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
-    warpPrint("Magnitude of aceleration: %d \n", acc_magntiude);
+    //warpPrint("Magnitude of aceleration: %d \n", acc_magntiude);
     
     timeAft = OSA_TimeGetMsec();
 
