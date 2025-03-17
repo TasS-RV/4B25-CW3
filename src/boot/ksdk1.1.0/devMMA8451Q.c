@@ -89,10 +89,10 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
     
 	update_goertzel((uint32_t)acc_mag);
 
-	// if ((int)buffer_index == BUFF_SIZE - 1)
-	// {
-	// 	populate_rolling_Goertzel_array();
-	// }
+	if ((int)buffer_index == BUFF_SIZE - 1)
+	{
+		compute_goertzel_power();
+	}
 	
 	// Update buffer_index number after Goortzel recursion
 	buffer_index = (buffer_index + 1) % BUFF_SIZE;

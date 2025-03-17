@@ -2111,7 +2111,6 @@ main(void)
 	for (int i = 0; i < 600; i++){
 		//timeBefore = OSA_TimeGetMsec();
 		byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
-
 		// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
 		OSA_TimeDelay(100);
 	}

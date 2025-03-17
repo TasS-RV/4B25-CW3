@@ -46,6 +46,26 @@ int32_t convertAcceleration(int16_t number){ // Convert the acceleration from mu
   }
   
 
+uint32_t compute_goertzel_power()
+{
+    for (int i = 0; i < NUM_FREQS; i++) {
+        // Get precomputed coefficient (scaled ×1000)
+        int32_t coeff = coeffs[i];
+
+        // Compute integer power at target frequency
+        uint32_t power = (y_values[i][1] * y_values[i][1]) 
+                       + (y_values[i][0] * y_values[i][0])
+                       - ((coeff * y_values[i][1] * y_values[i][0]) / 1000);
+
+        warpPrint("\nPower at %d Hz is: %d\n", target_freqs[i], power);
+    }
+    return;
+}
+
+
+
+
+
 /*
 Goertzel Update Function - pass in x_n = acc_mag in update_buffers() function in devMMA8451Q. Stores y_n-2 and y_n-2 to computer y_n 
 Then performs bitshift to update y_n-2 with y_n-1 and y_n-1 gets replaced with y_n.
