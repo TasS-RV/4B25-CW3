@@ -2108,11 +2108,11 @@ main(void)
 	OSA_TimeDelay(5000);
 	warpPrint("\nFinished initialising sensor.\n");
 	
-	for (int i = 0; i < 600; i++){
+	for (int i = 0; i < 500; i++){ 
 		//timeBefore = OSA_TimeGetMsec();
 		byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
 		// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
-		OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz
+		OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz - obtian data, 1/40 * 500 = 12.5 seconds, a little bit over 10s for the measurement window
 	}
 	
 
