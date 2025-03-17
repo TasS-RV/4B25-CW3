@@ -2108,11 +2108,39 @@ main(void)
 	OSA_TimeDelay(5000);
 	warpPrint("\nFinished initialising sensor.\n");
 	
-	for (int i = 0; i < 600; i++){
-		//timeBefore = OSA_TimeGetMsec();
-		byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
-		// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
-		OSA_TimeDelay(100); //--> Will print power computation every 1s as update freq is 40Hz
+	int32_t time_start = 0;
+	int32_t time_now = 0;
+
+	time_start = OSA_TimeGetMsec();
+
+	// for (int i = 0; i < 1000; i++){
+		
+	// 	if (time_now - time_start > 500)
+	// 	{
+	// 		byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
+	// 		time_start = OSA_TimeGetMsec();		
+	// 	}
+		
+	// 	time_now = OSA_TimeGetMsec(); // Update time
+	
+	// 	// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
+	// //	OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz
+		
+	// }
+	int8_t sample_rate = 10; // Currently just 10 Hz sample rate
+	int16_t iter_count = 0; 
+
+	while (1){
+	if (time_now - time_start > (uint32_t)(1000/sample_rate))
+		{
+			byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
+			time_start = OSA_TimeGetMsec();	
+			iter_count = iter_count + 1;	
+		}
+		time_now = OSA_TimeGetMsec();
+		
+		if (iter_count > sample_rate*10)
+		{  break; }  
 	}
 	
 

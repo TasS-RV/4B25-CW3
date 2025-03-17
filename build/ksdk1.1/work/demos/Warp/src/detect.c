@@ -149,7 +149,7 @@ uint32_t byte_to_state_conversion(){
     timeAft = OSA_TimeGetMsec();
 
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
-    //update_buffers(acc_magntiude, (uint16_t)((timeBefore - timeAft) + 100)); 
+    update_buffers(acc_magntiude, (uint16_t)((timeBefore - timeAft) + 100)); 
     
     return acc_magntiude;
 }
