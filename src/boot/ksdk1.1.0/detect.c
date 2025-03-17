@@ -47,19 +47,21 @@ int32_t convertAcceleration(int16_t number){ // Convert the acceleration from mu
   
 
 uint32_t compute_goertzel_power()
-{
+{   
+    uint32_t power[5] = {0}; //Power is also size of frequency bins, and forms a rolling buffer that is over-written
+
     for (int i = 0; i < NUM_FREQS; i++) {
         // Get precomputed coefficient (scaled ×1000)
         int32_t coeff = coeffs[i];
 
-        // Compute integer power at target frequency
-        uint32_t power = (y_values[i][1] * y_values[i][1]) 
+        // Correct power computation based on the last 2 Y_N and Y_N-1 values - supplemental input val;ue of X_N = 0 assumed.
+        power[i] =  (y_values[i][1] * y_values[i][1]) 
                        + (y_values[i][0] * y_values[i][0])
                        - ((coeff * y_values[i][1] * y_values[i][0]) / 1000);
 
-        warpPrint("\nPower at %d Hz is: %d\n", target_freqs[i], power);
+        warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);
     }
-    return;
+    return power;
 }
 
 

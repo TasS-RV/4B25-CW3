@@ -89,6 +89,7 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
     
 	update_goertzel((uint32_t)acc_mag);
 
+	// i.e. for BUFF_SIZE 40, buffer_index will reach 39 - this is the 'last' value before resetting due to 0 indexing, which is where we call the function to computer Power from Y_39 and Y_38.
 	if ((int)buffer_index == BUFF_SIZE - 1)
 	{
 		compute_goertzel_power();
@@ -98,6 +99,7 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
 	buffer_index = (buffer_index + 1) % BUFF_SIZE;
 	return; 
 }
+
 
 
 WarpStatus
