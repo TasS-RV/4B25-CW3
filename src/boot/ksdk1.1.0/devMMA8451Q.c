@@ -168,26 +168,23 @@ configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_
 												  payloadF_SETUP /* payload: Disable FIFO --> to acctively read only present data, rather than storing hhistorical data.*/
 	);
 	
+	// i2cWriteStatus2_1 = writeSensorRegisterMMA8451Q(MMA8451QCTRL_REG1_Register /* register address CTRL_REG1 */,
+	// 	(payloadCTRL_REG1 & 0xE) /* payload - standby mode for setting filters and range */
+	// );
+
 	// Decativating HPF - uncomment this out and comment out i2cWriteStatus3 line below 
 	
-	// i2cWriteStatus5 = writeSensorRegisterMMA8451Q(0x2B, 0x40); // Reset bit in CTRL_REG2
-	// OSA_TimeDelay(500); // Small relay to allow reste to occur
-	// i2cWriteStatus5 = writeSensorRegisterMMA8451Q(0x2B, 0x00); // Clear reset bit
-	//i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
+	i2cWriteStatus5 = writeSensorRegisterMMA8451Q(0x2B, 0x40); // Reset bit in CTRL_REG2
+	OSA_TimeDelay(500); // Small relay to allow reset to occur
+	i2cWriteStatus5 = writeSensorRegisterMMA8451Q(0x2B, 0x00); // Clear reset bit
+	
+	// i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
 	// 	0x00 /* payload - SEL0 and SEL1 both set to 1*/
 	// );
 
-	i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
-		payloadHP_FILTER_CUTOFF /* payload */
-	);
-
-	i2cWriteStatus2_1 = writeSensorRegisterMMA8451Q(MMA8451QCTRL_REG1_Register /* register address CTRL_REG1 */,
-		(payloadCTRL_REG1 & 0xE) /* payload - standby mode for setting filters and range */
-	);
-
-	i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
-		payloadHP_FILTER_CUTOFF /* payload */
-	);
+	// i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
+	// 	payloadHP_FILTER_CUTOFF /* payload */
+	// );
 
 	i2cWriteStatus4 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_DATA_CFG_Register /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */,
 		payloadXYZ_DATA_CFG /* payload */
