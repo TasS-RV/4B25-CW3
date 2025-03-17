@@ -159,13 +159,26 @@ writeSensorRegisterMMA8451Q(uint8_t deviceRegister, uint8_t payload)
 WarpStatus
 configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_t payloadHP_FILTER_CUTOFF, uint8_t payloadXYZ_DATA_CFG)
 {
-	WarpStatus	i2cWriteStatus1, i2cWriteStatus2_1, i2cWriteStatus2_2, i2cWriteStatus3, i2cWriteStatus4;
+	WarpStatus	i2cWriteStatus1, i2cWriteStatus2_1, i2cWriteStatus2_2, i2cWriteStatus3, i2cWriteStatus4, i2cWriteStatus5;
 
 
 	warpScaleSupplyVoltage(deviceMMA8451QState.operatingVoltageMillivolts);
 
 	i2cWriteStatus1 = writeSensorRegisterMMA8451Q(MMA8451QF_SETUP_Register /* register address F_SETUP */,
-												  payloadF_SETUP /* payload: Disable FIFO */
+												  payloadF_SETUP /* payload: Disable FIFO --> to acctively read only present data, rather than storing hhistorical data.*/
+	);
+	
+	// Decativating HPF - uncomment this out and comment out i2cWriteStatus3 line below 
+	
+	// i2cWriteStatus5 = writeSensorRegisterMMA8451Q(0x2B, 0x40); // Reset bit in CTRL_REG2
+	// OSA_TimeDelay(500); // Small relay to allow reste to occur
+	// i2cWriteStatus5 = writeSensorRegisterMMA8451Q(0x2B, 0x00); // Clear reset bit
+	//i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
+	// 	0x00 /* payload - SEL0 and SEL1 both set to 1*/
+	// );
+
+	i2cWriteStatus3 = writeSensorRegisterMMA8451Q(MMA8451QXYZ_HP_FILTER_CUTOFF_Register /* register address HP_FILTER_CUTOFF  - will pass in appropriate payload to set the cutoff frequency to remove Gravity offset*/,
+		payloadHP_FILTER_CUTOFF /* payload */
 	);
 
 	i2cWriteStatus2_1 = writeSensorRegisterMMA8451Q(MMA8451QCTRL_REG1_Register /* register address CTRL_REG1 */,
@@ -184,7 +197,7 @@ configureSensorMMA8451Q(uint8_t payloadF_SETUP, uint8_t payloadCTRL_REG1, uint8_
 		(payloadCTRL_REG1 & 0xF) /* payload - active mode */
 	);
 
-	return (i2cWriteStatus1 | i2cWriteStatus2_1 | i2cWriteStatus3 | i2cWriteStatus4 | i2cWriteStatus2_2 );
+	return (i2cWriteStatus1 | i2cWriteStatus2_1 | i2cWriteStatus3 | i2cWriteStatus4 | i2cWriteStatus2_2 | i2cWriteStatus5);
 }
 
 
