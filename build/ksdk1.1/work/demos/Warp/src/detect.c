@@ -17,7 +17,14 @@
 #include "detect.h"
 #include "devMMA8451Q.h"
 
-
+// Precomputed coefficients (scaled by 1000 as we cannot handle floats) - currently 3-7Hz inclusive 
+const int32_t coeffs[NUM_FREQS] = {
+    1960,  // Approx cos(2π * 3 / 40) * 1000
+    1855,  // Approx cos(2π * 4 / 40) * 1000
+    1736,  // Approx cos(2π * 5 / 40) * 1000
+    1609,  // Approx cos(2π * 6 / 40) * 1000
+    1470   // Approx cos(2π * 7 / 40) * 1000
+};
 
 
 int32_t get_sqrt(uint32_t magntiude){
@@ -38,6 +45,25 @@ int32_t convertAcceleration(int16_t number){ // Convert the acceleration from mu
     return result;
   }
   
+
+/*
+Goertzel Update Function - pass in x_n = acc_mag in update_buffers() function in devMMA8451Q. Stores y_n-2 and y_n-2 to computer y_n 
+Then performs bitshift to update y_n-2 with y_n-1 and y_n-1 gets replaced with y_n.
+*/
+void update_goertzel(uint32_t x_n) {
+    // Iteraate over each frequecy to computer the Y_n for that frequency - maintaining fized asample rate
+    for (int i = 0; i < NUM_FREQS; i++) {
+        // Get precomputed coefficient (scaled ×1000)
+        int32_t coeff = coeffs[i];
+
+        // Compute y_N - 1000*cos() * Y_n-1/ 1000 scaled for integer math
+        uint32_t y_N = ((2*coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
+
+        // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
+        y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
+        y_values[i][1] = y_N;             // y[N-1] = new y[N]
+    }
+}
 
 
 

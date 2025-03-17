@@ -51,12 +51,13 @@ Goertzel Update Function - pass in x_n = acc_mag in update_buffers() function in
 Then performs bitshift to update y_n-2 with y_n-1 and y_n-1 gets replaced with y_n.
 */
 void update_goertzel(uint32_t x_n) {
+    // Iteraate over each frequecy to computer the Y_n for that frequency - maintaining fized asample rate
     for (int i = 0; i < NUM_FREQS; i++) {
         // Get precomputed coefficient (scaled ×1000)
         int32_t coeff = coeffs[i];
 
-        // Compute y_N using fixed-point integer math
-        uint32_t y_N = ((coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
+        // Compute y_N - 1000*cos() * Y_n-1/ 1000 scaled for integer math
+        uint32_t y_N = ((2*coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
 
         // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]

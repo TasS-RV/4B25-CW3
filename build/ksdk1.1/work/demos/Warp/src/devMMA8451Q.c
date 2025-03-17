@@ -87,15 +87,15 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
     // Update buffer index (circular - reset using modulo) - print debug to check if being reset or updated
     warpPrint("Buffer_index: %d \n", buffer_index);
     
-	uint32_t x_n = acc_mag;
+	update_goertzel((uint32_t)acc_mag);
 
-	if ((int)buffer_index == BUFF_SIZE - 1)
-	{
-		compute_Goertzel_power();
-	}
+	// if ((int)buffer_index == BUFF_SIZE - 1)
+	// {
+	// 	populate_rolling_Goertzel_array();
+	// }
 	
+	// Update buffer_index number after Goortzel recursion
 	buffer_index = (buffer_index + 1) % BUFF_SIZE;
-
 	return; 
 }
 
