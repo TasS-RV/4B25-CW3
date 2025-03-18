@@ -30,7 +30,6 @@ const int32_t coeffs[NUM_FREQS] = {
     0,     // 2 * cos(2π * 10 / 40) * 1000
     -313,  // 2 * cos(2π * 11 / 40) * 1000
     -618   // 2 * cos(2π * 12 / 40) * 1000
-
 };
 
 
@@ -73,8 +72,6 @@ uint32_t compute_goertzel_power()
 
 
 
-
-
 /*
 Goertzel Update Function - pass in x_n = acc_mag in update_buffers() function in devMMA8451Q. Stores y_n-2 and y_n-2 to computer y_n 
 Then performs bitshift to update y_n-2 with y_n-1 and y_n-1 gets replaced with y_n.
@@ -93,7 +90,6 @@ void update_goertzel(uint32_t x_n) {
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
     }
-    //warpPrint("\nPower at %d Hz is: %d\n", target_freqs[i], power[i]);
     return;
 }
 
@@ -106,7 +102,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     int32_t XAcceleration, YAcceleration, ZAcceleration; // Actual acceleration values for checking their accuracy.
     WarpStatus i2cReadStatus;
 
-    timeBefore = OSA_TimeGetMsec(); // Start timing before polling registers and calculating numerical root
+    //timeBefore = OSA_TimeGetMsec(); // Start timing before polling registers and calculating numerical root
 
     i2cReadStatus = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_X_MSB, 6 /* numberOfBytes */); // Read 6 bytes consecutively to get 14-bit acceleration measurements from all three axes.
     
@@ -155,7 +151,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
     warpPrint("Magnitude of aceleration: %d \n", acc_magntiude);
     
-    timeAft = OSA_TimeGetMsec();
+    //timeAft = OSA_TimeGetMsec(); - time Aft and timeBefore get execution time of the polling, but given in boot.c we are reading this in a non blocking way without using delays, may not be necessary.
 
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
     update_buffers(acc_magntiude, sampling_time_delta); 
