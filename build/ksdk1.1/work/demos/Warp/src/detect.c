@@ -19,11 +19,18 @@
 
 // Precomputed coefficients (scaled by 1000 as we cannot handle floats) - currently 3-7Hz inclusive 
 const int32_t coeffs[NUM_FREQS] = {
-    1960,  // Approx cos(2π * 3 / 40) * 1000
-    1855,  // Approx cos(2π * 4 / 40) * 1000
-    1736,  // Approx cos(2π * 5 / 40) * 1000
-    1609,  // Approx cos(2π * 6 / 40) * 1000
-    1470   // Approx cos(2π * 7 / 40) * 1000
+    1902,  // 2 * cos(2π * 2 / 40) * 1000
+    1782,  // 2 * cos(2π * 3 / 40) * 1000
+    1618,  // 2 * cos(2π * 4 / 40) * 1000
+    1414,  // 2 * cos(2π * 5 / 40) * 1000
+    1175,  // 2 * cos(2π * 6 / 40) * 1000
+    907,   // 2 * cos(2π * 7 / 40) * 1000
+    618,   // 2 * cos(2π * 8 / 40) * 1000
+    313,   // 2 * cos(2π * 9 / 40) * 1000
+    0,     // 2 * cos(2π * 10 / 40) * 1000
+    -313,  // 2 * cos(2π * 11 / 40) * 1000
+    -618   // 2 * cos(2π * 12 / 40) * 1000
+
 };
 
 
@@ -48,7 +55,7 @@ int32_t convertAcceleration(int16_t number){ // Convert the acceleration from mu
 
 uint32_t compute_goertzel_power()
 {   
-    uint32_t power[5] = {0}; //Power is also size of frequency bins, and forms a rolling buffer that is over-written
+    uint32_t power[NUM_FREQS] = {0}; //Power is also size of frequency bins, and forms a rolling buffer that is over-written
 
     for (int i = 0; i < NUM_FREQS; i++) {
         // Get precomputed coefficient (scaled ×1000)
@@ -59,7 +66,7 @@ uint32_t compute_goertzel_power()
                        + (y_values[i][0] * y_values[i][0])
                        - ((coeff * y_values[i][1] * y_values[i][0]) / 1000);
 
-        warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);
+        warpPrint("\nPower at %d Hz is: %d\n", target_freqs[i], power[i]);
     }
     return power;
 }
@@ -81,10 +88,13 @@ void update_goertzel(uint32_t x_n) {
         // Compute y_N - 1000*cos() * Y_n-1/ 1000 scaled for integer math
         int32_t y_N = ((2*coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
 
+        warpPrint("\ny_N values: %d \n\n", y_N);
+
         // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
     }
+    //warpPrint("\nPower at %d Hz is: %d\n", target_freqs[i], power[i]);
     return;
 }
 

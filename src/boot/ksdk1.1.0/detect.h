@@ -9,7 +9,7 @@ uint16_t XCombined;
 uint16_t YCombined;
 uint16_t ZCombined;
 
-#define BUFF_SIZE 40
+#define BUFF_SIZE 10
 uint32_t AccelerationBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
 uint32_t LPFBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
 
@@ -26,13 +26,15 @@ static uint16_t time_steps_buffer[BUFF_SIZE];
 uint16_t timeBefore = 0;
 uint16_t timeAft = 0;
 
+// Number of discrete frequency bins
+#define NUM_FREQS 11
+
 // Function for updating Gopertzel array of values - instead of storing the whole BUFF_SIZE of Y_n values, it only stores the last 2 and current one. 
 void update_goertzel(uint32_t x_n);
 uint32_t compute_goertzel_power();
 
-#define NUM_FREQS 5
 
-const uint32_t target_freqs[NUM_FREQS] = {3, 4, 5, 6, 7};  // Hz - same bit field size for math
+const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12};  // Hz - same bit field size for math
 // Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
 int32_t y_values[NUM_FREQS][2] = {0};
 
