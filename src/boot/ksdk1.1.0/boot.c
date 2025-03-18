@@ -2127,20 +2127,21 @@ main(void)
 	// //	OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz
 		
 	// }
-	int8_t sample_rate = 10; // Currently just 10 Hz sample rate
+	int8_t sample_rate = 2; // Currently just 10 Hz sample rate
 	int16_t iter_count = 0; 
 
 	while (1){
 	if (time_now - time_start > (uint32_t)(1000/sample_rate))
-		{
-			byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
+		{	
+			warpPrint("\n Last Time difference: %dms.\n Iteration number: %d. \n", (time_now - time_start), iter_count);
+			byte_to_state_conversion(); //Obtain time taken to poll - Error will exist when upodating buffers
 			time_start = OSA_TimeGetMsec();	
 			iter_count = iter_count + 1;	
 		}
 		time_now = OSA_TimeGetMsec();
 		
 		if (iter_count > sample_rate*10)
-		{  break; }  
+		{  break; }   
 	}
 	
 
