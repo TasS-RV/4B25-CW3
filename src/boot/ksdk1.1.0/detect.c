@@ -30,6 +30,7 @@ const int32_t coeffs[NUM_FREQS] = {
     0,     // 2 * cos(2π * 10 / 40) * 1000
     -313,  // 2 * cos(2π * 11 / 40) * 1000
     -618   // 2 * cos(2π * 12 / 40) * 1000
+    -907   // 2 * cos(2π * 13 / 40) * 1000
 };
 
 
@@ -37,7 +38,7 @@ int32_t get_sqrt(uint32_t magntiude){
     if (magntiude == 0) return 0;  // Avoid division by zero
 
     uint32_t x =  magntiude / 2;  // Initial guess - larger values will want a higher iterations and greater initial division
-    for (int i = 0; i < 6; i++) {  // Higher iterations will give higher accuracy
+    for (int i = 0; i < 12; i++) {  // Higher iterations will give higher accuracy
         x = (x + magntiude / x)/2;
     }
     return x;
