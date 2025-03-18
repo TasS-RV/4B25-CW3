@@ -1,5 +1,5 @@
 
-uint32_t byte_to_state_conversion();
+uint32_t byte_to_state_conversion(uint16_t sampling_time_delta);
 void update_buffers(uint32_t acc_mag, uint16_t time_diff);
 
 int32_t convertAcceleration(int16_t number);

@@ -66,7 +66,7 @@ uint32_t compute_goertzel_power()
                        + (y_values[i][0] * y_values[i][0])
                        - ((coeff * y_values[i][1] * y_values[i][0]) / 1000);
 
-        warpPrint("\nPower at %d Hz is: %d\n", target_freqs[i], power[i]);
+        warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]); //%u - modifier prints power in unsigned format - expected to be positive
     }
     return power;
 }
@@ -85,11 +85,10 @@ void update_goertzel(uint32_t x_n) {
         // Get precomputed coefficient (scaled ×1000)
         int32_t coeff = coeffs[i];
 
-        // Compute y_N - 1000*cos() * Y_n-1/ 1000 scaled for integer math
+        // Compute y_N - 2*1000*cos() * Y_n-1/ 1000 scaled for integer math
         int32_t y_N = ((2*coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
 
-        warpPrint("\ny_N values: %d \n\n", y_N);
-
+        //warpPrint("\ny_N values: %d \n\n", y_N); // For print debugging - if we ever get zero powers
         // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
@@ -101,7 +100,7 @@ void update_goertzel(uint32_t x_n) {
 
 
 
-uint32_t byte_to_state_conversion(){
+uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     uint16_t x_LSB, y_LSB, z_LSB; // Least significant byte of each acceleration measurement.
     uint16_t x_MSB, y_MSB, z_MSB; // Most significant byte of each acceleration measurement.
     int32_t XAcceleration, YAcceleration, ZAcceleration; // Actual acceleration values for checking their accuracy.
@@ -159,7 +158,7 @@ uint32_t byte_to_state_conversion(){
     timeAft = OSA_TimeGetMsec();
 
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
-    //update_buffers(acc_magntiude, (uint16_t)(((time_now - time_start))); 
+    update_buffers(acc_magntiude, sampling_time_delta); 
 			
     return acc_magntiude;
 }

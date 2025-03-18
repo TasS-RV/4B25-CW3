@@ -2137,9 +2137,9 @@ main(void)
 	if (time_now - time_start > (uint32_t)(1000/sample_rate))
 		{	
 			warpPrint("\nLast Time difference: %dms.\nIteration number: %d. \n", (time_now - time_start), iter_count);
-			byte_to_state_conversion(); // Perform all conversions on raw acceleration readings in here - variances also computed within the function
+			byte_to_state_conversion((uint16_t)(time_now - time_start)); // Perform all conversions on raw acceleration readings in here - variances also computed within the function
 			// Update buffers and call Goertzel function - before updating time arrays and iteration number
-			update_buffers(acc_magntiude, (uint16_t)(time_now - time_start)); 
+			//update_buffers(acc_magntiude, (uint16_t)(time_now - time_start)); 
 				
 			time_start = OSA_TimeGetMsec();			
 			iter_count = iter_count + 1;	
