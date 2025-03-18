@@ -2130,13 +2130,14 @@ main(void)
 	// //	OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz
 		
 	// }
-	int8_t sample_rate = 40; // Currently just 10 Hz sample rate
+	int8_t sample_rate = 5; // Currently just 10 Hz sample rate
 	int16_t iter_count = 0; 
 
 	while (1){
 	if (time_now - time_start > (uint32_t)(1000/sample_rate))
 		{	
-			warpPrint("\nLast Time difference: %dms.\nIteration number: %d. \n", (time_now - time_start), iter_count);
+			if (MMA8451Q_RAW_DATA_COLLECT == 1){warpPrint("\nLast Time difference: %dms.\nIteration number: %d. \n", (time_now - time_start), iter_count);}
+			
 			byte_to_state_conversion((uint16_t)(time_now - time_start)); // Perform all conversions on raw acceleration readings in here - variances also computed within the function
 			
 			time_start = OSA_TimeGetMsec();			

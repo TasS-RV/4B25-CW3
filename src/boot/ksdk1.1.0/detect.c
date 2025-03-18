@@ -65,9 +65,9 @@ uint32_t compute_goertzel_power()
                        + (y_values[i][0] * y_values[i][0])
                        - ((coeff * y_values[i][1] * y_values[i][0]) / 1000);
 
-        warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]); //%u - modifier prints power in unsigned format - expected to be positive
+        if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);} //%u - modifier prints power in unsigned format - expected to be positive
     }
-    warpPrint("\n--> Next time window.\n");
+    if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\n--> Next time window.\n");}
     return power;
 }
 
@@ -118,7 +118,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     XCombined = (XCombined ^ (1 << 13)) - (1 << 13);
     //warpPrint("x_MSB: %d, x_MSB: %d, XCombined - Decimal: %d, Hexadecimal: %x.\n", x_MSB, x_LSB, XCombined, XCombined);
     XAcceleration = convertAcceleration(XCombined);
-    if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("XAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", XAcceleration, XAcceleration);}
+    if (MMA8451Q_RAW_DATA_COLLECT == 1){warpPrint("XAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", XAcceleration, XAcceleration);}
 
     // XVariance *= (totalSamples - 1); // Undo the division by n when the variance was calculated last.
     // XVariance += (XAcceleration*XAcceleration);
@@ -132,7 +132,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     //warpPrint("y_MSB: %d, y_MSB: %d, YCombined - Decimal: %d, Hexadecimal: %x.\n", y_MSB, y_LSB, YCombined, YCombined);
     YAcceleration = convertAcceleration(YCombined);
     
-    if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("YAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", YAcceleration, YAcceleration);}
+    if (MMA8451Q_RAW_DATA_COLLECT == 1){warpPrint("YAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", YAcceleration, YAcceleration);}
     
     // YVariance *= (totalSamples - 1); // Undo the division by n when the variance was calculated last.
     // YVariance += (YAcceleration*YAcceleration);
@@ -145,13 +145,13 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     ZCombined = (ZCombined ^ (1 << 13)) - (1 << 13);
     //warpPrint("z_MSB: %d, z_MSB: %d, ZCombined - Decimal: %d, Hexadecimal: %x.\n", z_MSB, z_LSB, ZCombined, ZCombined);
     ZAcceleration = convertAcceleration(ZCombined);
-    if (MMA8451Q_RAW_DATA_COLLECT == 0){ warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);}
+    if (MMA8451Q_RAW_DATA_COLLECT == 1){ warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);}
 
     
     uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
     // Testing with known values
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
-    if (MMA8451Q_RAW_DATA_COLLECT == 0){ warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);}
+    if (MMA8451Q_RAW_DATA_COLLECT == 1){ warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);}
     
     //timeAft = OSA_TimeGetMsec(); - time Aft and timeBefore get execution time of the polling, but given in boot.c we are reading this in a non blocking way without using delays, may not be necessary.
 
