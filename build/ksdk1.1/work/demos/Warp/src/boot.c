@@ -2130,7 +2130,7 @@ main(void)
 	// //	OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz
 		
 	// }
-	int8_t sample_rate = 2; // Currently just 10 Hz sample rate
+	int8_t sample_rate = 40; // Currently just 10 Hz sample rate
 	int16_t iter_count = 0; 
 
 	while (1){
@@ -2138,9 +2138,7 @@ main(void)
 		{	
 			warpPrint("\nLast Time difference: %dms.\nIteration number: %d. \n", (time_now - time_start), iter_count);
 			byte_to_state_conversion((uint16_t)(time_now - time_start)); // Perform all conversions on raw acceleration readings in here - variances also computed within the function
-			// Update buffers and call Goertzel function - before updating time arrays and iteration number
-			//update_buffers(acc_magntiude, (uint16_t)(time_now - time_start)); 
-				
+			
 			time_start = OSA_TimeGetMsec();			
 			iter_count = iter_count + 1;	
 		}

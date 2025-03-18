@@ -30,7 +30,6 @@ const int32_t coeffs[NUM_FREQS] = {
     0,     // 2 * cos(2π * 10 / 40) * 1000
     -313,  // 2 * cos(2π * 11 / 40) * 1000
     -618   // 2 * cos(2π * 12 / 40) * 1000
-
 };
 
 
@@ -68,10 +67,9 @@ uint32_t compute_goertzel_power()
 
         warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]); //%u - modifier prints power in unsigned format - expected to be positive
     }
+    warpPrint("\n--> Next time window.\n");
     return power;
 }
-
-
 
 
 
@@ -93,7 +91,6 @@ void update_goertzel(uint32_t x_n) {
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
     }
-    //warpPrint("\nPower at %d Hz is: %d\n", target_freqs[i], power[i]);
     return;
 }
 
@@ -106,7 +103,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     int32_t XAcceleration, YAcceleration, ZAcceleration; // Actual acceleration values for checking their accuracy.
     WarpStatus i2cReadStatus;
 
-    timeBefore = OSA_TimeGetMsec(); // Start timing before polling registers and calculating numerical root
+    //timeBefore = OSA_TimeGetMsec(); // Start timing before polling registers and calculating numerical root
 
     i2cReadStatus = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_X_MSB, 6 /* numberOfBytes */); // Read 6 bytes consecutively to get 14-bit acceleration measurements from all three axes.
     
@@ -121,7 +118,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     XCombined = (XCombined ^ (1 << 13)) - (1 << 13);
     //warpPrint("x_MSB: %d, x_MSB: %d, XCombined - Decimal: %d, Hexadecimal: %x.\n", x_MSB, x_LSB, XCombined, XCombined);
     XAcceleration = convertAcceleration(XCombined);
-    warpPrint("XAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", XAcceleration, XAcceleration);
+    if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("XAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", XAcceleration, XAcceleration);}
 
     // XVariance *= (totalSamples - 1); // Undo the division by n when the variance was calculated last.
     // XVariance += (XAcceleration*XAcceleration);
@@ -134,8 +131,9 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     YCombined = (YCombined ^ (1 << 13)) - (1 << 13);
     //warpPrint("y_MSB: %d, y_MSB: %d, YCombined - Decimal: %d, Hexadecimal: %x.\n", y_MSB, y_LSB, YCombined, YCombined);
     YAcceleration = convertAcceleration(YCombined);
-    warpPrint("YAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", YAcceleration, YAcceleration);
-
+    
+    if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("YAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n", YAcceleration, YAcceleration);}
+    
     // YVariance *= (totalSamples - 1); // Undo the division by n when the variance was calculated last.
     // YVariance += (YAcceleration*YAcceleration);
     // YVariance /= totalSamples; // Implement the new division by n for this sample.
@@ -147,15 +145,15 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     ZCombined = (ZCombined ^ (1 << 13)) - (1 << 13);
     //warpPrint("z_MSB: %d, z_MSB: %d, ZCombined - Decimal: %d, Hexadecimal: %x.\n", z_MSB, z_LSB, ZCombined, ZCombined);
     ZAcceleration = convertAcceleration(ZCombined);
-    warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);
+    if (MMA8451Q_RAW_DATA_COLLECT == 0){ warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);}
 
     
     uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
     // Testing with known values
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
-    warpPrint("Magnitude of aceleration: %d \n", acc_magntiude);
+    if (MMA8451Q_RAW_DATA_COLLECT == 0){ warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);}
     
-    timeAft = OSA_TimeGetMsec();
+    //timeAft = OSA_TimeGetMsec(); - time Aft and timeBefore get execution time of the polling, but given in boot.c we are reading this in a non blocking way without using delays, may not be necessary.
 
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
     update_buffers(acc_magntiude, sampling_time_delta); 
