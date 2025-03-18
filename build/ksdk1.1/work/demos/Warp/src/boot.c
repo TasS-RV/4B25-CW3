@@ -2107,7 +2107,10 @@ main(void)
 	
 	OSA_TimeDelay(5000);
 	warpPrint("\nFinished initialising sensor.\n");
-	
+
+	// Establish variables for getting time differences and acceleraiton magnitudes
+	uint32_t acc_magntiude;
+
 	int32_t time_start = 0;
 	int32_t time_now = 0;
 
@@ -2133,15 +2136,18 @@ main(void)
 	while (1){
 	if (time_now - time_start > (uint32_t)(1000/sample_rate))
 		{	
-			warpPrint("\n Last Time difference: %dms.\n Iteration number: %d. \n", (time_now - time_start), iter_count);
-			byte_to_state_conversion(); //Obtain time taken to poll - Error will exist when upodating buffers
-			time_start = OSA_TimeGetMsec();	
+			warpPrint("\nLast Time difference: %dms.\nIteration number: %d. \n", (time_now - time_start), iter_count);
+			byte_to_state_conversion(); // Perform all conversions on raw acceleration readings in here - variances also computed within the function
+			// Update buffers and call Goertzel function - before updating time arrays and iteration number
+			update_buffers(acc_magntiude, (uint16_t)(time_now - time_start)); 
+				
+			time_start = OSA_TimeGetMsec();			
 			iter_count = iter_count + 1;	
 		}
 		time_now = OSA_TimeGetMsec();
 		
 		if (iter_count > sample_rate*10)
-		{  break; }   
+		{  break; } // End of 10s    
 	}
 	
 
@@ -2180,7 +2186,6 @@ main(void)
 		
 		
 		
-
 #if (WARP_BUILD_ENABLE_DEVAT45DB)
 		warpPrint("\r- 'R': read bytes from Flash.\n");
 		warpPrint("\r- 'Z': reset Flash.\n");
