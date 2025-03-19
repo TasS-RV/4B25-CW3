@@ -9,9 +9,9 @@ uint16_t XCombined;
 uint16_t YCombined;
 uint16_t ZCombined;
 
-#define BUFF_SIZE 40
-uint32_t AccelerationBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
-uint32_t LPFBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
+#define BUFF_SIZE 40 //At 40Hz, set to update power every 1s
+// uint32_t AccelerationBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
+// uint32_t LPFBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
 
 /* 
 Variables for updating a rolling buffer for storing acceleration magntiudes and times  - thes eneed to be in the header, as the script file and internal functions 

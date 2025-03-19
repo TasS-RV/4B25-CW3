@@ -70,10 +70,10 @@ initMMA8451Q(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 	deviceMMA8451QState.operatingVoltageMillivolts	= operatingVoltageMillivolts;
 
 	// Initialise all Buffers to fill them with 0s - otherwise unfilled buffers will have garbage that has no physical meaning:  AccelerationBuffer and LPFBuffer to 0.
-	for(int i = 0; i < BUFF_SIZE; i++) {
-	 	AccelerationBuffer[i] = 0;
-	 	LPFBuffer[i] = 0;
-	}
+	// for(int i = 0; i < BUFF_SIZE; i++) {
+	//  	AccelerationBuffer[i] = 0;
+	//  	LPFBuffer[i] = 0;
+	// }
 
 	warpPrint("Finished initialising MMA8451Q accelerometer.\n");
 	return;

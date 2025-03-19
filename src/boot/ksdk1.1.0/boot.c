@@ -2134,7 +2134,7 @@ main(void)
 	int16_t iter_count = 0; 
 
 	while (1){
-	if ((time_now - time_start) >= (uint32_t)(1000/sample_rate))
+	if ((time_now - time_start) >= (uint32_t)(1*1000/sample_rate)) // Run for 50 seocnds,to get a decent distribution of powers
 		{	
 			if (MMA8451Q_RAW_DATA_COLLECT == 1){warpPrint("\nLast Time difference: %dms.\nIteration number: %d. \n", (time_now - time_start), iter_count);}
 			
