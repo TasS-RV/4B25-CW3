@@ -2105,7 +2105,7 @@ main(void)
 			0x12 /* [XYZ_DATA_CFG] Output data high-pass filtered with full-scale range of +/-8g. */
 		));
 	
-	OSA_TimeDelay(5000);
+	OSA_TimeDelay(3000);
 	warpPrint("\nFinished initialising sensor.\n");
 
 	// Establish variables for getting time differences and acceleraiton magnitudes
@@ -2130,7 +2130,7 @@ main(void)
 	// //	OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz
 		
 	// }
-	int8_t sample_rate = 40; // Currently just 10 Hz sample rate
+	int8_t sample_rate = 80; // Currently just 10 Hz sample rate
 	int16_t iter_count = 0; 
 
 	while (1){
