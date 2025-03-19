@@ -185,7 +185,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     
     if (MMA8451Q_RAW_DATA_COLLECT == 1){
         warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
-        warpPrint("Mean polling delay: %d us \n", (timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) / 3);
+        warpPrint("Mean polling delay: %d us \n", ((timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) * 1000 )/ 3); //Scaling up to get values after the decimal point - into warpPrint
         }
     
 

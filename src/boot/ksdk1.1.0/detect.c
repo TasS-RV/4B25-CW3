@@ -143,8 +143,8 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     // XVariance /= totalSamples; // Implement the new division by n for this sample.
     // warpPrint("XVariance = %d.\n", XVariance);
     
-    timediff_poll[0] = OSA_TimeGetMsec() - timeBefore_poll;
-    timeBefore_poll = OSA_TimeGetMsec(); // Variance calculations will be part of the program - therefore keep them within the time measurement for polling + variance calculation delay
+    // timediff_poll[0] = OSA_TimeGetMsec() - timeBefore_poll;
+    // timeBefore_poll = OSA_TimeGetMsec(); // Variance calculations will be part of the program - therefore keep them within the time measurement for polling + variance calculation delay
     
 
     y_MSB = deviceMMA8451QState.i2cBuffer[2];
@@ -161,8 +161,8 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     // YVariance /= totalSamples; // Implement the new division by n for this sample.
     // warpPrint("YVariance = %d.\n", YVariance);
     
-    timediff_poll[1] = OSA_TimeGetMsec() - timeBefore_poll;
-    timeBefore_poll = OSA_TimeGetMsec();
+    // timediff_poll[1] = OSA_TimeGetMsec() - timeBefore_poll;
+    // timeBefore_poll = OSA_TimeGetMsec();
     
     z_MSB = deviceMMA8451QState.i2cBuffer[4];
     z_LSB = deviceMMA8451QState.i2cBuffer[5];
@@ -185,8 +185,11 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     
     if (MMA8451Q_RAW_DATA_COLLECT == 1){
         warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
-        warpPrint("Mean polling delay: %d us \n", (timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) / 3);
-        }
+        //warpPrint("Mean polling delay: %d us \n", ((timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) * 1000) / 3); //Scaling up to get values after the decimal point - into warpPrint
+    
+        warpPrint("Total polling delay: %d us \n", timediff_poll[2] * 1000); // uncomment out, delete and remove the ); / 3); //Scaling up to get values after the decimal point - into warpPrint
+       
+    }
     
 
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
