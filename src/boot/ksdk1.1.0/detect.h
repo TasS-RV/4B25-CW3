@@ -23,8 +23,8 @@ static uint32_t accel_magnitude_buffer[BUFF_SIZE]; //<-- SHould be BUFF_size
 static uint16_t time_steps_buffer[BUFF_SIZE];
 
 // For computing thhe added time delay resulting in a reduction in effective polling frequency
-uint16_t timeBefore = 0;
-uint16_t timeAft = 0;
+uint16_t timeBefore_poll = 0;
+uint16_t timeAft_poll = 0;
 
 // Number of discrete frequency bins
 #define NUM_FREQS 12

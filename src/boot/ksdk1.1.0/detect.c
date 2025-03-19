@@ -17,6 +17,9 @@
 #include "detect.h"
 #include "devMMA8451Q.h"
 
+
+uint16_t timediff_poll[3] = {0};
+
 // Precomputed coefficients (scaled by 1000 as we cannot handle floats) - currently 3-7Hz inclusive 
 const int32_t coeffs[NUM_FREQS] = {
     1902,  // 2 * cos(2π * 2 / 40) * 1000
@@ -97,6 +100,18 @@ void update_goertzel(uint32_t x_n) {
 
 
 
+uint32_t OSA_TimeGetUsec(void) {
+    uint32_t ticksPerMs = SysTick->LOAD + 1; // Reload value for 1ms
+    uint32_t currentTick = SysTick->VAL;     // Current countdown value
+    uint32_t elapsedTicks = ticksPerMs - currentTick;
+
+    // Assuming SysTick clock = core clock (e.g., 48 MHz)
+    uint32_t coreClockHz = 48000000; // Adjust based on your clock config
+    uint32_t us = (elapsedTicks * 1000) / (coreClockHz / 1000);
+    return us + (OSA_TimeGetMsec() * 1000);
+}
+
+
 
 uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     uint16_t x_LSB, y_LSB, z_LSB; // Least significant byte of each acceleration measurement.
@@ -113,6 +128,8 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
         return; // Return - exit function if the sensor cannot be read from.
     }
 
+    timeBefore_poll = OSA_TimeGetMsec(); 
+
     x_MSB = deviceMMA8451QState.i2cBuffer[0];
     x_LSB = deviceMMA8451QState.i2cBuffer[1];
     XCombined = ((x_MSB & 0xFF) << 6) | (x_LSB >> 2);
@@ -125,7 +142,11 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     // XVariance += (XAcceleration*XAcceleration);
     // XVariance /= totalSamples; // Implement the new division by n for this sample.
     // warpPrint("XVariance = %d.\n", XVariance);
-        
+    
+    timediff_poll[0] = OSA_TimeGetMsec() - timeBefore_poll;
+    timeBefore_poll = OSA_TimeGetMsec(); // Variance calculations will be part of the program - therefore keep them within the time measurement for polling + variance calculation delay
+    
+
     y_MSB = deviceMMA8451QState.i2cBuffer[2];
     y_LSB = deviceMMA8451QState.i2cBuffer[3];
     YCombined = ((y_MSB & 0xFF) << 6) | (y_LSB >> 2);
@@ -139,7 +160,10 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     // YVariance += (YAcceleration*YAcceleration);
     // YVariance /= totalSamples; // Implement the new division by n for this sample.
     // warpPrint("YVariance = %d.\n", YVariance);
-        
+    
+    timediff_poll[1] = OSA_TimeGetMsec() - timeBefore_poll;
+    timeBefore_poll = OSA_TimeGetMsec();
+    
     z_MSB = deviceMMA8451QState.i2cBuffer[4];
     z_LSB = deviceMMA8451QState.i2cBuffer[5];
     ZCombined = ((z_MSB & 0xFF) << 6) | (z_LSB >> 2);
@@ -148,13 +172,22 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     ZAcceleration = convertAcceleration(ZCombined);
     if (MMA8451Q_RAW_DATA_COLLECT == 1){ warpPrint("ZAcceleration (mms^-2) - Decimal: %d, Hexadecimal: %x.\n\n", ZAcceleration, ZAcceleration);}
 
+    // ZVariance *= (totalSamples - 1); // Undo the division by n when the variance was calculated last.
+    // ZVariance += (ZAcceleration*ZAcceleration);
+    // ZVariance /= totalSamples; // Implement the new division by n for this sample.
+    // warpPrint("ZVariance = %d.\n", ZVariance);
     
-    uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
+    timediff_poll[2] = OSA_TimeGetMsec() - timeBefore_poll;
+    
     // Testing with known values
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
-    if (MMA8451Q_RAW_DATA_COLLECT == 1){ warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);}
+    uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
     
-    //timeAft = OSA_TimeGetMsec(); - time Aft and timeBefore get execution time of the polling, but given in boot.c we are reading this in a non blocking way without using delays, may not be necessary.
+    if (MMA8451Q_RAW_DATA_COLLECT == 1){
+        warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
+        warpPrint("Mean polling delay: %d us \n", (timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) / 3);
+        }
+    
 
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
     update_buffers(acc_magntiude, sampling_time_delta); 
