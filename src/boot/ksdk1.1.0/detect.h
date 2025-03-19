@@ -29,6 +29,11 @@ uint16_t timeAft_poll = 0;
 // Number of discrete frequency bins
 #define NUM_FREQS 12
 
+
+int32_t bayes_freq_probability(int16_t number); //<-- MAy need to pass in an array
+
+
+
 // Function for updating Gopertzel array of values - instead of storing the whole BUFF_SIZE of Y_n values, it only stores the last 2 and current one. 
 void update_goertzel(uint32_t x_n);
 uint32_t compute_goertzel_power();
@@ -37,4 +42,15 @@ uint32_t compute_goertzel_power();
 const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13};  // Hz - same bit field size for math
 // Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
 int32_t y_values[NUM_FREQS][2] = {0};
+
+
+// Section associated with Bayseian probability variables - based on training data: will use standard deviation instead of variance, as to get SD from var requires rooting. Squaring to go the other way is easier.
+uint16_t mu_known[NUM_FREQS] = {0};
+uint16_t sigma_known[NUM_FREQS] = {0};
+
+
+uint32_t calculate_gaussian();
+// All frequencies in 1000s for integer math
+uint32_t N_Parkinsonian[2] = {6000, 1000};  // X ∼ N(6, 1) - example Parkinsonian distribution, at centre frequency of 6Hz with 1Hz standard deviation (assumed to be quite sharp)
+uint32_t N_non_parkinsonian[2] = {4000, 3000};  // X ∼ N(4, 3)  
 

@@ -72,9 +72,20 @@ uint32_t compute_goertzel_power()
         if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);} //%u - modifier prints power in unsigned format - expected to be positive
     }
     if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\n--> Next time window.\n");}
+    
+    //return P_obs_normalised(target_freq, power);      <-- Use this to get nromalised power when implementing tinot final proability function      
     return power;
 }
 
+
+
+uint32_t P_obs_normalised(int target_freq, uint32_t spectrum[NUM_FREQS]){
+    uint32_t full_power = 0;
+    for (int i = 0; i < NUM_FREQS; i++) {
+        full_power = full_power + spectrum[i]; 
+    }
+    return spectrum[target_freq-2]/full_power; //Frequencies range from 2-13Hz - indices range from 0-11 (12 total bins)
+}
 
 
 /*
@@ -100,18 +111,6 @@ void update_goertzel(uint32_t x_n) {
 
 
 
-uint32_t OSA_TimeGetUsec(void) {
-    uint32_t ticksPerMs = SysTick->LOAD + 1; // Reload value for 1ms
-    uint32_t currentTick = SysTick->VAL;     // Current countdown value
-    uint32_t elapsedTicks = ticksPerMs - currentTick;
-
-    // Assuming SysTick clock = core clock (e.g., 48 MHz)
-    uint32_t coreClockHz = 48000000; // Adjust based on your clock config
-    uint32_t us = (elapsedTicks * 1000) / (coreClockHz / 1000);
-    return us + (OSA_TimeGetMsec() * 1000);
-}
-
-
 
 uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     uint16_t x_LSB, y_LSB, z_LSB; // Least significant byte of each acceleration measurement.
@@ -120,7 +119,6 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     WarpStatus i2cReadStatus;
 
     //timeBefore = OSA_TimeGetMsec(); // Start timing before polling registers and calculating numerical root
-
     i2cReadStatus = readSensorRegisterMMA8451Q(kWarpSensorOutputRegisterMMA8451QOUT_X_MSB, 6 /* numberOfBytes */); // Read 6 bytes consecutively to get 14-bit acceleration measurements from all three axes.
     
     if (i2cReadStatus != kWarpStatusOK){
@@ -199,3 +197,9 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
 }
 
 
+
+
+
+uint32_t calculate_gaussian(){
+    return;
+}
