@@ -225,15 +225,14 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
     P_of_f_given_H1 = PDF_parkinsonian[max_pwr_index];
     P_of_f_given_H0 = PDF_non_parkinsonian[max_pwr_index];
     
-    warpPrint("\nP_of_f_given_H1: %u\n", P_of_f_given_H1);
-    warpPrint("\nP_of_f_given_H0: %u\n", P_of_f_given_H0);
+    // warpPrint("\nP_of_f_given_H1: %u\n", P_of_f_given_H1); //Debug print statements - to check probability magnitudes
+    // warpPrint("\nP_of_f_given_H0: %u\n", P_of_f_given_H0);
+    // warpPrint("\nNumerator: %u\n", P_H1 * P_of_f_given_H1);
 
-    warpPrint("\nNumerator: %u\n", P_H1 * P_of_f_given_H1);
-
-    uint32_t P_H1_given_f = (1000*(P_H1 * P_of_f_given_H1))/(P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0); // Baysean Probability function - scaled by 10,000 (NOT 100,000 - WHCIH IS WHAT THE PROBABILITY DENSITY FUNCTIONS ARE GIVEN IN!)
+    uint32_t P_H1_given_f = (100000*(P_H1 * P_of_f_given_H1))/(P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0); // Baysean Probability function - scaled by 10,000 (NOT 100,000 - WHCIH IS WHAT THE PROBABILITY DENSITY FUNCTIONS ARE GIVEN IN!)
 
     //warpPrint("\nP_H1_given_f: {%u}\n", P_H1_given_f);
-    warpPrint("\nFrequency bin with peak power: {%d} Hz. \n Probability of Parkinson given detection of given frequency: {%u}/1000\n", target_freqs[max_pwr_index], P_H1_given_f);
+    warpPrint("\nFrequency bin with peak power: {%d} Hz. \n P_H1_given_f: {%u}/100000\n", target_freqs[max_pwr_index], P_H1_given_f);
     
     return;
 }
