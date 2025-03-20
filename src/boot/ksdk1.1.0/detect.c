@@ -203,7 +203,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
         //warpPrint("Mean polling delay: %d us \n", ((timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) * 1000) / 3); //Scaling up to get values after the decimal point - into warpPrint
     
         warpPrint("Total polling delay: %d us \n", timediff_poll[2] * 1000); // uncomment out, delete and remove the ); / 3); //Scaling up to get values after the decimal point - into warpPrint
-        warpPrint("Instantaneous Co-Variance: %u", CoVar_XYZ);
+        warpPrint("Instantaneous Co-Variance: %llu", (uint32_t)(CoVar_XYZ/1000));
     }
     
     return acc_magntiude;

@@ -106,12 +106,13 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
 uint64_t propagate_std_dev(uint64_t x_sq, uint64_t y_sq, uint64_t z_sq,
 	uint64_t sigma_x, uint64_t sigma_y, uint64_t sigma_z) {
 
-	warpPrint("\n X square: %llu \n", (uint32_t)x_sq );
-	warpPrint("\n Y square: %llu \n", (uint32_t)y_sq );
-	warpPrint("\n Z square: %llu \n", (uint32_t)z_sq );
-	warpPrint("\n X product: %llu \n", x_sq * sigma_x * sigma_x);
-	warpPrint("\n Y product: %llu \n", y_sq * sigma_y * sigma_y);
-	warpPrint("\n Z product: %llu \n", z_sq * sigma_z * sigma_z);
+	
+	// warpPrint("\n X square: %llu \n", (uint32_t)x_sq ); //--> repeat line format for y and z axes if necessary for debugging
+	// warpPrint("\n Y square: %llu \n", (uint32_t)y_sq ); //--> repeat line format for y and z axes if necessary for debugging
+	// warpPrint("\n Z square: %llu \n", (uint32_t)z_sq ); //--> repeat line format for y and z axes if necessary for debugging
+	// warpPrint("\n X product: %llu \n", (uint32_t)(x_sq * sigma_x * sigma_x));
+	// warpPrint("\n Y product: %llu \n", (uint32_t)(y_sq * sigma_y * sigma_y));
+	// warpPrint("\n Z product: %llu \n", (uint32_t)(z_sq * sigma_z * sigma_z));
 	
 
 	uint64_t numerator = x_sq * sigma_x * sigma_x
@@ -124,12 +125,12 @@ uint64_t propagate_std_dev(uint64_t x_sq, uint64_t y_sq, uint64_t z_sq,
 	if (denominator == 0) {
 	return 0;
 	}
-
-	warpPrint("\nNumerator: %u\n", numerator);
-	warpPrint("\nDenominator: %u\n", denominator);
+	// For debugging - again cannot pritn anything above 32 bit
+	// warpPrint("\nNumerator: %llu\n", (uint32_t)numerator);
+	// warpPrint("\nDenominator: %llu\n", (uint32_t)denominator);
    
-	// Scale numerator to preserve precision - 100*100 - previous 1000x scaaling on SD and mm/s^2 raw acceleraiton values will cancel out in the division. 
-	uint64_t scaled_value = numerator*10000 / denominator;
+	// Scale numerator to preserve precision - 10*10 scaling on SD and mm/s^2 raw acceleraiton values will cancel out in the division. 
+	uint64_t scaled_value = 1000 * numerator / denominator;
 	
 	//uint32_t result = integer_sqrt((uint32_t)scaled_value);
 	return scaled_value; // Returning the variaance - square root can be done externally
