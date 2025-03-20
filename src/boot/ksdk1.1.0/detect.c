@@ -230,7 +230,7 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
     warpPrint("\nNumerator: %u\n", P_H1 * P_of_f_given_H1);
     warpPrint("\n Denominator: %u \n", (P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0));
 
-    float P_H1_given_f = (P_H1 * P_of_f_given_H1)/(P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0); // Baysean Probability function - scaled by 10,000 (NOT 100,000 - WHCIH IS WHAT THE PROBABILITY DENSITY FUNCTIONS ARE GIVEN IN!)
+    float P_H1_given_f = (100*P_H1 * 100*P_of_f_given_H1)/(P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0); // Baysean Probability function - scaled by 10,000 (NOT 100,000 - WHCIH IS WHAT THE PROBABILITY DENSITY FUNCTIONS ARE GIVEN IN!)
     uint32_t final_P = (uint32_t)(P_H1_given_f*100000); 
     //warpPrint("\nP_H1_given_f: {%u}\n", P_H1_given_f);
     warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}\n", target_freqs[max_pwr_index], final_P);
