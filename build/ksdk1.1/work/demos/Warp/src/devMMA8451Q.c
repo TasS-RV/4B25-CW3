@@ -103,18 +103,15 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
 
 
 // Running error propagation in sensor driver - as this is the one reading the values in the first place (treating the Gaussian noise as an inherent property of the sensor when stationary).
-uint64_t propagate_std_dev(int64_t x, int64_t y, int64_t z,
+uint64_t propagate_std_dev(uint64_t x_sq, uint64_t y_sq, uint64_t z_sq,
 	uint64_t sigma_x, uint64_t sigma_y, uint64_t sigma_z) {
 
-	int64_t x_sq = x * x; //Pass in as signed integer for correct magntiude conversion - then cast to unsigned as all computations will involve positive integers for the remainder of Covariance calc
-	int64_t y_sq = y * y;
-	int64_t z_sq = z * z;
-	warpPrint("\n X square: %u\n", (uint64_t)x_sq );
-	warpPrint("\n Y square: %u\n", (uint64_t)y_sq );
-	warpPrint("\n Z square: %u\n", (uint64_t)z_sq );
-	warpPrint("\n X product: %u\n", (uint64_t)x_sq * sigma_x * sigma_x);
-	warpPrint("\n Y product: %u\n", (uint64_t)y_sq * sigma_y * sigma_y);
-	warpPrint("\n Z product: %u\n", (uint64_t)z_sq * sigma_z * sigma_z);
+	warpPrint("\n X square: %llu \n", (uint32_t)x_sq );
+	warpPrint("\n Y square: %llu \n", (uint32_t)y_sq );
+	warpPrint("\n Z square: %llu \n", (uint32_t)z_sq );
+	warpPrint("\n X product: %llu \n", x_sq * sigma_x * sigma_x);
+	warpPrint("\n Y product: %llu \n", y_sq * sigma_y * sigma_y);
+	warpPrint("\n Z product: %llu \n", z_sq * sigma_z * sigma_z);
 	
 
 	uint64_t numerator = x_sq * sigma_x * sigma_x

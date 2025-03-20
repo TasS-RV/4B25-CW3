@@ -195,7 +195,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
     update_buffers(acc_magntiude, sampling_time_delta); 
-	uint64_t CoVar_XYZ = propagate_std_dev(1000*(int64_t)XAcceleration, 1000*(int64_t)YAcceleration, 1000*(int64_t)ZAcceleration,  //All SDs are x1000 so pass in values scaaled by same amount.
+	uint64_t CoVar_XYZ = propagate_std_dev((uint64_t)(XAcceleration*XAcceleration), (uint64_t)(YAcceleration*YAcceleration), (uint64_t)(ZAcceleration*ZAcceleration),  
         X_SD, Y_SD, Z_SD);
     
     if (MMA8451Q_RAW_DATA_COLLECT == 1){
