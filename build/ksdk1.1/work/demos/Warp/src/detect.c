@@ -60,6 +60,9 @@ uint32_t compute_goertzel_power()
 {   
     uint32_t power[NUM_FREQS] = {0}; //Power is also size of frequency bins, and forms a rolling buffer that is over-written
 
+    int max_pwr_index = 0; // Index for tracking the  frequency bin with peak power amplitude
+    uint16_t max_power = 0; // Need to locally store max power for max frequency bin finding function below 
+
     for (int i = 0; i < NUM_FREQS; i++) {
         // Get precomputed coefficient (scaled ×1000)
         int32_t coeff = coeffs[i];
@@ -69,10 +72,18 @@ uint32_t compute_goertzel_power()
                        + (y_values[i][0] * y_values[i][0])
                        - ((coeff * y_values[i][1] * y_values[i][0]) / 1000);
 
+        // Track index of frequency bin whcih is the max power
+        if (power[i] > max_power) {
+            max_pwr_index = i;
+        }
+
         if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);} //%u - modifier prints power in unsigned format - expected to be positive
     }
     if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\n--> Next time window.\n");}
     
+    // Call Baysean probability calculation function:
+    calculate_baysean(max_pwr_index, power); // Pass in the power spectrm - we may decide to do on the fly Gaussian or other proability modelling and computations with the instantaenous  
+
     //return P_obs_normalised(target_freq, power);      <-- Use this to get nromalised power when implementing tinot final proability function      
     return power;
 }
@@ -197,9 +208,22 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
 }
 
 
+uint32_t f_peak(int target_freq, uint32_t spectrum[NUM_FREQS]){
+    uint32_t full_power = 0;
+    for (int i = 0; i < NUM_FREQS; i++) {
+        full_power = full_power + spectrum[i]; 
+    }
+    return spectrum[target_freq-2]/full_power; //Frequencies range from 2-13Hz - indices range from 0-11 (12 total bins)
+}
 
 
 
-uint32_t calculate_gaussian(){
+uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
+    uint32_t P_of_f_given_H1; uint32_t P_of_f_given_H0;
+
+    P_of_f_given_H1 = PDF_parkinsonian[max_pwr_index];
+    P_of_f_given_H0 = PDF_non_parkinsonian[max_pwr_index];
+    
+    
     return;
 }
