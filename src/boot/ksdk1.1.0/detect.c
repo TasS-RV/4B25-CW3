@@ -233,8 +233,13 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
     // printouts for debugging values: 
     // warpPrint("\nNumerator: %u\n", P_of_f_given_H1 * P_H1);
     // warpPrint("\nDenominator: %u \n", (P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0));
-                   
-    uint64_t final_P = (1000*numerator)/denominator; 
+    uint64_t final_P = 0;
+    if (denominator > 0) {
+        final_P = (1000*numerator / denominator); // Safe division after scaling
+    } else {
+        warpPrint("\nERROR: Denominator is ZERO!");
+        final_P = 0;
+    }               
     //warpPrint("\nP_H1_given_f: {%u}\n", P_H1_given_f);
     warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}/1000 \n", target_freqs[max_pwr_index], final_P); //Rescaled output probability by 1000 to accomodate for decent resolution of proability wwith warpPrint.
     
