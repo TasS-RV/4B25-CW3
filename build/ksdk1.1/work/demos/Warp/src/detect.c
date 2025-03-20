@@ -225,15 +225,18 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
     P_of_f_given_H1 = PDF_parkinsonian[max_pwr_index];
     P_of_f_given_H0 = PDF_non_parkinsonian[max_pwr_index];
     
-    // warpPrint("\nP_of_f_given_H1: %u\n", P_of_f_given_H1); //Debug print statements - to check probability magnitudes
-    // warpPrint("\nP_of_f_given_H0: %u\n", P_of_f_given_H0);
-    warpPrint("\nNumerator: %u\n", P_H1 * P_of_f_given_H1);
-    warpPrint("\n Denominator: %u \n", (P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0));
+    // 64 bit unsigned typecasting to get any reaonable probability values at very low confidence levels
+    uint64_t numerator = (uint64_t) P_H1 * (uint64_t) P_of_f_given_H1;
+    uint64_t denominator = (uint64_t) P_H1 * (uint64_t) P_of_f_given_H1 + 
+                       (uint64_t) P_H0 * (uint64_t) P_of_f_given_H0;
 
-    float P_H1_given_f = (100*P_H1 * 100*P_of_f_given_H1)/(P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0); // Baysean Probability function - scaled by 10,000 (NOT 100,000 - WHCIH IS WHAT THE PROBABILITY DENSITY FUNCTIONS ARE GIVEN IN!)
-    uint32_t final_P = (uint32_t)(P_H1_given_f*100000); 
+    // printouts for debugging values: 
+    // warpPrint("\nNumerator: %u\n", P_of_f_given_H1 * P_H1);
+    // warpPrint("\nDenominator: %u \n", (P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0));
+                   
+    uint64_t final_P = (1000*numerator)/denominator; 
     //warpPrint("\nP_H1_given_f: {%u}\n", P_H1_given_f);
-    warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}\n", target_freqs[max_pwr_index], final_P);
+    warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}/1000 \n", target_freqs[max_pwr_index], final_P); //Rescaled output probability by 1000 to accomodate for decent resolution of proability wwith warpPrint.
     
     return;
 }
