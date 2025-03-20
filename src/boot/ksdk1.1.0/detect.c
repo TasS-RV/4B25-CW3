@@ -193,18 +193,19 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
     uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
     
+    // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
+    update_buffers(acc_magntiude, sampling_time_delta); 
+	uint64_t CoVar_XYZ = propagate_std_dev(XAcceleration*1000, YAcceleration*1000, ZAcceleration*1000,  //All SDs are x1000 so pass in values scaaled by same amount.
+        X_SD, Y_SD, Z_SD);
+    
     if (MMA8451Q_RAW_DATA_COLLECT == 1){
         warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
         //warpPrint("Mean polling delay: %d us \n", ((timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) * 1000) / 3); //Scaling up to get values after the decimal point - into warpPrint
     
         warpPrint("Total polling delay: %d us \n", timediff_poll[2] * 1000); // uncomment out, delete and remove the ); / 3); //Scaling up to get values after the decimal point - into warpPrint
-       
+        warpPrint("Instantaneous Co-Variance: %u", CoVar_XYZ/10000);
     }
     
-
-    // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
-    update_buffers(acc_magntiude, sampling_time_delta); 
-			
     return acc_magntiude;
 }
 
@@ -241,7 +242,6 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
         final_P = 0;
     }               
     //warpPrint("\nP_H1_given_f: {%u}\n", P_H1_given_f);
-    warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}/1000 \n", target_freqs[max_pwr_index], final_P); //Rescaled output probability by 1000 to accomodate for decent resolution of proability wwith warpPrint.
-    
+    warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}/1000 \n", target_freqs[max_pwr_index], final_P); //Rescaled output probability by 1000 to accomodate for decent resolution of proability with warpPrint.
     return;
 }

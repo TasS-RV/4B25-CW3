@@ -53,3 +53,10 @@ const uint8_t bytesPerMeasurementMMA8451Q            = 6;
 const uint8_t bytesPerReadingMMA8451Q                = 2;
 const uint8_t numberOfReadingsPerMeasurementMMA8451Q = 3;
 
+
+// Standard deviations (*1000) modelling x, y, z accelerations as additive white Gaussian noise form Python fitting
+uint64_t X_SD = 19430;
+uint64_t Y_SD = 32940;
+uint64_t Z_SD = 20383;
+
+uint32_t propagate_std_dev(int32_t x, int32_t y, int32_t z, uint32_t sigma_x, uint32_t sigma_y, uint32_t sigma_z);

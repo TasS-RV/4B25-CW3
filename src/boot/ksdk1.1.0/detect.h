@@ -9,6 +9,7 @@ uint16_t XCombined;
 uint16_t YCombined;
 uint16_t ZCombined;
 
+
 #define BUFF_SIZE 40 //At 40Hz, set to update power every 1s
 // uint32_t AccelerationBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
 // uint32_t LPFBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
