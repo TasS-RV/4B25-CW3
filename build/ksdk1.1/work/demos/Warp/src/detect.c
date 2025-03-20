@@ -61,7 +61,7 @@ uint32_t compute_goertzel_power()
     uint32_t power[NUM_FREQS] = {0}; //Power is also size of frequency bins, and forms a rolling buffer that is over-written
 
     int max_pwr_index = 0; // Index for tracking the  frequency bin with peak power amplitude
-    uint16_t max_power = 0; // Need to locally store max power for max frequency bin finding function below 
+    uint32_t max_power = 0; // Need to locally store max power for max frequency bin finding function below - keeping bit resolution consistent with power array.
 
     for (int i = 0; i < NUM_FREQS; i++) {
         // Get precomputed coefficient (scaled ×1000)
@@ -75,6 +75,7 @@ uint32_t compute_goertzel_power()
         // Track index of frequency bin whcih is the max power
         if (power[i] > max_power) {
             max_pwr_index = i;
+            max_power = power[i];
         }
 
         if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);} //%u - modifier prints power in unsigned format - expected to be positive
@@ -224,9 +225,15 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
     P_of_f_given_H1 = PDF_parkinsonian[max_pwr_index];
     P_of_f_given_H0 = PDF_non_parkinsonian[max_pwr_index];
     
-    uint32_t P_H1_given_f = (10000*(P_H1 * P_of_f_given_H1))/(P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0); // Baysean Probability function - scaled by 10,000 (NOT 100,000 - WHCIH IS WHAT THE PROBABILITY DENSITY FUNCTIONS ARE GIVEN IN!)
+    warpPrint("\nP_of_f_given_H1: %u\n", P_of_f_given_H1);
+    warpPrint("\nP_of_f_given_H0: %u\n", P_of_f_given_H0);
 
-    warpPrint("\nFrequency bin with peak power: {%d} Hz. \n Probability of Parkinson's given detection of given frequency: {%d}/10000\n", target_freqs[max_pwr_index], P_H1_given_f);
+    warpPrint("\nNumerator: %u\n", P_H1 * P_of_f_given_H1);
+
+    uint32_t P_H1_given_f = (1000*(P_H1 * P_of_f_given_H1))/(P_H1 * P_of_f_given_H1 + P_H0 * P_of_f_given_H0); // Baysean Probability function - scaled by 10,000 (NOT 100,000 - WHCIH IS WHAT THE PROBABILITY DENSITY FUNCTIONS ARE GIVEN IN!)
+
+    //warpPrint("\nP_H1_given_f: {%u}\n", P_H1_given_f);
+    warpPrint("\nFrequency bin with peak power: {%d} Hz. \n Probability of Parkinson given detection of given frequency: {%u}/1000\n", target_freqs[max_pwr_index], P_H1_given_f);
     
     return;
 }
