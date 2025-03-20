@@ -59,4 +59,4 @@ uint64_t X_SD = 19430;
 uint64_t Y_SD = 32940;
 uint64_t Z_SD = 20383;
 
-uint32_t propagate_std_dev(int32_t x, int32_t y, int32_t z, uint32_t sigma_x, uint32_t sigma_y, uint32_t sigma_z);
+uint64_t propagate_std_dev(int64_t x, int64_t y, int64_t z, uint64_t sigma_x, uint64_t sigma_y, uint64_t sigma_z);

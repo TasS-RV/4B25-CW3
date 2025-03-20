@@ -195,7 +195,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
     update_buffers(acc_magntiude, sampling_time_delta); 
-	uint64_t CoVar_XYZ = propagate_std_dev(XAcceleration*1000, YAcceleration*1000, ZAcceleration*1000,  //All SDs are x1000 so pass in values scaaled by same amount.
+	uint64_t CoVar_XYZ = propagate_std_dev(1000*(int64_t)XAcceleration, 1000*(int64_t)YAcceleration, 1000*(int64_t)ZAcceleration,  //All SDs are x1000 so pass in values scaaled by same amount.
         X_SD, Y_SD, Z_SD);
     
     if (MMA8451Q_RAW_DATA_COLLECT == 1){
@@ -203,7 +203,7 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
         //warpPrint("Mean polling delay: %d us \n", ((timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) * 1000) / 3); //Scaling up to get values after the decimal point - into warpPrint
     
         warpPrint("Total polling delay: %d us \n", timediff_poll[2] * 1000); // uncomment out, delete and remove the ); / 3); //Scaling up to get values after the decimal point - into warpPrint
-        warpPrint("Instantaneous Co-Variance: %u", CoVar_XYZ/10000);
+        warpPrint("Instantaneous Co-Variance: %u", CoVar_XYZ);
     }
     
     return acc_magntiude;

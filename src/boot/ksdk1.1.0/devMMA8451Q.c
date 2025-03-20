@@ -103,16 +103,16 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
 
 
 // Running error propagation in sensor driver - as this is the one reading the values in the first place (treating the Gaussian noise as an inherent property of the sensor when stationary).
-uint32_t propagate_std_dev(int32_t x, int32_t y, int32_t z,
-	uint32_t sigma_x, uint32_t sigma_y, uint32_t sigma_z) {
+uint64_t propagate_std_dev(int64_t x, int64_t y, int64_t z,
+	uint64_t sigma_x, uint64_t sigma_y, uint64_t sigma_z) {
 
-	uint64_t x_sq = (uint64_t)x * (uint64_t)x;
-	uint64_t y_sq = (uint64_t)y * (uint64_t)y;
-	uint64_t z_sq = (uint64_t)z * (uint64_t)z;
+	uint64_t x_sq = x * x; //Pass in as signed integer for correct magntiude conversion - then cast to unsigned as all computations will involve positive integers for the remainder of Covariance calc
+	uint64_t y_sq = y * y;
+	uint64_t z_sq = z * z;
 
-	uint64_t numerator = x_sq * (uint64_t)sigma_x * (uint64_t)sigma_x
-	+ y_sq * (uint64_t)sigma_y * (uint64_t)sigma_y
-	+ z_sq * (uint64_t)sigma_z * (uint64_t)sigma_z;
+	uint64_t numerator = x_sq * sigma_x * sigma_x
+	+ y_sq * sigma_y * sigma_y
+	+ z_sq * sigma_z * sigma_z;
 
 	uint64_t denominator = x_sq + y_sq + z_sq;
 
@@ -120,7 +120,6 @@ uint32_t propagate_std_dev(int32_t x, int32_t y, int32_t z,
 	if (denominator == 0) {
 	return 0;
 	}
-
 	// Scale numerator to preserve precision - 100*100 - previous 1000x scaaling on SD and mm/s^2 raw acceleraiton values will cancel out in the division. 
 	uint64_t scaled_value = numerator*10000 / denominator;
 	
