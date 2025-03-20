@@ -78,7 +78,7 @@ uint32_t compute_goertzel_power()
 }
 
 
-
+// This is wrong - I am using the power spectrumm, and not a probaiblity counts when running the test multiple times to get counts of frequencies
 uint32_t P_obs_normalised(int target_freq, uint32_t spectrum[NUM_FREQS]){
     uint32_t full_power = 0;
     for (int i = 0; i < NUM_FREQS; i++) {

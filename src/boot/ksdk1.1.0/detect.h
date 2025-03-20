@@ -50,7 +50,7 @@ uint16_t sigma_known[NUM_FREQS] = {0};
 
 
 uint32_t calculate_gaussian();
-// All frequencies in 1000s for integer math
-uint32_t N_Parkinsonian[2] = {6000, 1000};  // X ∼ N(6, 1) - example Parkinsonian distribution, at centre frequency of 6Hz with 1Hz standard deviation (assumed to be quite sharp)
-uint32_t N_non_parkinsonian[2] = {4000, 3000};  // X ∼ N(4, 3)  
+// All frequencies x100000s for integer math
+uint32_t N_parkinsonian[NUM_FREQS] =      {72, 780, 29844, 33404, 28674, 3930, 1414, 877, 121, 99, 360, 425};  // PDF for P(H1) - probability spectrum for true hypothesis. Non_gaussian - instead concentration of probaabilities around 4-6Hz Parkinsonian frequencies 
+uint32_t N_non_parkinsonian[NUM_FREQS] = {6654, 7865, 13294, 15042, 13299, 9772, 15092, 7222, 4482, 1793, 2791, 2694}; // PDF for P(H0) - probability distribution for false hypothesis  
 

@@ -314,10 +314,10 @@ Discarded input sections
  .bss.timeBefore_poll
                 0x0000000000000000        0x2 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
  .bss.y_values  0x0000000000000000       0x60 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
- .data.N_Parkinsonian
-                0x0000000000000000        0x8 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
  .data.N_non_parkinsonian
                 0x0000000000000000        0x8 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
+ .data.N_parkinsonian
+                0x0000000000000000       0x30 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
  .rodata.bytesPerMeasurementMMA8451Q
                 0x0000000000000000        0x1 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
  .rodata.bytesPerReadingMMA8451Q
@@ -379,10 +379,10 @@ Discarded input sections
                 0x0000000000000000       0x18 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
  .bss.timeAft_poll
                 0x0000000000000000        0x2 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
- .data.N_Parkinsonian
-                0x0000000000000000        0x8 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
  .data.N_non_parkinsonian
                 0x0000000000000000        0x8 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
+ .data.N_parkinsonian
+                0x0000000000000000       0x30 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
  .rodata.bytesPerMeasurementMMA8451Q
                 0x0000000000000000        0x1 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
  .rodata.bytesPerReadingMMA8451Q
@@ -1009,7 +1009,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crti.o
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtbegin.o
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/../../../arm-none-eabi/lib/thumb/v6-m/nofp/crt0.o
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/../../../arm-none-eabi/lib/thumb/v6-m/nofp/libm.a
-                0x0000000000000100                __stack_size__ = 0x100
+                0x0000000000000300                __stack_size__ = 0x300
                 0x0000000000000000                __heap_size__ = 0x0
 LOAD CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/platform/utilities/src/fsl_misc_utilities.c.obj
 LOAD CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/platform/startup/MKL03Z4/gcc/startup_MKL03Z4.S.obj
@@ -1046,7 +1046,7 @@ END GROUP
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtend.o
 LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtn.o
                 0x0000000000000000                HEAP_SIZE = DEFINED (__heap_size__)?__heap_size__:0x200
-                0x0000000000000100                STACK_SIZE = DEFINED (__stack_size__)?__stack_size__:0x50
+                0x0000000000000300                STACK_SIZE = DEFINED (__stack_size__)?__stack_size__:0x50
                 0x0000000000000000                M_VECTOR_RAM_SIZE = DEFINED (__ram_vector_table__)?0x100:0x0
 
 .interrupts     0x0000000000000000       0xc0
@@ -2032,12 +2032,12 @@ LOAD /usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v6-m/nofp/crtn.o
                 0x0000000020000258                . = (. + HEAP_SIZE)
                 0x0000000020000258                __HeapLimit = .
 
-.stack          0x0000000020000258      0x100 load address 0x0000000000006ca8
+.stack          0x0000000020000258      0x300 load address 0x0000000000006ca8
                 0x0000000020000258                . = ALIGN (0x8)
-                0x0000000020000358                . = (. + STACK_SIZE)
- *fill*         0x0000000020000258      0x100 
+                0x0000000020000558                . = (. + STACK_SIZE)
+ *fill*         0x0000000020000258      0x300 
                 0x0000000020000600                __StackTop = (ORIGIN (m_data) + LENGTH (m_data))
-                0x0000000020000500                __StackLimit = (__StackTop - STACK_SIZE)
+                0x0000000020000300                __StackLimit = (__StackTop - STACK_SIZE)
                 0x0000000020000600                PROVIDE (__stack = __StackTop)
 
 .ARM.attributes
