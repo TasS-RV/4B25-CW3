@@ -258,33 +258,6 @@ home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.s:
 	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.s
 .PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.s
 
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.obj
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.obj
-
-# target to build an object file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.obj:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.obj
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.obj
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.i: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.i
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.i
-
-# target to preprocess a source file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.i:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.i
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.i
-
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.s: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.s
-
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.s
-
-# target to generate assembly for a file
-home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.s:
-	$(MAKE) -f CMakeFiles/Warp.dir/build.make CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.s
-.PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.c.s
-
 home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.obj: home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
 
 .PHONY : home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.obj
@@ -588,9 +561,6 @@ help:
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.s"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.obj"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.i"
-	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devAT45DB.s"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.obj"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.i"
 	@echo "... home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.s"
