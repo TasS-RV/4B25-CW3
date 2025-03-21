@@ -105,7 +105,7 @@
 
 // Testing mode - to simply collect raw data then print this function - otherwise set to 0 - to only get the power outputs and final frequency classification.
 #define MMA8451Q_RAW_DATA_COLLECT   	1
-#define MMA8451Q_RAW_VarError_PROP      0 //For recursive calculation of the covariance
+#define MMA8451Q_RAW_VarError_PROP      1 //For recursive calculation of the covariance
 
 #define WARP_BUILD_ENABLE_DEVRV8803C7 	0
 #define WARP_BUILD_ENABLE_DEVSI4705   	0

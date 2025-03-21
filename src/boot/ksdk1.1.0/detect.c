@@ -157,7 +157,7 @@ void update_goertzel(uint32_t x_n) {
             Prev_Covars_Y[i] = Cov_Y_Nsub1; // Shift Cov(y[N-1], y[N-2]) → Cov(y[N-2], y[N-3])
             Covars_Y[i] = Cov_Y_Nsub1;      // Store new Cov(y[N], y[N-1])
 
-            warpPrint("\nVariance in most recently computed Y_N: %d\n", Var_Y_N);}
+            warpPrint("\nY_N variance: %d for frequency: %d Hz.", Var_Y_N, i);}
     
         // Y_Vars[i][2] = (float)Acc_mag_Variance  + (float)coeff*(float)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*(float)coeff*Covars_Y[i][1];  //Y_N variance expression
         //Y_Vars[i][2] = (float)Acc_mag_Variance + (float)coeff*(float)coeff*Y_Vars[i][1]+ Y_Vars[i][0] + 2*(float)coeff*Covars_Y[i][1];  // version with variance and covariance arrays defined floating point - in header 
