@@ -1,6 +1,5 @@
 
 uint32_t byte_to_state_conversion(uint16_t sampling_time_delta);
-void update_buffers(uint32_t acc_mag, uint16_t time_diff);
 
 int32_t convertAcceleration(int16_t number);
 int32_t get_sqrt(uint32_t magntiude); //<-- Magntiude will be an unsigned int, so uint32 - want large integer size for the calculation
@@ -36,13 +35,17 @@ int32_t bayes_freq_probability(int16_t number); //<-- MAy need to pass in an arr
 
 
 // Function for updating Gopertzel array of values - instead of storing the whole BUFF_SIZE of Y_n values, it only stores the last 2 and current one. 
-void update_goertzel(uint32_t x_n);
+void update_goertzel(uint32_t x_n, uint64_t Acc_mag_Variance);
 uint32_t compute_goertzel_power();
 
 
 const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13};  // Hz - same bit field size for math
 // Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
 int32_t y_values[NUM_FREQS][2] = {0};
+float Y_Vars[NUM_FREQS][3] = {0};  // variances of yN-2, yN-1, and yN-3
+float Covars_Y[NUM_FREQS][3] = {0};  // variances of yN-2, yN-1, and yN-3
+
+
 
 
 // Section associated with Bayseian probability variables - based on training data: will use standard deviation instead of variance, as to get SD from var requires rooting. Squaring to go the other way is easier.

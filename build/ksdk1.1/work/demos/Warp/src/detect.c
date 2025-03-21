@@ -104,14 +104,14 @@ uint32_t P_obs_normalised(int target_freq, uint32_t spectrum[NUM_FREQS]){
 Goertzel Update Function - pass in x_n = acc_mag in update_buffers() function in devMMA8451Q. Stores y_n-2 and y_n-2 to computer y_n 
 Then performs bitshift to update y_n-2 with y_n-1 and y_n-1 gets replaced with y_n.
 */
-void update_goertzel(uint32_t x_n) {
+void update_goertzel(uint32_t x_n, uint64_t Acc_mag_Variance) {
     // Iteraate over each frequecy to computer the Y_n for that frequency - maintaining fized asample rate
     for (int i = 0; i < NUM_FREQS; i++) {
         // Get precomputed coefficient (scaled ×1000)
         int32_t coeff = coeffs[i];
 
-        // Compute y_N - 2*1000*cos() * Y_n-1/ 1000 scaled for integer math
-        int32_t y_N = ((2*coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
+        // Compute y_N - 2*1000*cos() * Y_n-1/ 1000 scaled for integer math - coeffs were already scaled by 2, minor mistake
+        int32_t y_N = ((coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
 
         //warpPrint("\ny_N values: %d \n\n", y_N); // For print debugging - if we ever get zero powers
         // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
@@ -119,12 +119,16 @@ void update_goertzel(uint32_t x_n) {
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
         
 
-        warpPrint("yn-2 value: %d \n", y_values[i][0]);
-        warpPrint("yn-2 value - float conversion: %d \n", (int32_t)(((float)y_values[i][0])/4.0));
+        Y_Vars[i][2] = (float)Acc_mag_Variance + (float)coeff*(float)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*(float)coeff*Covars_Y[i][1];  //Y_N variance expression
+        //Minor comment for commit
         
     }
     return;
 }
+
+// float Cov(float y_n0, float y_n1, float var_y_n0, float var_y_n1){
+
+// }
 
 
 
@@ -201,11 +205,11 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
     uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
     
-    // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
-    update_buffers(acc_magntiude, sampling_time_delta); 
-	uint64_t CoVar_XYZ = propagate_std_dev((uint64_t)(XAcceleration*XAcceleration), (uint64_t)(YAcceleration*YAcceleration), (uint64_t)(ZAcceleration*ZAcceleration),  
+    uint64_t CoVar_XYZ = propagate_std_dev((uint64_t)(XAcceleration*XAcceleration), (uint64_t)(YAcceleration*YAcceleration), (uint64_t)(ZAcceleration*ZAcceleration),  
         X_SD, Y_SD, Z_SD);
-    
+    // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers  - alongside Covariance in XYZ measurement
+    update_buffers(acc_magntiude, sampling_time_delta, CoVar_XYZ); 
+	
     if (MMA8451Q_RAW_DATA_COLLECT == 1){
         warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
         //warpPrint("Mean polling delay: %d us \n", ((timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) * 1000) / 3); //Scaling up to get values after the decimal point - into warpPrint
