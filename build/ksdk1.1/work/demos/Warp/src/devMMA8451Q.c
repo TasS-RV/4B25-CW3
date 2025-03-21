@@ -87,7 +87,7 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
     // Update buffer index (circular - reset using modulo) - print debug to check if being reset or updated
     //warpPrint("Buffer_index: %d \n", buffer_index);
     
-	update_goertzel((uint32_t)acc_mag);
+	//update_goertzel((uint32_t)acc_mag);
 
 	// i.e. for BUFF_SIZE 40, buffer_index will reach 39 - this is the 'last' value before resetting due to 0 indexing, which is where we call the function to computer Power from Y_39 and Y_38.
 	if ((int)buffer_index == BUFF_SIZE - 1)
