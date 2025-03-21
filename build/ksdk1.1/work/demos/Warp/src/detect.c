@@ -91,7 +91,7 @@ uint32_t compute_goertzel_power()
         int64_t covY_Nsub1_Nsub2 = Prev_Covars_Y[i]; // Redefining here for clarity
         
         if (MMA8451Q_RAW_VarError_PROP) {
-            compute_power_uncertainty((int64_t) power, (int64_t)y_values[i][0], (int64_t)y_values[i][1], Prev_Y_Vars[i], Y_Vars[i], covY_Nsub1_Nsub2, (int64_t)coeff); // Passing in y_N-1 and y_N-2 and their associated variance properties.
+            compute_power_uncertainty((int)target_freqs[i], (int64_t) power, (int64_t)y_values[i][0], (int64_t)y_values[i][1], Prev_Y_Vars[i], Y_Vars[i], covY_Nsub1_Nsub2, (int64_t)coeff); // Passing in y_N-1 and y_N-2 and their associated variance properties.
         }
 
     }
@@ -104,15 +104,14 @@ uint32_t compute_goertzel_power()
     return power;
 }
 
-
 /*
 Need to validate and wirte out character by character if this equation is doing the right thing
 */
 
 
-int64_t compute_power_uncertainty(int64_t power, int64_t yNsub1, int64_t yNsub2, int64_t varY_Nsub1, int64_t varY_Nsub2, int64_t covY_Nsub1_Nsub2, int64_t coeff) {
+int64_t compute_power_uncertainty(int frequency, int64_t power, int64_t yNsub1, int64_t yNsub2, int64_t varY_Nsub1, int64_t varY_Nsub2, int64_t covY_Nsub1_Nsub2, int64_t coeff) {
     // Convert coefficient back to integer math (coeff was scaled ×1000)
-    int64_t a = (coeff); // Already scaled by 1000
+    int64_t a = (coeff); // Already scaled by 1000 in cosines (and 2x coeff iuun front of cos built in)
 
     // Compute integer derivatives (scaled by 1000 to maintain precision)
     int64_t dP_dyNsub1 = (2 * yNsub1 * 1000 - a * yNsub2);  
@@ -125,6 +124,8 @@ int64_t compute_power_uncertainty(int64_t power, int64_t yNsub1, int64_t yNsub2,
 
     // Ensure variance is non-negative
     if (varP < 0) varP = 0;
+
+    warpPrint("\nPower Variance @ %d, is %d \n", frequency, (int32_t)varP);
 
     return varP;  // Return the variance of power (still in int64_t)
 }

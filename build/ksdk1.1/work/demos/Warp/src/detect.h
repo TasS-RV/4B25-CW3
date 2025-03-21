@@ -1,6 +1,6 @@
 
 uint32_t byte_to_state_conversion(uint16_t sampling_time_delta);
-int64_t compute_power_uncertainty(int64_t power, int64_t yNsub1, int64_t yNsub2, int64_t varY_Nsub1, int64_t varY_Nsub2, int64_t covY_Nsub1_Nsub2, int64_t coeff); //Function for propagated power uncertainty
+int64_t compute_power_uncertainty(int frequency, int64_t power, int64_t yNsub1, int64_t yNsub2, int64_t varY_Nsub1, int64_t varY_Nsub2, int64_t covY_Nsub1_Nsub2, int64_t coeff); //Function for propagated power uncertainty
 int32_t convertAcceleration(int16_t number);
 int32_t get_sqrt(uint32_t magntiude); //<-- Magntiude will be an unsigned int, so uint32 - want large integer size for the calculation
 
@@ -32,7 +32,7 @@ void update_goertzel(uint32_t x_n);
 uint32_t compute_goertzel_power();
 
 
-const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13};  // Hz - same bit field size for math
+const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13};  // Hz - same bit field size for math. 32 bitrs is overkill, but required for the int arithmetic
 // Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
 static int32_t y_values[NUM_FREQS][2] = {0}; // Empty array to populate with y values
 
