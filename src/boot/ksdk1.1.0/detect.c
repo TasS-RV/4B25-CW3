@@ -122,8 +122,8 @@ void update_goertzel(uint32_t x_n) {
 
 
         int64_t Var_Y_Nsub2 = Prev_Y_Vars[i];  // Var(y[N-2])
-        // int64_t Var_Y_Nsub1 = Y_Vars[i];       // Var(y[N-1])
-        // int64_t Cov_Y_Nsub2 = Prev_Covars_Y[i]; // Cov(y[N-2], y[N-3])
+        int64_t Var_Y_Nsub1 = Y_Vars[i];       // Var(y[N-1])
+        int64_t Cov_Y_Nsub2 = Prev_Covars_Y[i]; // Cov(y[N-2], y[N-3])
         
         //         // Compute new covariance: Cov(y[N-1], y[N-2]) = a * Var(y[N-2]) - Cov(y[N-2], y[N-3])
         // int64_t Cov_Y_Nsub1 = (int64_t)coeff * Var_Y_Nsub2 / 1000 - Cov_Y_Nsub2;
