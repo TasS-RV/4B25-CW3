@@ -1,6 +1,6 @@
 
 uint32_t byte_to_state_conversion(uint16_t sampling_time_delta);
-
+int64_t compute_power_uncertainty(int64_t power, int64_t yNsub1, int64_t yNsub2, int64_t varY_Nsub1, int64_t varY_Nsub2, int64_t covY_Nsub1_Nsub2, int64_t coeff); //Function for propagated power uncertainty
 int32_t convertAcceleration(int16_t number);
 int32_t get_sqrt(uint32_t magntiude); //<-- Magntiude will be an unsigned int, so uint32 - want large integer size for the calculation
 

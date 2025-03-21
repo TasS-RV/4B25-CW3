@@ -86,7 +86,14 @@ uint32_t compute_goertzel_power()
             max_power = power[i];
         }
 
+        // Outputs - either debugging to for final classifications
         if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);} //%u - modifier prints power in unsigned format - expected to be positive
+        int64_t covY_Nsub1_Nsub2 = Prev_Covars_Y[i]; // Redefining here for clarity
+        
+        if (MMA8451Q_RAW_VarError_PROP) {
+            compute_power_uncertainty((int64_t) power, (int64_t)y_values[i][0], (int64_t)y_values[i][1], Prev_Y_Vars[i], Y_Vars[i], covY_Nsub1_Nsub2, (int64_t)coeff); // Passing in y_N-1 and y_N-2 and their associated variance properties.
+        }
+
     }
     if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\n--> Next time window.\n");}
     
@@ -97,6 +104,30 @@ uint32_t compute_goertzel_power()
     return power;
 }
 
+
+/*
+Need to validate and wirte out character by character if this equation is doing the right thing
+*/
+
+
+int64_t compute_power_uncertainty(int64_t power, int64_t yNsub1, int64_t yNsub2, int64_t varY_Nsub1, int64_t varY_Nsub2, int64_t covY_Nsub1_Nsub2, int64_t coeff) {
+    // Convert coefficient back to integer math (coeff was scaled ×1000)
+    int64_t a = (coeff); // Already scaled by 1000
+
+    // Compute integer derivatives (scaled by 1000 to maintain precision)
+    int64_t dP_dyNsub1 = (2 * yNsub1 * 1000 - a * yNsub2);  
+    int64_t dP_dyNsub2 = (2 * yNsub2 * 1000 - a * yNsub1);
+
+    // Compute variance of power (all in int64_t)
+    int64_t varP = (dP_dyNsub1 * dP_dyNsub1 * varY_Nsub1) / (1000000) // Scaling down due to squared terms
+                 + (dP_dyNsub2 * dP_dyNsub2 * varY_Nsub2) / (1000000)
+                 + (2 * dP_dyNsub1 * dP_dyNsub2 * covY_Nsub1_Nsub2) / (1000000);
+
+    // Ensure variance is non-negative
+    if (varP < 0) varP = 0;
+
+    return varP;  // Return the variance of power (still in int64_t)
+}
 
 // This is wrong - I am using the power spectrumm, and not a probaiblity counts when running the test multiple times to get counts of frequencies
 uint32_t P_obs_normalised(int target_freq, uint32_t spectrum[NUM_FREQS]){

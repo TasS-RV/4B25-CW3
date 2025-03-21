@@ -340,6 +340,8 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
  .text.convertAcceleration
                 0x0000000000000000       0x14 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
+ .text.compute_power_uncertainty
+                0x0000000000000000       0xc4 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
  .text.P_obs_normalised
                 0x0000000000000000       0x28 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
  .text.f_peak   0x0000000000000000        0x8 CMakeFiles/Warp.dir/home/students/tes46/4B25-CW3/build/ksdk1.1/work/demos/Warp/src/detect.c.obj
