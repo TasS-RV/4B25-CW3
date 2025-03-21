@@ -34,7 +34,7 @@ uint32_t compute_goertzel_power();
 
 const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13};  // Hz - same bit field size for math
 // Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
-y_values[NUM_FREQS][2] = {0}; // Empty array to populate with y values
+static int32_t y_values[NUM_FREQS][2] = {0}; // Empty array to populate with y values
 
 static int64_t Prev_Covars_Y[NUM_FREQS] = {0};
 static int64_t Covars_Y[NUM_FREQS] = {0};

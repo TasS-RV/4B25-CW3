@@ -75,6 +75,8 @@ initMMA8451Q(const uint8_t i2cAddress, uint16_t operatingVoltageMillivolts)
 
 
 
+
+
 void update_buffers(uint32_t acc_mag, uint16_t time_diff){
     accel_magnitude_buffer[buffer_index] = acc_mag;
     time_steps_buffer[buffer_index] = 10;    
@@ -85,8 +87,17 @@ void update_buffers(uint32_t acc_mag, uint16_t time_diff){
 
 	// i.e. for BUFF_SIZE 40, buffer_index will reach 39 - this is the 'last' value before resetting due to 0 indexing, which is where we call the function to computer Power from Y_39 and Y_38.
 	if ((int)buffer_index == BUFF_SIZE - 1)
-	{
+	{   
+		// Will pass in the most latest versions of y_N-1 and y_N-2 -->
 		compute_goertzel_power();
+		
+		// Resets bins to 0 for shifting window
+		static int32_t y_values[NUM_FREQS][2] = {0};
+		static int64_t Prev_Covars_Y[NUM_FREQS] = {0};
+		static int64_t Covars_Y[NUM_FREQS] = {0};
+		static int64_t Prev_Y_Vars[NUM_FREQS] = {0};
+		static int64_t Y_Vars[NUM_FREQS] = {0};
+		
 	}
 	
 	// Update buffer_index number after Goortzel recursion
