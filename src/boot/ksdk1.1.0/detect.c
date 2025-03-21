@@ -18,6 +18,7 @@
 #include "devMMA8451Q.h"
 
 
+int64_t Acc_mag_Variance = 0; // Instead, storing instantaenous acceleration magntiude as a global variance
 uint16_t timediff_poll[3] = {0};
 
 // Precomputed coefficients (scaled by 1000 as we cannot handle floats) - currently 3-7Hz inclusive 
@@ -117,11 +118,20 @@ void update_goertzel(uint32_t x_n) {
         // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
+    
+        //  // // Update old Covariance indices
+        Y_Vars[i][0] = Y_Vars[i][1]; // Var(yN-2) becomes previous Var(yN-1) - by defualt y0 and y1 start as 0 in the recursive relation
+        Y_Vars[i][1] = Y_N_Var; // Var(yN-1) becomes previous Var(yN)
+        //Covars_Y[i][0] = Covars_Y[i][1]; // Cov(yN-2, yN-3) = Cov(yN-1, yN-2) <-- Frresh resetting the last covariance
         
-
-        warpPrint("yn-2 value: %d \n", y_values[i][0]);
-        warpPrint("yn-2 value - float conversion: %d \n", (int32_t)(((float)y_values[i][0])/4.0));
+        // // // Calculate Nth Variance and use N-1th Covariance
+        Covars_Y[i][1] = (int64_t)coeff*Y_Vars[i][0]/1000 - Covars_Y[i][0];  // Cov(yN-1, yN-2) = a*Var(yN-2) - Cov(yN-2, yN-3)
+        Y_N_Var = (int64_t)Acc_mag_Variance + (int64_t)coeff*(int64_t)coeff*Y_Vars[i][1]/1000000 + Y_Vars[i][0] + 2*(int64_t)coeff*Covars_Y[i][1]/1000;  //Y_N variance expression, last term with covariance defined ad: // Cov(yN-1, yN-2) 
         
+     //   warpPrint("\nVariance in most recently computed Y_N: %d\n", Y_Vars[i][2]);
+        // Y_Vars[i][2] = (float)Acc_mag_Variance  + (float)coeff*(float)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*(float)coeff*Covars_Y[i][1];  //Y_N variance expression
+        //Y_Vars[i][2] = (float)Acc_mag_Variance + (float)coeff*(float)coeff*Y_Vars[i][1]+ Y_Vars[i][0] + 2*(float)coeff*Covars_Y[i][1];  // version with variance and covariance arrays defined floating point - in header 
+    
     }
     return;
 }
@@ -200,8 +210,10 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     // Testing with known values
     //uint32_t acc_magntiude = get_sqrt((uint32_t)2500);
     uint32_t acc_magntiude = get_sqrt((uint32_t)(ZAcceleration*ZAcceleration) + (uint32_t)(YAcceleration*YAcceleration) + (uint32_t)(XAcceleration*XAcceleration));
-    
+    Acc_mag_Variance = (int64_t)acc_magntiude;
+
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
+        
     update_buffers(acc_magntiude, sampling_time_delta); 
 	uint64_t CoVar_XYZ = propagate_std_dev((uint64_t)(XAcceleration*XAcceleration), (uint64_t)(YAcceleration*YAcceleration), (uint64_t)(ZAcceleration*ZAcceleration),  
         X_SD, Y_SD, Z_SD);
