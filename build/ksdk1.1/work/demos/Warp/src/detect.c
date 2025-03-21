@@ -119,7 +119,11 @@ void update_goertzel(uint32_t x_n, uint64_t Acc_mag_Variance) {
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
         
 
-        Y_Vars[i][2] = (float)Acc_mag_Variance + (float)coeff*(float)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*(float)coeff*Covars_Y[i][1];  //Y_N variance expression
+        Y_Vars[i][0] = Y_Vars[i][1]; // Var(yN-2) becomes previous Var(yN-1) - by defualt y0 and y1 start as 0 in the recursive relation
+        Y_Vars[i][1] = Y_Vars[i][2]; // Var(yN-1) becomes previous Var(yN)
+        //Y_Vars[i][2] = (float)Acc_mag_Variance  + (float)coeff*(float)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*(float)coeff*Covars_Y[i][1];  //Y_N variance expression
+        Y_Vars[i][2] = (int64_t)Acc_mag_Variance + (int64_t)coeff*(int64_t)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2*(int64_t)coeff*Covars_Y[i][1];  //Y_N variance expression
+        
         //Minor comment for commit
         
     }
