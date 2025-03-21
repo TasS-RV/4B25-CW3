@@ -42,11 +42,11 @@ uint32_t compute_goertzel_power();
 const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13};  // Hz - same bit field size for math
 // Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
 int32_t y_values[NUM_FREQS][2] = {0};
-// float Y_Vars[NUM_FREQS][3] = {0};  // variances of yN-2, yN-1, and yN-3
-// float Covars_Y[NUM_FREQS][3] = {0};  // variances of yN-2, yN-1, and yN-3
-
-int64_t Y_Vars[NUM_FREQS][3] = {0};  // variances of yN-2, yN-1, and yN-3
-int64_t Covars_Y[NUM_FREQS][3] = {0};  // variances of yN-2, yN-1, and yN-3
+float Y_Vars[NUM_FREQS][2] = {0};  // variances of yN-2, yN-1, and yN-3
+float Covars_Y[NUM_FREQS][2] = {0};  // variances of yN-2, yN-1, and yN-3
+float Var_Y_N = 0;
+// int64_t Y_Vars[NUM_FREQS][3] = {0};  // variances of yN-2, yN-1, and yN-3
+// int64_t Covars_Y[NUM_FREQS][3] = {0};  // variances of yN-2, yN-1, and yN-3
 
 
 

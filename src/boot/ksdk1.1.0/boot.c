@@ -4094,93 +4094,12 @@ repeatRegisterReadForDeviceAndAddress(WarpSensorDevice warpSensorDevice, uint8_t
 			break;
 		}
 
-		case kWarpSensorINA219:
-		{
+		
 			
 /*
  *	INA219: VDD 3.3--5.0
  */
-#if (WARP_BUILD_INA219_DRIVER)
 
-	
-	// Not sure if wwe necessarily need to rrun this - likely do, keeping here for now 	
-	// uint16_t configPayload = 0x399F;  // Configuration for 32V, ±320mV, 12-bit ADC, continuous mode
-	// uint16_t calibrationPayload = 0x1000;  // Sample offset 0 calibration value
-	uint32_t iteration = 0; // Create the variable which will store the iteration number
-
-	char buffer[50];
-	snprintf(buffer, sizeof(buffer), "Set INA219 calibration value. \n\r");
-	SEGGER_RTT_WriteString(0, buffer);
-	 
-	// Wriute appropriate calibration scaling value
-	writeSensorRegister_INA219(
-		kWarpSensorConfigurationRegister_INA219_CALIB, // 0x05 - calibration
-		CALIBRATION_VALUE // Payload: Operating mode, gain, and resolution
-	);
-
-	/*
-	while (1)		
-		{
-        // Call the function to read sensor registers
-        loopForCurrentSensor(("\r\nINA219 register reading iteration: %lu\n\r", iteration),
-                             &readSensorRegister_INA219,
-                             &device_INA219State,
-                             NULL,
-                             baseAddress,
-                             0x00,
-                             0x05,
-                             repetitionsPerAddress,
-                             chunkReadsPerAddress,
-                             spinDelay,
-                             autoIncrement,
-                             sssupplyMillivolts,
-                             referenceByte,
-                             adaptiveSssupplyMaxMillivolts,
-                             chatty);
-
-        // Delay reading printouts for 1 second
-        OSA_TimeDelay(1000);
-
-        // Check for keypress
-        if (SEGGER_RTT_HasKey())  // Checks for keypress in the client
-        {
-            SEGGER_RTT_Read(0, buffer, sizeof(buffer));  // Clear input buffer for next print out on client
-            SEGGER_RTT_WriteString(0, "\r\nKeypress detected, stopping loop.\n\r");
-            break;
-        }
-
-        iteration++;
-    	}
-    */
-
-	for (uint32_t iteration = 0; iteration < 1000; iteration++)
-		{
-			// Call the function to read sensor registers
-			loopForCurrentSensor(("\r\nINA219 register reading iteration: %d \n\r", iteration),
-				&readSensorRegister_INA219,
-				&device_INA219State,
-				NULL,
-				baseAddress,
-				0x00,
-				0x05,
-				repetitionsPerAddress,
-				chunkReadsPerAddress,
-				spinDelay,
-				autoIncrement,
-				sssupplyMillivolts,
-				referenceByte,
-				adaptiveSssupplyMaxMillivolts,
-				chatty
-			);
-			OSA_TimeDelay(10); //10 ms delay
-		}
-
-#else
-			warpPrint("\r\n\tINA219 Read Aborted. Device Disabled :(");
-
-#endif
-			break;
-		}
 
 case kWarpSensorMMA8451Q:
 			{
