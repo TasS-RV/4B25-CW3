@@ -125,7 +125,7 @@ void update_goertzel(uint32_t x_n, uint64_t Acc_mag_Variance) {
 
         Covars_Y[i][1] = (int64_t)coeff*Y_Vars[i][0] - Covars_Y[i][0];  // Cov(yN-1, yN-2) = a*Var(yN-2) - Cov(yN-2, yN-3)
         //Y_Vars[i][2] = (float)Acc_mag_Variance  + (float)coeff*(float)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*(float)coeff*Covars_Y[i][1];  //Y_N variance expression
-        Y_Vars[i][2] = (int64_t)Acc_mag_Variance + (int64_t)coeff*(int64_t)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2*(int64_t)coeff*Covars_Y[i][1];  //Y_N variance expression, last term with covariance defined ad: // Cov(yN-1, yN-2) 
+        Y_Vars[i][2] = (int64_t)Acc_mag_Variance + (int64_t)coeff*(int64_t)coeff*Y_Vars[i][1]+ Y_Vars[i][0] + 2*(int64_t)coeff*Covars_Y[i][1];  //Y_N variance expression, last term with covariance defined ad: // Cov(yN-1, yN-2) 
         
     }
     return;
