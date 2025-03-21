@@ -45,14 +45,18 @@ const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13
 int32_t y_values[NUM_FREQS][2] = {0};
 
 // Variance and Covraince sarrays - N-2nd and N-1th values etc..
-int32_t Y_Vars[NUM_FREQS][2] = {0};
-int32_t Covars_Y[NUM_FREQS][2] = {0};
-int32_t Y_N_Var = 0;
+// int32_t Y_Vars[NUM_FREQS][2] = {0};
+// int32_t Covars_Y[NUM_FREQS][2] = {0};
+// int32_t Y_N_Var = 0;
 
+
+int64_t Prev_Covars_Y[NUM_FREQS] = {0};
+int64_t Covars_Y[NUM_FREQS] = {0};
+int64_t Prev_Y_Vars[NUM_FREQS] = {0};
+int64_t Y_Vars[NUM_FREQS] = {0};
 
 // Section associated with Bayseian probability variables - based on training data: will use standard deviation instead of variance, as to get SD from var requires rooting. Squaring to go the other way is easier.
-uint16_t mu_known[NUM_FREQS] = {0};
-uint16_t sigma_known[NUM_FREQS] = {0};
+
 
 uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]);
 // All frequencies x100000s for integer math
