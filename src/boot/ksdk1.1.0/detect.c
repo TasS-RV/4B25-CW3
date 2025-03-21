@@ -135,6 +135,7 @@ void update_goertzel(uint32_t x_n) {
             // Compute new covariance: Cov(y[N-1], y[N-2]) = a * Var(y[N-2]) - Cov(y[N-2], y[N-3])
             int64_t Cov_Y_Nsub1 = (int64_t)coeff * Var_Y_Nsub2 / 1000 - Cov_Y_Nsub2;
             
+            warpPrint("\n Covariances: y_n-2andn-3: %d: y_n-1andn-2 %d", (int32_t)Cov_Y_Nsub2, (int32_t)Cov_Y_Nsub2);
             // Compute new variance using updated covariance
             int64_t Var_Y_N = Acc_mag_Variance 
                                     + (int64_t)coeff * (int64_t)coeff * Var_Y_Nsub1 / 1000000
@@ -147,8 +148,9 @@ void update_goertzel(uint32_t x_n) {
             Prev_Covars_Y[i] = Cov_Y_Nsub1; // Shift Cov(y[N-1], y[N-2]) → Cov(y[N-2], y[N-3])
             Covars_Y[i] = Cov_Y_Nsub1;      // Store new Cov(y[N], y[N-1])
 
-            warpPrint("\nY_N variance: %d for frequency: %d Hz.", Var_Y_N, i);}
-      
+            //warpPrint("\nFrequency: %d Hz. Variance of: %d", i, (int32_t)Var_Y_N); //Need to typecast to 32 bit - max bit depth of warpPrint - can loose accuracy at large magnitudes
+        }
+        warpPrint("\n");
     }
     return;
 }

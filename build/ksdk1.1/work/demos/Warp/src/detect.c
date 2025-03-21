@@ -135,6 +135,7 @@ void update_goertzel(uint32_t x_n) {
             // Compute new covariance: Cov(y[N-1], y[N-2]) = a * Var(y[N-2]) - Cov(y[N-2], y[N-3])
             int64_t Cov_Y_Nsub1 = (int64_t)coeff * Var_Y_Nsub2 / 1000 - Cov_Y_Nsub2;
             
+            warpPrint("\n Covariances: y_n-2andn-3: %d: y_n-1andn-2 %d", (int32_t)Cov_Y_Nsub2, (int32_t)Cov_Y_Nsub2);
             // Compute new variance using updated covariance
             int64_t Var_Y_N = Acc_mag_Variance 
                                     + (int64_t)coeff * (int64_t)coeff * Var_Y_Nsub1 / 1000000
@@ -147,56 +148,12 @@ void update_goertzel(uint32_t x_n) {
             Prev_Covars_Y[i] = Cov_Y_Nsub1; // Shift Cov(y[N-1], y[N-2]) → Cov(y[N-2], y[N-3])
             Covars_Y[i] = Cov_Y_Nsub1;      // Store new Cov(y[N], y[N-1])
 
-            warpPrint("\nY_N variance: %d for frequency: %d Hz.", Var_Y_N, i);}
-      
+            //warpPrint("\nFrequency: %d Hz. Variance of: %d", i, (int32_t)Var_Y_N); //Need to typecast to 32 bit - max bit depth of warpPrint - can loose accuracy at large magnitudes
+        }
+        warpPrint("\n");
     }
     return;
 }
-
-
-
-
-// void update_goertzel(uint32_t x_n) {
-//     for (int i = 0; i < NUM_FREQS; i++) {
-//         // Get precomputed coefficient (scaled ×1000)
-//         int32_t coeff = coeffs[i];
-
-//          // Compute y_N - 2*1000*cos() * Y_n-1/ 1000 scaled for integer math
-//         int32_t y_N = ((2*coeff * y_values[i][1]) / 1000) - y_values[i][0] + x_n;
-
-//         //warpPrint("\ny_N values: %d \n\n", y_N); // For print debugging - if we ever get zero powers
-//         // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
-//         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
-//         y_values[i][1] = y_N;             // y[N-1] = new y[N]
-
-
-//         // Retrieve previous variance and covariance values
-//         int64_t Var_Y_Nsub2 = Prev_Y_Vars[i];  // Var(y[N-2])
-//         int64_t Var_Y_Nsub1 = Y_Vars[i];       // Var(y[N-1])
-//         int64_t Cov_Y_Nsub2 = Prev_Covars_Y[i]; // Cov(y[N-2], y[N-3])
-
-//         // Compute new covariance: Cov(y[N-1], y[N-2]) = a * Var(y[N-2]) - Cov(y[N-2], y[N-3])
-//         int64_t Cov_Y_Nsub1 = (int64_t)coeff * Var_Y_Nsub2 / 1000 - Cov_Y_Nsub2;
-
-//         // Compute new variance using updated covariance
-//         int64_t Var_Y_N = (int64_t)Acc_mag_Variance 
-//                         + (int64_t)coeff * (int64_t)coeff * Var_Y_Nsub1 / 1000000
-//                         + Var_Y_Nsub2
-//                         + 2 * (int64_t)coeff * Cov_Y_Nsub1 / 1000;
-
-//         // Store the new computed values
-//         Prev_Y_Vars[i] = Var_Y_Nsub1;   // Shift Var(y[N-1]) → Var(y[N-2])
-//         Y_Vars[i] = Var_Y_N;            // Store new Var(y[N])
-//         Prev_Covars_Y[i] = Cov_Y_Nsub1; // Shift Cov(y[N-1], y[N-2]) → Cov(y[N-2], y[N-3])
-//         Covars_Y[i] = Cov_Y_Nsub1;      // Store new Cov(y[N], y[N-1])
-//     }
-//     return;
-// }
-
-
-
-
-//float Cov(float y_1)
 
 
 
