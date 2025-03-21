@@ -118,18 +118,15 @@ void update_goertzel(uint32_t x_n, uint64_t Acc_mag_Variance) {
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
         
-
+        // Update old Covariance indices
         Y_Vars[i][0] = Y_Vars[i][1]; // Var(yN-2) becomes previous Var(yN-1) - by defualt y0 and y1 start as 0 in the recursive relation
-        //Y_Vars[i][1] = Y_Vars[i][2]; // Var(yN-1) becomes previous Var(yN)
-        Y_Vars[i][1] = Var_Y_N; // Var(yN-1) becomes previous Var(yN)
-        
+        Y_Vars[i][1] = Y_Vars[i][2]; // Var(yN-1) becomes previous Var(yN)
         Covars_Y[i][0] = Covars_Y[i][1]; // Cov(yN-2, yN-3) = Cov(yN-1, yN-2) <-- Frresh resetting the last covariance
-        float a = (float)coeff;
         
-        //Covars_Y[i][1] = (int64_t)coeff*Y_Vars[i][0] - Covars_Y[i][0];  // Cov(yN-1, yN-2) = a*Var(yN-2) - Cov(yN-2, yN-3)
-        Covars_Y[i][1] = a*Y_Vars[i][0] - Covars_Y[i][0];  // Cov(yN-1, yN-2) = a*Var(yN-2) - Cov(yN-2, yN-3)
-        Var_Y_N = (float)Acc_mag_Variance  + a*a*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*a*Covars_Y[i][1];  //Y_N variance expression
-        //Y_Vars[i][2] = (int64_t)Acc_mag_Variance + (int64_t)coeff*(int64_t)coeff*Y_Vars[i][1]+ Y_Vars[i][0] + 2*(int64_t)coeff*Covars_Y[i][1];  //Y_N variance expression, last term with covariance defined ad: // Cov(yN-1, yN-2) 
+
+        Covars_Y[i][1] = (int64_t)coeff*Y_Vars[i][0] - Covars_Y[i][0];  // Cov(yN-1, yN-2) = a*Var(yN-2) - Cov(yN-2, yN-3)
+        // Y_Vars[i][2] = (float)Acc_mag_Variance  + (float)coeff*(float)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*(float)coeff*Covars_Y[i][1];  //Y_N variance expression
+        Y_Vars[i][2] = (int64_t)Acc_mag_Variance + (int64_t)coeff*(int64_t)coeff*Y_Vars[i][1]+ Y_Vars[i][0] + 2*(int64_t)coeff*Covars_Y[i][1];  //Y_N variance expression, last term with covariance defined ad: // Cov(yN-1, yN-2) 
         
     }
     return;
