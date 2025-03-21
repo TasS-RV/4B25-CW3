@@ -21,6 +21,13 @@
 int64_t Acc_mag_Variance = 0; // Instead, storing instantaenous acceleration magntiude as a global variance
 uint16_t timediff_poll[3] = {0};
 
+
+// int64_t Prev_Covars_Y[NUM_FREQS] = {0};
+// int64_t Covars_Y[NUM_FREQS] = {0};
+// int64_t Prev_Y_Vars[NUM_FREQS] = {0};
+// int64_t Y_Vars[NUM_FREQS] = {0};
+
+
 // Precomputed coefficients (scaled by 1000 as we cannot handle floats) - currently 3-7Hz inclusive 
 const int32_t coeffs[NUM_FREQS] = {
     1902,  // 2 * cos(2π * 2 / 40) * 1000
@@ -126,17 +133,17 @@ void update_goertzel(uint32_t x_n) {
         int64_t Cov_Y_Nsub2 = Prev_Covars_Y[i]; // Cov(y[N-2], y[N-3])
         
         //         // Compute new covariance: Cov(y[N-1], y[N-2]) = a * Var(y[N-2]) - Cov(y[N-2], y[N-3])
-        // int64_t Cov_Y_Nsub1 = (int64_t)coeff * Var_Y_Nsub2 / 1000 - Cov_Y_Nsub2;
+        int64_t Cov_Y_Nsub1 = (int64_t)coeff * Var_Y_Nsub2 / 1000 - Cov_Y_Nsub2;
         
         //         // Compute new variance using updated covariance
-        // int64_t Var_Y_N = (int64_t)Acc_mag_Variance 
-        //                         + (int64_t)coeff * (int64_t)coeff * Var_Y_Nsub1 / 1000000
-        //                         + Var_Y_Nsub2
-        //                         + 2 * (int64_t)coeff * Cov_Y_Nsub1 / 1000;
+        int64_t Var_Y_N = Acc_mag_Variance 
+                                + (int64_t)coeff * (int64_t)coeff * Var_Y_Nsub1 / 1000000
+                                + Var_Y_Nsub2
+                                + 2 * (int64_t)coeff * Cov_Y_Nsub1 / 1000;
         
         //         // Store the new computed values
-        // Prev_Y_Vars[i] = Var_Y_Nsub1;   // Shift Var(y[N-1]) → Var(y[N-2])
-        // Y_Vars[i] = Var_Y_N;            // Store new Var(y[N])
+        Prev_Y_Vars[i] = Var_Y_Nsub1;   // Shift Var(y[N-1]) → Var(y[N-2])
+        Y_Vars[i] = Var_Y_N;            // Store new Var(y[N])
         // Prev_Covars_Y[i] = Cov_Y_Nsub1; // Shift Cov(y[N-1], y[N-2]) → Cov(y[N-2], y[N-3])
         // Covars_Y[i] = Cov_Y_Nsub1;      // Store new Cov(y[N], y[N-1])
 
