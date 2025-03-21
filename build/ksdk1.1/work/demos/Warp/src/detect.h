@@ -50,10 +50,10 @@ int32_t y_values[NUM_FREQS][2] = {0};
 // int32_t Y_N_Var = 0;
 
 
-extern int64_t Prev_Covars_Y[NUM_FREQS] = {0};
-extern int64_t Covars_Y[NUM_FREQS] = {0};
-extern int64_t Prev_Y_Vars[NUM_FREQS] = {0};
-extern int64_t Y_Vars[NUM_FREQS] = {0};
+static int64_t Prev_Covars_Y[NUM_FREQS] = {0};
+static int64_t Covars_Y[NUM_FREQS] = {0};
+static int64_t Prev_Y_Vars[NUM_FREQS] = {0};
+static int64_t Y_Vars[NUM_FREQS] = {0};
 
 // Section associated with Bayseian probability variables - based on training data: will use standard deviation instead of variance, as to get SD from var requires rooting. Squaring to go the other way is easier.
 
