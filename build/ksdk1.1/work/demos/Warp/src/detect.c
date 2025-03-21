@@ -90,7 +90,7 @@ uint32_t compute_goertzel_power()
         if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);} //%u - modifier prints power in unsigned format - expected to be positive
         int64_t covY_Nsub1_Nsub2 = Prev_Covars_Y[i]; // Redefining here for clarity
         
-        if (MMA8451Q_RAW_VarError_PROP) {
+        if (MMA8451Q_RAW_VarError_PROP && MMA8451Q_PROP_power) {
             compute_power_uncertainty((int)target_freqs[i], (int64_t) power, (int64_t)y_values[i][0], (int64_t)y_values[i][1], Prev_Y_Vars[i], Y_Vars[i], covY_Nsub1_Nsub2, (int64_t)coeff); // Passing in y_N-1 and y_N-2 and their associated variance properties.
         }
 
@@ -159,7 +159,7 @@ void update_goertzel(uint32_t x_n) {
         y_values[i][1] = y_N;           // y[N-1] = new y[N]
 
           
-        if (MMA8451Q_RAW_VarError_PROP){ // Flag for computing covariance - may require lower sampling frequency to observe, favours hgihest possible sampling rate for higher accuracy
+        if (MMA8451Q_RAW_VarError_PROP && !MMA8451Q_PROP_power){ // Flag for computing covariance - may require lower sampling frequency to observe, favours hgihest possible sampling rate for higher accuracy
             int64_t Var_Y_Nsub2 = Prev_Y_Vars[i];  // Var(y[N-2])
             int64_t Var_Y_Nsub1 = Y_Vars[i];       // Var(y[N-1])
             int64_t Cov_Y_Nsub2 = Prev_Covars_Y[i]; // Cov(y[N-2], y[N-3])

@@ -9,7 +9,7 @@ uint16_t YCombined;
 uint16_t ZCombined;
 
 
-#define BUFF_SIZE 40 //At 40Hz, set to update power every 1s
+#define BUFF_SIZE 10 //At 40Hz, set to update power every 1s
 
 /* 
 Variables for updating a rolling buffer for storing acceleration magntiudes and times  - thes eneed to be in the header, as the script file and internal functions 
