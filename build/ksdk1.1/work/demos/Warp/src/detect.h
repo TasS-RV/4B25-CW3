@@ -10,8 +10,6 @@ uint16_t ZCombined;
 
 
 #define BUFF_SIZE 40 //At 40Hz, set to update power every 1s
-// uint32_t AccelerationBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
-// uint32_t LPFBuffer[BUFF_SIZE] = {0}; // Initialised to 0.
 
 /* 
 Variables for updating a rolling buffer for storing acceleration magntiudes and times  - thes eneed to be in the header, as the script file and internal functions 
@@ -44,8 +42,6 @@ static int64_t Prev_Y_Vars[NUM_FREQS] = {0};
 static int64_t Y_Vars[NUM_FREQS] = {0};
 
 // Section associated with Bayseian probability variables - based on training data: will use standard deviation instead of variance, as to get SD from var requires rooting. Squaring to go the other way is easier.
-
-
 uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]);
 // All frequencies x100000s for integer math
 uint32_t PDF_parkinsonian[NUM_FREQS] =      {72, 780, 29844, 33404, 28674, 3930, 1414, 877, 121, 99, 360, 425};  // PDF(H1) - probability spectrum for true hypothesis. Non_gaussian - instead concentration of probaabilities around 4-6Hz Parkinsonian frequencies 

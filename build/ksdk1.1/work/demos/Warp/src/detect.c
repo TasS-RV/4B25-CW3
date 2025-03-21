@@ -126,18 +126,8 @@ void update_goertzel(uint32_t x_n) {
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;           // y[N-1] = new y[N]
 
-        
-    
-        //  // // Update old Covariance indices
-        // Y_Vars[i][0] = Y_Vars[i][1]; // Var(yN-2) becomes previous Var(yN-1) - by defualt y0 and y1 start as 0 in the recursive relation
-        // Y_Vars[i][1] = Y_N_Var; // Var(yN-1) becomes previous Var(yN)
-        // //Covars_Y[i][0] = Covars_Y[i][1]; // Cov(yN-2, yN-3) = Cov(yN-1, yN-2) <-- Frresh resetting the last covariance
-        
-        // // // // Calculate Nth Variance and use N-1th Covariance
-        // Covars_Y[i][1] = (int64_t)coeff*Y_Vars[i][0]/1000 - Covars_Y[i][0];  // Cov(yN-1, yN-2) = a*Var(yN-2) - Cov(yN-2, yN-3)
-        // Y_N_Var = (int64_t)Acc_mag_Variance + (int64_t)coeff*(int64_t)coeff*Y_Vars[i][1]/1000000 + Y_Vars[i][0] + 2*(int64_t)coeff*Covars_Y[i][1]/1000;  //Y_N variance expression, last term with covariance defined ad: // Cov(yN-1, yN-2) 
-        
-        if (MMA8451Q_RAW_VarError_PROP){
+          
+        if (MMA8451Q_RAW_VarError_PROP){ // Flag for computing covariance - may require lower sampling frequency to observe, favours hgihest possible sampling rate for higher accuracy
             int64_t Var_Y_Nsub2 = Prev_Y_Vars[i];  // Var(y[N-2])
             int64_t Var_Y_Nsub1 = Y_Vars[i];       // Var(y[N-1])
             int64_t Cov_Y_Nsub2 = Prev_Covars_Y[i]; // Cov(y[N-2], y[N-3])
@@ -157,11 +147,8 @@ void update_goertzel(uint32_t x_n) {
             Prev_Covars_Y[i] = Cov_Y_Nsub1; // Shift Cov(y[N-1], y[N-2]) → Cov(y[N-2], y[N-3])
             Covars_Y[i] = Cov_Y_Nsub1;      // Store new Cov(y[N], y[N-1])
 
-            warpPrint("\nVariance in most recently computed Y_N: %d\n", Var_Y_N);}
-    
-        // Y_Vars[i][2] = (float)Acc_mag_Variance  + (float)coeff*(float)coeff*(Y_Vars[i][1] + Y_Vars[i][0]) + 2.0*(float)coeff*Covars_Y[i][1];  //Y_N variance expression
-        //Y_Vars[i][2] = (float)Acc_mag_Variance + (float)coeff*(float)coeff*Y_Vars[i][1]+ Y_Vars[i][0] + 2*(float)coeff*Covars_Y[i][1];  // version with variance and covariance arrays defined floating point - in header 
-    
+            warpPrint("\nY_N variance: %d for frequency: %d Hz.", Var_Y_N, i);}
+      
     }
     return;
 }
