@@ -117,10 +117,18 @@ void update_goertzel(uint32_t x_n) {
         // Shift values: Move y[N-1] → y[N-2], and store y_N in y[N-1]
         y_values[i][0] = y_values[i][1];  // y[N-2] = old y[N-1]
         y_values[i][1] = y_N;             // y[N-1] = new y[N]
+        
+
+        warpPrint("yn-2 value: %d \n", y_values[i][0]);
+        warpPrint("yn-2 value - float conversion: %d \n", (int32_t)(((float)y_values[i][0])/4.0));
+        
     }
     return;
 }
 
+
+
+//float Cov(float y_1)
 
 
 

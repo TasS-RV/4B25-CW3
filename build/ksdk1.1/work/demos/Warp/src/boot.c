@@ -2130,7 +2130,7 @@ main(void)
 	// //	OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz
 		
 	// }
-	int8_t sample_rate = 40; // Currently just 10 Hz sample rate
+	int8_t sample_rate = 4; // Currently just 10 Hz sample rate
 	int16_t iter_count = 0; 
 
 	while (1){
