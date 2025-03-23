@@ -195,7 +195,7 @@ In order to observe different outputs, different values should be turned on and 
 
 ---
 
-## 🧪 Example Output
+## 📝 Example Output in RTT print
 
 Dominant Oscillation detected at: 5 Hz. Probability of this being Parkinsonian tremors: 873 /1000.
 
