@@ -1968,7 +1968,9 @@ main(void)
 		
 	int8_t sample_rate = 40; // Currently just 10 Hz sample rate
 	int16_t iter_count = 0; 
+    
 
+	// Simple change for commit
 	while (1){
 	if ((time_now - time_start) >= (uint32_t)(1*1000/sample_rate)) // Run for 50 seocnds,to get a decent distribution of powers
 		{	
