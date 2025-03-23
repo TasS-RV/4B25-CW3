@@ -31,6 +31,8 @@ uint16_t timeAft_poll = 0;
 void update_goertzel(uint32_t x_n);
 void compute_goertzel_power();
 
+uint16_t P_H1 = 40000;  // Arbitrary 10% of population with Parkinson's.
+uint16_t P_H0 = 60000; // 97% probability/ proportion of populaiton without Parkinson's
 
 const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13};  // Hz - same bit field size for math. 32 bitrs is overkill, but required for the int arithmetic
 // Y_values for NUM_FREQ number of frequency bins for Goertzel FFT
@@ -47,5 +49,6 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]);
 uint32_t PDF_parkinsonian[NUM_FREQS] =      {72, 780, 29844, 33404, 28674, 3930, 1414, 877, 121, 99, 360, 425};  // PDF(H1) - probability spectrum for true hypothesis. Non_gaussian - instead concentration of probaabilities around 4-6Hz Parkinsonian frequencies 
 uint32_t PDF_non_parkinsonian[NUM_FREQS] = {6654, 7865, 13294, 15042, 13299, 9772, 15092, 7222, 4482, 1793, 2791, 2694}; // PDF(H0) - probability distribution for false hypothesis  
 
-uint16_t P_H1 = 40000;  // Arbitrary 3% of population with Parkinson's.
-uint16_t P_H0 = 60000; // 97% probability/ proportion of populaiton without Parkinson's
+// For debugging
+//uint16_t P_H1 = 3000;  // Literature based 3% of population with Parkinson's.
+//uint16_t P_H0 = 9700; // 97% probability/ proportion of populaiton without Parkinson's - literature based.
