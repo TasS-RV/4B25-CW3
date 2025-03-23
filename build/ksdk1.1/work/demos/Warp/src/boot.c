@@ -1965,22 +1965,8 @@ main(void)
 	int32_t time_now = 0;
 
 	time_start = OSA_TimeGetMsec();
-
-	// for (int i = 0; i < 1000; i++){
 		
-	// 	if (time_now - time_start > 500)
-	// 	{
-	// 		byte_to_state_conversion(); //Obtrain time taken to poll - Error will exist when upodating buffers
-	// 		time_start = OSA_TimeGetMsec();		
-	// 	}
-		
-	// 	time_now = OSA_TimeGetMsec(); // Update time
-	
-	// 	// Manual 0.5s delay between printed readings - repeats ther cycle 600x (5 minutes)
-	// //	OSA_TimeDelay(25); //--> Will print power computation every 1s as update freq is 40Hz
-		
-	// }
-	int8_t sample_rate = 10; // Currently just 10 Hz sample rate
+	int8_t sample_rate = 40; // Currently just 10 Hz sample rate
 	int16_t iter_count = 0; 
 
 	while (1){

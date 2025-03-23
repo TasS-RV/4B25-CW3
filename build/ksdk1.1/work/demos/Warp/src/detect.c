@@ -87,10 +87,10 @@ void compute_goertzel_power()
         }
 
         // Outputs - either debugging to for final classifications
-        if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);} //%u - modifier prints power in unsigned format - expected to be positive
+        if (MMA8451Q_RAW_DATA_COLLECT == 0 && MMA8451Q_Powerprintouts == 1){warpPrint("\nPower at %d Hz is: %u\n", target_freqs[i], power[i]);} //%u - modifier prints power in unsigned format - expected to be positive
         int64_t covY_Nsub1_Nsub2 = Prev_Covars_Y[i]; // Redefining here for clarity
         
-        if (MMA8451Q_RAW_VarError_PROP && MMA8451Q_PROP_power) {
+        if (MMA8451Q_RAW_VarError_PROP) {
             int64_t varPower = compute_power_uncertainty((int)target_freqs[i], (int64_t) power, (int64_t)y_values[i][0], (int64_t)y_values[i][1], Prev_Y_Vars[i], Y_Vars[i], covY_Nsub1_Nsub2, (int64_t)coeff); // Passing in y_N-1 and y_N-2 and their associated variance properties.
             
             // Option to print both the raww variance in power - as well as variance/ Power magnitude (for computed power of each of the frequency bins)
@@ -99,7 +99,7 @@ void compute_goertzel_power()
         }
 
     }
-    if (MMA8451Q_RAW_DATA_COLLECT == 0){warpPrint("\n--> Next time window.\n");}
+    if (MMA8451Q_RAW_DATA_COLLECT == 0 && MMA8451Q_Powerprintouts == 1){warpPrint("\n--> Next time window.\n");} // Used for regex in the python script to sxtract powers
     
     // Call Baysean probability calculation function:
     calculate_baysean(max_pwr_index, power); // Pass in the power spectrm - we may decide to do on the fly Gaussian or other proability modelling and computations with the instantaenous  
@@ -151,7 +151,7 @@ void update_goertzel(uint32_t x_n) {
         y_values[i][1] = y_N;           // y[N-1] = new y[N]
 
           
-        if (MMA8451Q_RAW_VarError_PROP && !MMA8451Q_PROP_power){ // Flag for computing covariance - may require lower sampling frequency to observe, favours hgihest possible sampling rate for higher accuracy
+        if (MMA8451Q_RAW_VarError_PROP){ // Flag for computing covariance - may require lower sampling frequency to observe, favours hgihest possible sampling rate for higher accuracy
             int64_t Var_Y_Nsub2 = Prev_Y_Vars[i];  // Var(y[N-2])
             int64_t Var_Y_Nsub1 = Y_Vars[i];       // Var(y[N-1])
             int64_t Cov_Y_Nsub2 = Prev_Covars_Y[i]; // Cov(y[N-2], y[N-3])
@@ -174,7 +174,6 @@ void update_goertzel(uint32_t x_n) {
 
             //warpPrint("\nFrequency: %d Hz. Variance of: %d", i, (int32_t)Var_Y_N); //Need to typecast to 32 bit - max bit depth of warpPrint - can loose accuracy at large magnitudes
         }
-        warpPrint("\n");
     }
     return;
 }
@@ -292,6 +291,8 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
         final_P = 0;
     }               
     //warpPrint("\nP_H1_given_f: {%u}\n", P_H1_given_f);
-    warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}/1000 \n", target_freqs[max_pwr_index], final_P); //Rescaled output probability by 1000 to accomodate for decent resolution of proability with warpPrint.
+    //warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}/1000 \n", target_freqs[max_pwr_index], final_P); //Rescaled output probability by 1000 to accomodate for decent resolution of proability with warpPrint.
+
+    warpPrint("\n Dominant Oscillation detected at: %d Hz. Probability of this being Parkinsonian tremors: %u /1000\n", target_freqs[max_pwr_index], final_P);
     return;
 }
