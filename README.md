@@ -34,6 +34,96 @@ The following procedure describes how data for the Baysean classification was ob
 2. dfg 
 3. fg
 
+   ## 3 Propagated Uncertainty and Discrete PMFs
+
+To evaluate Parkinsonian tremor likelihood, the classifier performs a hypothesis test using peak frequency bins based on Goertzel power. It compares:
+
+- **H₁**: Subject exhibits Parkinsonian rest tremors  
+- **H₀**: Subject is at rest or shows non-Parkinsonian motion
+
+This is done by computing the discrete probability distributions **P(f | H₁)** and **P(f | H₀)**, where `f` is the frequency detected at peak power.
+
+### 📊 Constructing the PMFs
+
+Due to the absence of clinical tremor datasets, both PMFs were created empirically:
+
+- **P(f | H₁)** was formed from **10 trials** with controlled oscillations between **4–6 Hz**, applied manually or using a coupled actuation rig. For each trial, the frequency bin with the highest Goertzel power was recorded.
+  
+- **P(f | H₀)** was derived from **90 trials** of:
+  - The sensor at rest (static on a flat surface), and
+  - Irregular or very low-frequency motions outside the Parkinsonian band
+
+These histograms reflect how often each frequency bin shows up at peak power, forming **discrete PMFs** used in the Bayesian classifier. These models are visualized in the figure below:
+
+![Bayesian PDF Inputs](./baysean_RVAR_inputs.png)
+
+- The Parkinsonian PMF shows a sharp peak centered on 5 Hz.
+- The non-Parkinsonian PMF is broad and flat, indicating low frequency specificity at rest.
+
+### 📈 Propagation of Magnitude Variance
+
+To quantify uncertainty in the raw acceleration input, we assume white Gaussian noise on each axis (x, y, z). This noise propagates into the magnitude calculation using:
+
+```
+            x²σₓ² + y²σᵧ² + z²σ_z²
+σₐ²  =  ----------------------------
+              x² + y² + z²
+```
+
+This result serves as the **input variance for the Goertzel sequence**, allowing uncertainty to be traced through each intermediate calculation.
+
+### 🔁 Recursive Uncertainty in Goertzel Sequence
+
+The Goertzel recurrence:
+
+```
+y[n] = x[n] + a·y[n−1] − y[n−2]
+```
+
+is updated with uncertainty propagation:
+
+```
+Var(y[n]) = Var(x) + a²·Var(y[n−1]) + Var(y[n−2]) + 2a·Cov(y[n−1], y[n−2])
+```
+
+Covariance terms are updated iteratively via:
+
+```
+Cov(y[n−1], y[n−2]) = a·Var(y[n−2]) − Cov(y[n−2], y[n−3])
+```
+
+This continues to the end of each 1 s rolling window (40 samples), giving full variance on `y[n−1]` and `y[n−2]`.
+
+### 🧮 Posterior Power Variance
+
+Power is computed from the final Goertzel terms. The **posterior uncertainty in power** is:
+
+```
+Var(P) = (2yₙ₋₁ − ayₙ₋₂)² · Var(yₙ₋₁)
+       + (2yₙ₋₂ − ayₙ₋₁)² · Var(yₙ₋₂)
+       + 2(2yₙ₋₁ − ayₙ₋₂)(2yₙ₋₂ − ayₙ₋₁) · Cov(yₙ₋₁, yₙ₋₂)
+```
+
+This variance can be printed for interpretability but is **not used in the final Bayesian probability calculation**, which relies only on the frequency PMFs.
+
+### 📊 Classification Results
+
+The classification output is summarized below:
+
+![Stacked Classification Histogram](./Classificaiton_tests.png)
+
+- **Red bars**: Frequency bins classified during Parkinsonian-like 4–6 Hz inputs.
+- **Blue bars**: Classifications during rest or low-frequency motion.
+- The sharp separation between 4–6 Hz and other bins validates the discriminative power of the PMF model.
+
+---
+
+*Note: All computations are implemented in fixed-point integer math with scaled variance tracking. Only Type A uncertainty is modeled here — firmware limitations (e.g., register quantization, integer rounding) introduce additional epistemic errors that are not accounted for.*
+
+
+
+
+
 
 - Optional variance propagation introduces latency but increases robustness in detection.
 - Designed to run efficiently on low-power embedded systems (e.g., FRDM-KL03Z with Warp firmware stack).
