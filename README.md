@@ -92,7 +92,7 @@ Var(P) = (2yₙ₋₁ − ayₙ₋₂)² · Var(yₙ₋₁)
        + 2(2yₙ₋₁ − ayₙ₋₂)(2yₙ₋₂ − ayₙ₋₁) · Cov(yₙ₋₁, yₙ₋₂)
 ```
 
-This variance can be printed for interpretability but is **not used in the final Bayesian probability calculation**, which relies only on the frequency PMFs.
+This variance can be printed for interpretability but is **not used in the final Bayesian probability calculation**, which relies only on the frequency PMFs. See above in the discussion regarding how it was not possible to verufy the statristical accuracy of the power variability/ relative variance calculations at 40Hz, due to the slow down caused by ```c warpPrint```.
 
 ### 📊 Classification Results
 
