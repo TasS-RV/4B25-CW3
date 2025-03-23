@@ -1,0 +1,3 @@
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/lib/ksdk_platform_lib/armgcc/KL03Z4/CMakeFiles/rebuild_cache.dir
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/lib/ksdk_platform_lib/armgcc/KL03Z4/CMakeFiles/edit_cache.dir
+/home/students/tes46/4B25-CW3/build/ksdk1.1/work/lib/ksdk_platform_lib/armgcc/KL03Z4/CMakeFiles/KsdkPlatformLib.dir
