@@ -21,12 +21,8 @@
 int64_t Acc_mag_Variance = 0; // Instead, storing instantaenous acceleration magntiude as a global variance
 uint16_t timediff_poll[3] = {0};
 
-
-// int64_t Prev_Covars_Y[NUM_FREQS] = {0};
-// int64_t Covars_Y[NUM_FREQS] = {0};
-// int64_t Prev_Y_Vars[NUM_FREQS] = {0};
-// int64_t Y_Vars[NUM_FREQS] = {0};
-
+//Used for checking the program efficiency: MMA8451Q_RAW_VarError_PROP and MMA8451Q_Powerprintouts both being ste to 1 represent wost case scenario due to added delay of warpprintouts
+int16_t compute_time_before;
 
 // Precomputed coefficients (scaled by 1000 as we cannot handle floats) - currently 3-7Hz inclusive 
 const int32_t coeffs[NUM_FREQS] = {
@@ -251,11 +247,17 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     Acc_mag_Variance = (int64_t)acc_magntiude;
 
     // Update buffer index (circular) - adding both time delay between function call and time difference for polling registers 
-        
+    
+    compute_time_before = OSA_TimeGetMsec();
+
     update_buffers(acc_magntiude, sampling_time_delta); 
 	uint64_t CoVar_XYZ = propagate_std_dev((uint64_t)(XAcceleration*XAcceleration), (uint64_t)(YAcceleration*YAcceleration), (uint64_t)(ZAcceleration*ZAcceleration),  
         X_SD, Y_SD, Z_SD);
     
+    // Used for calculating program efficiency in the report - NOTE THAT ADDING THE WARRPPRINTs can bring this up to 72 ms.
+    warpPrint("\n\nTotal processing time elapsed (excluding register polling): %d ms\n",(OSA_TimeGetMsec() - compute_time_before)); 
+
+
     if (MMA8451Q_RAW_DATA_COLLECT == 1){
         warpPrint("Magnitude of acceleration: %d \n", acc_magntiude);
         //warpPrint("Mean polling delay: %d us \n", ((timediff_poll[0] + timediff_poll[1] + timediff_poll[2]) * 1000) / 3); //Scaling up to get values after the decimal point - into warpPrint
@@ -293,6 +295,6 @@ uint32_t calculate_baysean(int max_pwr_index, uint32_t power_dist[NUM_FREQS]){
     //warpPrint("\nP_H1_given_f: {%u}\n", P_H1_given_f);
     //warpPrint("\nFrequency bin with peak power: %d Hz. \n P_H1_given_f: {%u}/1000 \n", target_freqs[max_pwr_index], final_P); //Rescaled output probability by 1000 to accomodate for decent resolution of proability with warpPrint.
 
-    warpPrint("\n Dominant Oscillation detected at: %d Hz. Probability of this being Parkinsonian tremors: %u /1000\n", target_freqs[max_pwr_index], final_P);
+    warpPrint("\nDominant Oscillation detected at: %d Hz. Probability of this being Parkinsonian tremors: %u /1000\n", target_freqs[max_pwr_index], final_P);
     return;
 }
