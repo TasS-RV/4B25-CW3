@@ -193,9 +193,9 @@ In order to observe different outputs, different values should be turned on and 
 ---
 
 ## 📝 Example Output in RTT print
-
+```bash
 Dominant Oscillation detected at: 5 Hz. Probability of this being Parkinsonian tremors: 873 /1000.
-
+```
 
 ## 📚 References
 
