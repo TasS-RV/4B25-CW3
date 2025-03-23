@@ -1,6 +1,6 @@
 # Coursework Activity 4: Real-Time Parkinsonian Tremor Detection Using MMA8451Q Accelerometer
 
-## Author
+---
 **Name:** Tasin Sayed  
 **College:** Corpus Christi College  
 **CRSid:** tes46
