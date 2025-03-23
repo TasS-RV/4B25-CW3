@@ -254,8 +254,8 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
 	uint64_t CoVar_XYZ = propagate_std_dev((uint64_t)(XAcceleration*XAcceleration), (uint64_t)(YAcceleration*YAcceleration), (uint64_t)(ZAcceleration*ZAcceleration),  
         X_SD, Y_SD, Z_SD);
     
-    // Used for calculating program efficiency in the report - can keep it commented out for the rest of the program
-    warpPrint("\n\nTotal processing time elapsed (excluding register polling): %d ms\n",(OSA_TimeGetMsec() - compute_time_before)); 
+    // Used for calculating program efficiency in the report - NOTE THAT ADDING THE WARRPPRINTs can bring this up to 72 ms.
+    //warpPrint("\n\nTotal processing time elapsed (excluding register polling): %d ms\n",(OSA_TimeGetMsec() - compute_time_before)); 
 
 
     if (MMA8451Q_RAW_DATA_COLLECT == 1){

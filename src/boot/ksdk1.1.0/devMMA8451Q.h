@@ -54,10 +54,10 @@ const uint8_t bytesPerReadingMMA8451Q                = 2;
 const uint8_t numberOfReadingsPerMeasurementMMA8451Q = 3;
 
 
-// Standard deviations (*10) modelling x, y, z accelerations as additive white Gaussian noise form Python fitting
-uint64_t X_SD = 194;//30;
-uint64_t Y_SD = 329;//40;
-uint64_t Z_SD = 204;//83;
+// Standard deviations (*10) modelling x, y, z accelerations as additive white Gaussian noise from Python fitting - remainding decimal points must be omitted.
+uint64_t X_SD = 194;// .30;
+uint64_t Y_SD = 329;// .40;
+uint64_t Z_SD = 204;// .83;
 
 
 // Stores the current power calculation, computed at the end of the rolling window
