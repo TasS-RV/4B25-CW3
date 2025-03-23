@@ -102,13 +102,13 @@ The classification output is summarized below:
 
 - **Red bars**: Frequency bins classified during Parkinsonian-like 4–6 Hz inputs.
 - **Blue bars**: Classifications during rest or low-frequency motion.
-- The sharp separation between 4–6 Hz and other bins validates the discriminative power of the PMF model.
+The sharp separation between 4–6 Hz and other bins validates the discriminative power of the PMF model. See the report for further details about how this feeds into the hypothesis test.
 
 ---
 
 *Note: All computations are implemented in fixed-point integer math with scaled variance tracking. Only Type A uncertainty is modeled here — firmware limitations (e.g., register quantization, integer rounding) introduce additional epistemic errors that are not accounted for.*
 
-- From the above, the variance propagation calculations are indeed done on board in 64 bit integer arithmetic. However, it was found to not be possible to validate all the live data and debug simultaneously as the data proceesing time was found to be > sampling period. Therefore, the intention of live detection could not be fulfilled, and is only read an validated outside the c-implementation. 
+From the above, the variance propagation calculations are indeed done on board in 64 bit integer arithmetic. However, it was found to not be possible to validate all the live data and debug simultaneously as the data proceesing time was found to be > sampling period. Therefore, the intention of live detection could not be fulfilled, and is only read an validated outside the c-implementation. 
 
 
 ---
