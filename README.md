@@ -39,7 +39,7 @@ The system follows a non-blocking polling loop and classifies tremors based on t
 ---
 
 ## 🌲 Function Call Tree
-Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better at understanding the inheritance between function calls and order of processing.
+Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better used to understand the inheritance between function calls and order of processing.
 
 ```text
 boot.c  
