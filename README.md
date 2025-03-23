@@ -118,7 +118,7 @@ From the above, the variance propagation calculations are indeed done on board i
 ## 📊 System Flowchart
 
 <p align="center">
-  <img src="Flowchart_for_Implementation.png" alt="Flowchart for Parkinsonian Tremor Classifier" width="600"/>
+  <img src="Flowchart_for_Implementation.png" alt="Flowchart for Parkinsonian Tremor Classifier" width="800"/>
 </p>
 
 The system follows a non-blocking polling loop and classifies tremors based on the dominant frequency every 0.5 seconds using a Bayesian posterior confidence score.
