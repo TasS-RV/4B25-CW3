@@ -39,7 +39,7 @@ The system follows a non-blocking polling loop and classifies tremors based on t
 ---
 
 ## 🌲 Function Call Tree
-Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better used to understand the inheritance between function calls and order of processing.
+Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better used to understand the nesting between function calls and order of processing.
 All these files can be found in ```/src/boot/ksdk1.1.0``` - in order to burn the 'export' ready firmwware onto the KL03Z, the executable is located in: ```build/ksdk1.1/work/demos/Warp/armgcc/Warp/release/Warp.srec```.
 ```text
 boot.c  
