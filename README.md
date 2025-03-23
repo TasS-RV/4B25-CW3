@@ -38,8 +38,36 @@ The system follows a non-blocking polling loop and classifies tremors based on t
 
 ---
 
-## 🧩 Function Inheritance & Key Call Graph
-boot.c │ ├── initMMA8451Q() │ └── sets sensor I2C address and voltage │ ├── configureSensorMMA8451Q() │ └── writeSensorRegisterMMA8451Q() │ └── while (sampling loop @ 40Hz) └── byte_to_state_conversion() ├── readSensorRegisterMMA8451Q() ├── convertAcceleration() ├── get_sqrt() ├── update_buffers() │ ├── update_goertzel() │ │ └── compute_power_uncertainty() (if enabled) │ └── compute_goertzel_power() (every 0.5s) │ ├── compute_power_uncertainty() (if enabled) │ └── calculate_baysean() └── propagate_std_dev()
+## 🌲 Function Call Tree
+Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better at understanding the inheritance between function calls and order of processing.
+
+boot.c  
+│  
+devMMA8451Q.c
+├── initMMA8451Q()  
+│   └── configureSensorMMA8451Q()  
+│       ├── writeSensorRegisterMMA8451Q()  
+│       └── (sets sensor I2C registers and check status)  
+detect.c 
+└── while iteration for fixed iteration count limit to last 10s (main sampling loop at 40 Hz)  
+    └── byte_to_state_conversion()  
+        devMMA8451Q.c
+        ├── readSensorRegisterMMA8451Q() 
+        │ 
+        detect.c 
+        ├── convertAcceleration()  
+        ├── get_sqrt() 
+        │ 
+        devMMA8451Q.c
+        ├── update_buffers()  
+        │   │ 
+        │   detect.c 
+        │   ├── update_goertzel()  
+        │   │   ├── compute_power_uncertainty()   (only if variance flag enabled)  
+        │   │   └── propagate_std_dev()  
+        │   └── compute_goertzel_power()          (triggered every 0.5 s)  
+        │       ├── compute_power_uncertainty()   (only if variance flag enabled)  
+        │       └── calculate_baysean()  
 
 
 ---
@@ -82,13 +110,6 @@ Dominant Oscillation detected at: 5 Hz. Probability of this being Parkinsonian t
 
 ---
 
-## 📍 Future Improvements
-
-- FFT alternative using more bins for better frequency resolution.
-- Adaptive windowing or decimation to balance time vs. frequency resolution.
-- Multi-axis frequency decomposition instead of magnitude-only.
-
----
 
 
 
