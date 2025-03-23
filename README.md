@@ -21,6 +21,7 @@ The algorithm samples acceleration at **40Hz**, calculates the **magnitude** of 
 ## 📝 Notes
 
 - All math is implemented in fixed-point integer format — scaled where needed — to accommodate SEGGER RTT print limitations. Internal computations have been verified to be correct through logging the terminal output on python script and running a digital twin of the system, exlcuding the sensor reading stage. This is mainly a data post processingf script to verify the calculations being performed in C.
+- Instead of importing the ```c math.h ``` library for square root, due to thius demanding too large stack memory allocation compared to a simple iterative method. This can however, result in Epistemic uncertainty, as on board there is no way live validate the inaccuracy of the iteration.
 - The report states the maximum polling rate is 55Hz - inside ```c byte_to_state_conversion ``` we are reading one of each 3 registers at once, resulting in Type B uncertaity alongside an epistemic error from the assumption of x, y, z magnitude being at the same snapshot of time. This should not nesessarily be a major issue for a limb-mounted sensor as intended, given the oscillations would be multiaxial (unlike the mono-axial vibrations on the IB Integrated Coursework building vibration transducer.
 
 <p align="center">
@@ -29,7 +30,9 @@ The algorithm samples acceleration at **40Hz**, calculates the **magnitude** of 
 
 The following procedure describes how data for the Baysean classification was obtained:
 
-
+1. kdjnbd
+2. dfg 
+3. fg
 
 
 - Optional variance propagation introduces latency but increases robustness in detection.
