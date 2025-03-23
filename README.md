@@ -183,12 +183,13 @@ boot.c
 ---
 
 ## ⚙️ Compilation Flags (in `config.h`)
+In order to observe different outputs, different values should be turned on and off. All the above should be turned off, and set to 0 in the ```config.h``` for the exmaple output statement every 0.5s rolling window below. 
 
 | Flag | Description |
 |------|-------------|
-| `MMA8451Q_RAW_DATA_COLLECT` | Enable raw accelerometer + power printouts. |
-| `MMA8451Q_RAW_VarError_PROP` | Enable variance/covariance propagation. |
-| `MMA8451Q_Powerprintouts` | Enable individual frequency bin power output. |
+| `MMA8451Q_RAW_DATA_COLLECT` | Enable raw accelerometer + power printouts for each Frequency bin 2-13 Hz.| 
+| `MMA8451Q_RAW_VarError_PROP` | Enable variance/covariance propagation data to be printed - advisable to keep this 0 due to very large computational delays from warpPrint.|
+| `MMA8451Q_Powerprintouts` | Enable individual frequency bin power output. `MMA8451Q_RAW_DATA_COLLECT`  needs to be set to active simultaneously to get satisfy the logic to get the prinout. |
 
 ---
 
