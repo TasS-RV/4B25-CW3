@@ -98,7 +98,9 @@ This variance can be printed for interpretability but is **not used in the final
 
 The classification output is summarized below:
 
-![Stacked Classification Histogram](./Classificaiton_tests.png)
+<p align="center">
+  <img src="Classificaiton_tests.png" alt="Classificaiton_tests" width="400"/>
+</p>
 
 - **Red bars**: Frequency bins classified during Parkinsonian-like 4–6 Hz inputs.
 - **Blue bars**: Classifications during rest or low-frequency motion.
