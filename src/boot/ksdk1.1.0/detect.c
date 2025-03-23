@@ -64,7 +64,7 @@ int32_t convertAcceleration(int16_t number){ // Convert the acceleration from mu
   }
   
 
-uint32_t compute_goertzel_power()
+void compute_goertzel_power()
 {   
     uint32_t power[NUM_FREQS] = {0}; //Power is also size of frequency bins, and forms a rolling buffer that is over-written
 
@@ -91,7 +91,11 @@ uint32_t compute_goertzel_power()
         int64_t covY_Nsub1_Nsub2 = Prev_Covars_Y[i]; // Redefining here for clarity
         
         if (MMA8451Q_RAW_VarError_PROP && MMA8451Q_PROP_power) {
-            compute_power_uncertainty((int)target_freqs[i], (int64_t) power, (int64_t)y_values[i][0], (int64_t)y_values[i][1], Prev_Y_Vars[i], Y_Vars[i], covY_Nsub1_Nsub2, (int64_t)coeff); // Passing in y_N-1 and y_N-2 and their associated variance properties.
+            int64_t varPower = compute_power_uncertainty((int)target_freqs[i], (int64_t) power, (int64_t)y_values[i][0], (int64_t)y_values[i][1], Prev_Y_Vars[i], Y_Vars[i], covY_Nsub1_Nsub2, (int64_t)coeff); // Passing in y_N-1 and y_N-2 and their associated variance properties.
+            
+            // Option to print both the raww variance in power - as well as variance/ Power magnitude (for computed power of each of the frequency bins)
+            warpPrint("\n Power raw variance: %d \n", (int32_t) varPower);
+            warpPrint("\n Power_variability squared: %d \n", (int32_t) (varPower/power[i]));
         }
 
     }
@@ -99,8 +103,7 @@ uint32_t compute_goertzel_power()
     
     // Call Baysean probability calculation function:
     calculate_baysean(max_pwr_index, power); // Pass in the power spectrm - we may decide to do on the fly Gaussian or other proability modelling and computations with the instantaenous  
-
-    return power;
+    return;
 }
 
 /*
@@ -109,6 +112,7 @@ Need to validate and wirte out character by character if this equation is doing 
 
 
 int64_t compute_power_uncertainty(int frequency, int64_t power, int64_t yNsub1, int64_t yNsub2, int64_t varY_Nsub1, int64_t varY_Nsub2, int64_t covY_Nsub1_Nsub2, int64_t coeff) {
+    // Called for eahc power calculation - each frequency bin
     // Convert coefficient back to integer math (coeff was scaled ×1000)
     int64_t a = (coeff); // Already scaled by 1000 in cosines (and 2x coeff iuun front of cos built in)
 
@@ -123,9 +127,6 @@ int64_t compute_power_uncertainty(int frequency, int64_t power, int64_t yNsub1, 
 
     // Ensure variance is non-negative
     if (varP < 0) varP = 0;
-
-    warpPrint("\nPower Variance @ %d, is %d \n", frequency, (int32_t)varP);
-
     return varP;  // Return the variance of power (still in int64_t) - would need to implement the relative uncertainty
 }
 
@@ -265,15 +266,6 @@ uint32_t byte_to_state_conversion(uint16_t sampling_time_delta){
     }
     
     return acc_magntiude;
-}
-
-
-uint32_t f_peak(int target_freq, uint32_t spectrum[NUM_FREQS]){
-    uint32_t full_power = 0;
-    for (int i = 0; i < NUM_FREQS; i++) {
-        full_power = full_power + spectrum[i]; 
-    }
-    return spectrum[target_freq-2]/full_power; //Frequencies range from 2-13Hz - indices range from 0-11 (12 total bins)
 }
 
 

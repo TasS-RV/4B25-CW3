@@ -29,7 +29,7 @@ uint16_t timeAft_poll = 0;
 
 // Function for updating Gopertzel array of values - instead of storing the whole BUFF_SIZE of Y_n values, it only stores the last 2 and current one. 
 void update_goertzel(uint32_t x_n);
-uint32_t compute_goertzel_power();
+void compute_goertzel_power();
 
 
 const uint32_t target_freqs[NUM_FREQS] = {2, 3, 4, 5, 6, 7, 8, 9 ,10, 11, 12, 13};  // Hz - same bit field size for math. 32 bitrs is overkill, but required for the int arithmetic

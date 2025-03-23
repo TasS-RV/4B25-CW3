@@ -119,7 +119,6 @@ uint64_t propagate_std_dev(uint64_t x_sq, uint64_t y_sq, uint64_t z_sq,
 	// warpPrint("\n Y product: %llu \n", (uint32_t)(y_sq * sigma_y * sigma_y));
 	// warpPrint("\n Z product: %llu \n", (uint32_t)(z_sq * sigma_z * sigma_z));
 	
-
 	uint64_t numerator = x_sq * sigma_x * sigma_x
 	+ y_sq * sigma_y * sigma_y
 	+ z_sq * sigma_z * sigma_z;

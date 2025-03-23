@@ -59,4 +59,8 @@ uint64_t X_SD = 194;//30;
 uint64_t Y_SD = 329;//40;
 uint64_t Z_SD = 204;//83;
 
+
+// Stores the current power calculation, computed at the end of the rolling window
+uint64_t window_power = 0;
+
 uint64_t propagate_std_dev(uint64_t x, uint64_t y, uint64_t z, uint64_t sigma_x, uint64_t sigma_y, uint64_t sigma_z);
