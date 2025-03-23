@@ -21,7 +21,7 @@ The algorithm samples acceleration at **40Hz**, calculates the **magnitude** of 
   <img src="Flowchart_for_Implementation.png" alt="Flowchart for Parkinsonian Tremor Classifier" width="800"/>
 </p>
 
-The system follows a non-blocking polling loop and classifies tremors based on the dominant frequency every 0.5 seconds using a Bayesian posterior confidence score. Note that on startup, the program will take 5s to set the ```0x0f``` HPF register at 1 Hz, to remove the offset due to gravity. We decided a Low-Pass filter was not required due to specific frequency extraction using the Goertzel DFT.
+The system follows a non-blocking polling loop and classifies tremors based on the dominant frequency every 0.5 seconds using a Bayesian posterior confidence score. Note that on startup, the program will take 5s to set the ```0x0F``` HPF register at 1 Hz, to remove the offset due to gravity. We decided a Low-Pass filter was not required due to specific frequency extraction using the Goertzel DFT.
 
 ---
 
