@@ -15,6 +15,72 @@ The algorithm samples acceleration at **40Hz**, calculates the **magnitude** of 
 
 
 
+## 📊 System Flowchart
+
+<p align="center">
+  <img src="Flowchart_for_Implementation.png" alt="Flowchart for Parkinsonian Tremor Classifier" width="800"/>
+</p>
+
+The system follows a non-blocking polling loop and classifies tremors based on the dominant frequency every 0.5 seconds using a Bayesian posterior confidence score.
+
+---
+
+## 🗂️ File Structure
+
+| File | Description |
+|------|-------------|
+| `boot.c` | Main execution file. Initializes the sensor, controls timing, and runs the main sampling loop. |
+| `devMMA8451Q.c` | Contains low-level I2C communication and sensor configuration functions, as well as buffering and filtering logic. |
+| `devMMA8451Q.h` | Header file for `devMMA8451Q.c` with function and constant declarations. |
+| `detect.c` | Implements signal processing: Goertzel sequence update, power calculation, variance propagation, and Bayesian classification. |
+| `detect.h` | Header file for `detect.c` with external declarations. |
+| `config.h` | Global configuration, feature toggles, constants, and sensor activation flags. |
+
+---
+
+## 🌲 Function Call Tree
+Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better at understanding the inheritance between function calls and order of processing.
+
+```text
+boot.c  
+│  
+├── devMMA8451Q.c  
+│   └── initMMA8451Q()  
+│       └── configureSensorMMA8451Q()  
+│           ├── writeSensorRegisterMMA8451Q()  
+│           └── (sets sensor I2C registers and check status)  
+
+├── detect.c  
+│   └── while iteration for fixed iteration count limit to last 10s (main sampling loop at 40 Hz)  
+│       └── byte_to_state_conversion()  
+│           ├── devMMA8451Q.c  
+│           │   └── readSensorRegisterMMA8451Q()  
+│           ├── detect.c  
+│           │   ├── convertAcceleration()  
+│           │   └── get_sqrt()  
+│           └── devMMA8451Q.c  
+│               └── update_buffers()  
+│                   ├── detect.c  
+│                   │   └── update_goertzel()  
+│                   │       ├── compute_power_uncertainty()   (only if variance flag enabled)  
+│                   │       └── propagate_std_dev()  
+│                   └── compute_goertzel_power()              (triggered every 0.5 s)  
+│                       ├── compute_power_uncertainty()       (only if variance flag enabled)  
+│                       └── calculate_baysean()
+```
+
+---
+
+## 🔍 Detection Logic
+
+- **Input**: Acceleration vectors (X, Y, Z) sampled at 40 Hz.
+- **Buffer**: Magnitude buffer of 20 samples (0.5 seconds).
+- **Frequency Analysis**: Goertzel algorithm applied at 11 bins (3–13 Hz).
+- **Uncertainty**: Propagation of priot variance form magntidue and covariances between the Goetzel intermediate sequence, to a posterior variance from the Variance in Power / Power.
+- **Classification**: Bayesian calculation using precomputed PDFs:
+  - `PDF_parkinsonian[]`
+  - `PDF_non_parkinsonian[]`
+- **Output**: Prints dominant frequency and confidence score in detecting tremor.
 
 ---
 
@@ -112,75 +178,6 @@ The sharp separation between 4–6 Hz and other bins validates the discriminat
 
 From the above, the variance propagation calculations are indeed done on board in 64 bit integer arithmetic. However, it was found to not be possible to validate all the live data and debug simultaneously as the data proceesing time was found to be > sampling period. Therefore, the intention of live detection could not be fulfilled, and is only read an validated outside the c-implementation. 
 
-
----
-
-## 📊 System Flowchart
-
-<p align="center">
-  <img src="Flowchart_for_Implementation.png" alt="Flowchart for Parkinsonian Tremor Classifier" width="800"/>
-</p>
-
-The system follows a non-blocking polling loop and classifies tremors based on the dominant frequency every 0.5 seconds using a Bayesian posterior confidence score.
-
----
-
-## 🗂️ File Structure
-
-| File | Description |
-|------|-------------|
-| `boot.c` | Main execution file. Initializes the sensor, controls timing, and runs the main sampling loop. |
-| `devMMA8451Q.c` | Contains low-level I2C communication and sensor configuration functions, as well as buffering and filtering logic. |
-| `devMMA8451Q.h` | Header file for `devMMA8451Q.c` with function and constant declarations. |
-| `detect.c` | Implements signal processing: Goertzel sequence update, power calculation, variance propagation, and Bayesian classification. |
-| `detect.h` | Header file for `detect.c` with external declarations. |
-| `config.h` | Global configuration, feature toggles, constants, and sensor activation flags. |
-
----
-
-## 🌲 Function Call Tree
-Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better at understanding the inheritance between function calls and order of processing.
-
-```text
-boot.c  
-│  
-├── devMMA8451Q.c  
-│   └── initMMA8451Q()  
-│       └── configureSensorMMA8451Q()  
-│           ├── writeSensorRegisterMMA8451Q()  
-│           └── (sets sensor I2C registers and check status)  
-
-├── detect.c  
-│   └── while iteration for fixed iteration count limit to last 10s (main sampling loop at 40 Hz)  
-│       └── byte_to_state_conversion()  
-│           ├── devMMA8451Q.c  
-│           │   └── readSensorRegisterMMA8451Q()  
-│           ├── detect.c  
-│           │   ├── convertAcceleration()  
-│           │   └── get_sqrt()  
-│           └── devMMA8451Q.c  
-│               └── update_buffers()  
-│                   ├── detect.c  
-│                   │   └── update_goertzel()  
-│                   │       ├── compute_power_uncertainty()   (only if variance flag enabled)  
-│                   │       └── propagate_std_dev()  
-│                   └── compute_goertzel_power()              (triggered every 0.5 s)  
-│                       ├── compute_power_uncertainty()       (only if variance flag enabled)  
-│                       └── calculate_baysean()
-```
-
----
-
-## 🔍 Detection Logic
-
-- **Input**: Acceleration vectors (X, Y, Z) sampled at 40 Hz.
-- **Buffer**: Magnitude buffer of 20 samples (0.5 seconds).
-- **Frequency Analysis**: Goertzel algorithm applied at 11 bins (3–13 Hz).
-- **Uncertainty**: Propagation of priot variance form magntidue and covariances between the Goetzel intermediate sequence, to a posterior variance from the Variance in Power / Power.
-- **Classification**: Bayesian calculation using precomputed PDFs:
-  - `PDF_parkinsonian[]`
-  - `PDF_non_parkinsonian[]`
-- **Output**: Prints dominant frequency and confidence score in detecting tremor.
 
 ---
 
