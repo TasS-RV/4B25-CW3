@@ -41,8 +41,6 @@ The system follows a non-blocking polling loop and classifies tremors based on t
 ## 🌲 Function Call Tree
 Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better at understanding the inheritance between function calls and order of processing.
 
-## 🌲 Function Call Tree
-
 ```text
 boot.c  
 │  
@@ -98,7 +96,7 @@ boot.c
 
 ## 🧪 Example Output
 
-Dominant Oscillation detected at: 5 Hz. Probability of this being Parkinsonian tremors: 873 /1000
+Dominant Oscillation detected at: 5 Hz. Probability of this being Parkinsonian tremors: 873 /1000.
 
 
 ---
