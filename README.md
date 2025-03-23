@@ -11,7 +11,7 @@
 
 This project implements a lightweight, real-time classifier to detect Parkinsonian tremors based on dominant frequency analysis of 3-axis accelerometer data from the **MMA8451Q** sensor.
 
-The algorithm samples acceleration at **40Hz**, calculates the **magnitude** of acceleration vectors, and uses the **Goertzel algorithm** to extract frequency-domain information in a rolling 0.5-second window. Frequencies in the range of **3–7Hz** are especially indicative of Parkinsonian tremors.
+The algorithm samples acceleration at **40Hz**, calculates the **magnitude** of acceleration vectors, and uses the **Goertzel algorithm** to extract frequency-domain information in a rolling 0.5-second window. Frequencies in the range of **4–6Hz** are especially indicative of Parkinsonian tremors. [1]
 
 
 
@@ -46,7 +46,7 @@ These histograms reflect how often each frequency bin shows up at peak power, fo
 ![Bayesian PDF Inputs](./baysean_RVAR_inputs.png)
 
 - The Parkinsonian PMF shows a sharp peak centered on 5 Hz.
-- The non-Parkinsonian PMF is broad and flat, indicating low frequency specificity at rest.
+- The non-Parkinsonian PMF is broad and flat, indicating low frequency specificity at rest. [2]
 
 ### 📈 Propagation of Magnitude Variance
 
@@ -198,6 +198,19 @@ In order to observe different outputs, different values should be turned on and 
 ## 🧪 Example Output
 
 Dominant Oscillation detected at: 5 Hz. Probability of this being Parkinsonian tremors: 873 /1000.
+
+
+## 📚 References
+
+1. **Heida et al. (2014)**  
+   *Quantifying Parkinsonian tremor in the frequency domain: evidence from accelerometry*  
+   _Journal of Neurophysiology, 113(7)_, pp. 2562–2570.  
+   [https://doi.org/10.1152/jn.00519.2014](https://doi.org/10.1152/jn.00519.2014)
+
+2. **Stern, B. J. (2018)**  
+   *Evaluation of Patients with Tremor*  
+   _Practical Neurology_, May 2018 Issue.  
+   [https://practicalneurology.com/articles/2018-may/evaluation-of-patients-with-tremor](https://practicalneurology.com/articles/2018-may/evaluation-of-patients-with-tremor)
 
 
 
