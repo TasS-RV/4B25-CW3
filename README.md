@@ -22,30 +22,18 @@ The algorithm samples acceleration at **40Hz**, calculates the **magnitude** of 
 
 - All math is implemented in fixed-point integer format — scaled where needed — to accommodate SEGGER RTT print limitations. Internal computations have been verified to be correct through logging the terminal output on python script and running a digital twin of the system, exlcuding the sensor reading stage. This is mainly a data post processingf script to verify the calculations being performed in C.
 - Instead of importing the ```c math.h ``` library for square root, due to thius demanding too large stack memory allocation compared to a simple iterative method. This can however, result in Epistemic uncertainty, as on board there is no way live validate the inaccuracy of the iteration.
-- The report states the maximum polling rate is 55Hz - inside ```c byte_to_state_conversion ``` we are reading one of each 3 registers at once, resulting in Type B uncertaity alongside an epistemic error from the assumption of x, y, z magnitude being at the same snapshot of time. This should not nesessarily be a major issue for a limb-mounted sensor as intended, given the oscillations would be multiaxial (unlike the mono-axial vibrations on the IB Integrated Coursework building vibration transducer.
+- The report states the maximum polling rate is 55Hz, which wa sobserved in an alternaitve implementation polling all 6 bytes rather than 2 at a time - inside ```c byte_to_state_conversion ``` we are reading one of each 3 registers at once, resulting in Type B uncertaity alongside an epistemic error from the assumption of x, y, z magnitude being at the same snapshot of time. This should not nesessarily be a major issue for a limb-mounted sensor as intended, given the oscillations would be multiaxial (unlike the mono-axial vibrations on the IB Integrated Coursework building vibration transducer. 
 
 <p align="center">
   <img src="LabSetup1.png" alt="Flowchart for Parkinsonian Tremor Classifier" width="600"/>
 </p>
 
-The following procedure describes how data for the Baysean classification was obtained:
-
-1. kdjnbd
-2. dfg 
-3. fg
-
-   ## 3 Propagated Uncertainty and Discrete PMFs
-
-To evaluate Parkinsonian tremor likelihood, the classifier performs a hypothesis test using peak frequency bins based on Goertzel power. It compares:
+The following procedure describes how data for the Baysean classification was obtained. To evaluate Parkinsonian tremor likelihood, the classifier performs a hypothesis test using peak frequency bins based on Goertzel power. It compares:
 
 - **H₁**: Subject exhibits Parkinsonian rest tremors  
 - **H₀**: Subject is at rest or shows non-Parkinsonian motion
 
-This is done by computing the discrete probability distributions **P(f | H₁)** and **P(f | H₀)**, where `f` is the frequency detected at peak power.
-
-### 📊 Constructing the PMFs
-
-Due to the absence of clinical tremor datasets, both PMFs were created empirically:
+This is done by computing the discrete probability distributions **P(f | H₁)** and **P(f | H₀)**, where `f` is the frequency detected at peak power. Due to the absence of clinical tremor datasets, both PMFs were created empirically:
 
 - **P(f | H₁)** was formed from **10 trials** with controlled oscillations between **4–6 Hz**, applied manually or using a coupled actuation rig. For each trial, the frequency bin with the highest Goertzel power was recorded.
   
@@ -120,18 +108,7 @@ The classification output is summarized below:
 
 *Note: All computations are implemented in fixed-point integer math with scaled variance tracking. Only Type A uncertainty is modeled here — firmware limitations (e.g., register quantization, integer rounding) introduce additional epistemic errors that are not accounted for.*
 
-
-
-
-
-
-- Optional variance propagation introduces latency but increases robustness in detection.
-- Designed to run efficiently on low-power embedded systems (e.g., FRDM-KL03Z with Warp firmware stack).
-
----
-
-
-
+- From the above, the variance propagation calculations are indeed done on board in 64 bit integer arithmetic. However, it was found to not be possible to validate all the live data and debug simultaneously as the data proceesing time was found to be > sampling period. Therefore, the intention of live detection could not be fulfilled, and is only read an validated outside the c-implementation. 
 
 
 ---
