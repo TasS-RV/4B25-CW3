@@ -13,6 +13,34 @@ This project implements a lightweight, real-time classifier to detect Parkinsoni
 
 The algorithm samples acceleration at **40Hz**, calculates the **magnitude** of acceleration vectors, and uses the **Goertzel algorithm** to extract frequency-domain information in a rolling 0.5-second window. Frequencies in the range of **3–7Hz** are especially indicative of Parkinsonian tremors.
 
+
+
+
+---
+
+## 📝 Notes
+
+- All math is implemented in fixed-point integer format — scaled where needed — to accommodate SEGGER RTT print limitations. Internal computations have been verified to be correct through logging the terminal output on python script and running a digital twin of the system, exlcuding the sensor reading stage. This is mainly a data post processingf script to verify the calculations being performed in C.
+- The report states the maximum polling rate is 55Hz - inside ```c byte_to_state_conversion ``` we are reading one of each 3 registers at once, resulting in Type B uncertaity alongside an epistemic error from the assumption of x, y, z magnitude being at the same snapshot of time. This should not nesessarily be a major issue for a limb-mounted sensor as intended, given the oscillations would be multiaxial (unlike the mono-axial vibrations on the IB Integrated Coursework building vibration transducer.
+
+<p align="center">
+  <img src="LabSetup1.png" alt="Flowchart for Parkinsonian Tremor Classifier" width="600"/>
+</p>
+
+The following procedure describes how data for the Baysean classification was obtained:
+
+
+
+
+- Optional variance propagation introduces latency but increases robustness in detection.
+- Designed to run efficiently on low-power embedded systems (e.g., FRDM-KL03Z with Warp firmware stack).
+
+---
+
+
+
+
+
 ---
 
 ## 📊 System Flowchart
@@ -99,15 +127,6 @@ boot.c
 Dominant Oscillation detected at: 5 Hz. Probability of this being Parkinsonian tremors: 873 /1000.
 
 
----
-
-## 📝 Notes
-
-- All math is implemented in fixed-point integer format — scaled where needed — to accommodate microcontroller limitations.
-- Optional variance propagation introduces latency but increases robustness in detection.
-- Designed to run efficiently on low-power embedded systems (e.g., FRDM-KL03Z with Warp firmware stack).
-
----
 
 
 
