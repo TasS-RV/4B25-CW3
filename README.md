@@ -174,7 +174,7 @@ boot.c
 - **Input**: Acceleration vectors (X, Y, Z) sampled at 40 Hz.
 - **Buffer**: Magnitude buffer of 20 samples (0.5 seconds).
 - **Frequency Analysis**: Goertzel algorithm applied at 11 bins (3–13 Hz).
-- **Uncertainty**: Optional propagation of variance and covariances.
+- **Uncertainty**: Propagation of priot variance form magntidue and covariances between the Goetzel intermediate sequence, to a posterior variance from the Variance in Power / Power.
 - **Classification**: Bayesian calculation using precomputed PDFs:
   - `PDF_parkinsonian[]`
   - `PDF_non_parkinsonian[]`
