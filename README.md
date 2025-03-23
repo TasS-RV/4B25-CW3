@@ -41,34 +41,35 @@ The system follows a non-blocking polling loop and classifies tremors based on t
 ## 🌲 Function Call Tree
 Refer to the flowchart for a brief summary of the operaation of each function - this call tree is better at understanding the inheritance between function calls and order of processing.
 
+## 🌲 Function Call Tree
+
+```text
 boot.c  
 │  
-devMMA8451Q.c
-├── initMMA8451Q()  
-│   └── configureSensorMMA8451Q()  
-│       ├── writeSensorRegisterMMA8451Q()  
-│       └── (sets sensor I2C registers and check status)  
-detect.c 
-└── while iteration for fixed iteration count limit to last 10s (main sampling loop at 40 Hz)  
-    └── byte_to_state_conversion()  
-        devMMA8451Q.c
-        ├── readSensorRegisterMMA8451Q() 
-        │ 
-        detect.c 
-        ├── convertAcceleration()  
-        ├── get_sqrt() 
-        │ 
-        devMMA8451Q.c
-        ├── update_buffers()  
-        │   │ 
-        │   detect.c 
-        │   ├── update_goertzel()  
-        │   │   ├── compute_power_uncertainty()   (only if variance flag enabled)  
-        │   │   └── propagate_std_dev()  
-        │   └── compute_goertzel_power()          (triggered every 0.5 s)  
-        │       ├── compute_power_uncertainty()   (only if variance flag enabled)  
-        │       └── calculate_baysean()  
+├── devMMA8451Q.c  
+│   └── initMMA8451Q()  
+│       └── configureSensorMMA8451Q()  
+│           ├── writeSensorRegisterMMA8451Q()  
+│           └── (sets sensor I2C registers and check status)  
 
+├── detect.c  
+│   └── while iteration for fixed iteration count limit to last 10s (main sampling loop at 40 Hz)  
+│       └── byte_to_state_conversion()  
+│           ├── devMMA8451Q.c  
+│           │   └── readSensorRegisterMMA8451Q()  
+│           ├── detect.c  
+│           │   ├── convertAcceleration()  
+│           │   └── get_sqrt()  
+│           └── devMMA8451Q.c  
+│               └── update_buffers()  
+│                   ├── detect.c  
+│                   │   └── update_goertzel()  
+│                   │       ├── compute_power_uncertainty()   (only if variance flag enabled)  
+│                   │       └── propagate_std_dev()  
+│                   └── compute_goertzel_power()              (triggered every 0.5 s)  
+│                       ├── compute_power_uncertainty()       (only if variance flag enabled)  
+│                       └── calculate_baysean()
+```
 
 ---
 
