@@ -91,7 +91,7 @@ boot.c
 - The report states the maximum polling rate is 55Hz, which wa sobserved in an alternaitve implementation polling all 6 bytes rather than 2 at a time - inside ``` byte_to_state_conversion ``` we are reading one of each 3 registers at once, resulting in Type B uncertaity alongside an epistemic error from the assumption of x, y, z magnitude being at the same snapshot of time. This should not nesessarily be a major issue for a limb-mounted sensor as intended, given the oscillations would be multiaxial (unlike the mono-axial vibrations on the IB Integrated Coursework building vibration transducer. 
 
 <p align="center">
-  <img src="LabSetup2.png" alt="Flowchart for Parkinsonian Tremor Classifier" width="600"/>
+  <img src="LabSetup2.jpg" alt="Flowchart for Parkinsonian Tremor Classifier" width="600"/>
 </p>
 
 The following procedure describes how data for the Baysean classification was obtained. To evaluate Parkinsonian tremor likelihood, the classifier performs a hypothesis test using peak frequency bins based on Goertzel power. It compares:
