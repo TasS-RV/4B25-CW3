@@ -99,7 +99,7 @@ This variance can be printed for interpretability but is **not used in the final
 The classification output is summarized below:
 
 <p align="center">
-  <img src="Classificaiton_tests.png" alt="Classificaiton_tests" width="400"/>
+  <img src="Classificaiton_tests.png" alt="Classificaiton_tests" width="600"/>
 </p>
 
 - **Red bars**: Frequency bins classified during Parkinsonian-like 4–6 Hz inputs.
