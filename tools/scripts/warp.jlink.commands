@@ -1,0 +1,6 @@
+power on perm
+exec EnableRemarks
+unlock kinetis
+loadfile /home/students/tes46/Warp-firmware-TScopy/build/ksdk1.1/work/demos/Warp/armgcc/Warp/release/Warp.srec
+r
+go
