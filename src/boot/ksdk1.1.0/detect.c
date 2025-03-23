@@ -100,7 +100,6 @@ uint32_t compute_goertzel_power()
     // Call Baysean probability calculation function:
     calculate_baysean(max_pwr_index, power); // Pass in the power spectrm - we may decide to do on the fly Gaussian or other proability modelling and computations with the instantaenous  
 
-    //return P_obs_normalised(target_freq, power);      <-- Use this to get nromalised power when implementing tinot final proability function      
     return power;
 }
 
@@ -127,17 +126,9 @@ int64_t compute_power_uncertainty(int frequency, int64_t power, int64_t yNsub1, 
 
     warpPrint("\nPower Variance @ %d, is %d \n", frequency, (int32_t)varP);
 
-    return varP;  // Return the variance of power (still in int64_t)
+    return varP;  // Return the variance of power (still in int64_t) - would need to implement the relative uncertainty
 }
 
-// This is wrong - I am using the power spectrumm, and not a probaiblity counts when running the test multiple times to get counts of frequencies
-uint32_t P_obs_normalised(int target_freq, uint32_t spectrum[NUM_FREQS]){
-    uint32_t full_power = 0;
-    for (int i = 0; i < NUM_FREQS; i++) {
-        full_power = full_power + spectrum[i]; 
-    }
-    return spectrum[target_freq-2]/full_power; //Frequencies range from 2-13Hz - indices range from 0-11 (12 total bins)
-}
 
 
 /*
